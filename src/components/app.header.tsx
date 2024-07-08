@@ -8,6 +8,7 @@ import { useState } from 'react';
 import AppSidebar from './app.sidebar';
 import { NavDropdown } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
+import Image from 'next/image';
 const AppHeader = () => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
@@ -24,27 +25,33 @@ const AppHeader = () => {
                     >
                         <span className="navbar-toggler-icon" ></span>
                     </Button>
+                    {/* <Image
+                        src="/images/logo.jpg"
+                        alt="Example Image"
+                        width={70} // Chiều rộng hình ảnh
+                        height={50} // Chiều cao hình ảnh
+                    /> */}
                 </Navbar.Brand>
 
                 <Navbar.Toggle />
 
                 <Navbar.Collapse className="justify-content-end">
                     {/* <Navbar.Text className='div-user'> */}
-                   
-                        <Dropdown>
-                            <Dropdown.Toggle className='btn-dropdown'>
-                            <i className="fa-solid fa-user"></i>
-                            <span className='user-name' >Nguyễn Văn A</span> 
-                            </Dropdown.Toggle>
 
-                            <Dropdown.Menu >
-                                <Dropdown.Item href="/#">Cá nhân</Dropdown.Item>
-                                <Dropdown.Item href="/#">Cài đặt</Dropdown.Item>
-                                <Dropdown.Divider />
-                                <Dropdown.Item href="/#">Đăng xuất</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                   
+                    <Dropdown>
+                        <Dropdown.Toggle className='btn-dropdown'>
+                            <i className="fa-solid fa-user"></i>
+                            <span className='user-name' >Nguyễn Văn A</span>
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu >
+                            <Dropdown.Item href="/#">Cá nhân</Dropdown.Item>
+                            <Dropdown.Item href="/#">Cài đặt</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item href="/#">Đăng xuất</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
 
                     {/* <i className="fa-solid fa-user"></i>
                         <span className='user-name' >Nguyễn Văn A</span> */}

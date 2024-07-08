@@ -27,9 +27,10 @@ const AppSidebar = (props: Iprops) => {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Quản lý</Offcanvas.Title>
         </Offcanvas.Header>
+        
         <Offcanvas.Body>
 
-          <Link href={"/category"} className='link-tab-sidebar' 
+          <Link href={"/management/category"} className='link-tab-sidebar' 
           onClick={()=>setShowSidebar(false)}
           >
             <Navbar className =  {`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("category")? "active" : ""}`}>
@@ -39,7 +40,7 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/tour"} className='link-tab-sidebar'
+          <Link href={"/management/tour"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
           >
             <Navbar className= {`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("tour")? "active" : ""}`}>
@@ -49,7 +50,7 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/reserve"} className='link-tab-sidebar' 
+          <Link href={"/management/reserve"} className='link-tab-sidebar' 
            onClick={()=>setShowSidebar(false)}
           >
             <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("reserve")? "active" : ""}`}>
@@ -59,7 +60,7 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/customer"} className='link-tab-sidebar'
+          <Link href={"/management/customer"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
           >
             <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("customer")? "active" : ""}`}>
@@ -69,7 +70,7 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/account"} className='link-tab-sidebar'
+          <Link href={"/management/account"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
           >
             <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("account")? "active" : ""}`}>
@@ -79,7 +80,7 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/history"} className='link-tab-sidebar'
+          <Link href={"/management/history"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
           >
             <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("history")? "active" : ""}`}>

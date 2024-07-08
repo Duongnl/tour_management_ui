@@ -1,11 +1,18 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+import LoginForm from "@/components/login/login.form";
+import "@/styles/login.css"
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from "react-bootstrap";
-
-export default function Home() {
+const Home = () => {
   return (
-  <>
-       Login
-  </>
+    
+
+      <div className="div-login">
+        <LoginForm />
+      </div>
+ 
+
   );
 }
+
+export default Home
