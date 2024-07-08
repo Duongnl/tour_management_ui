@@ -1,0 +1,10 @@
+.footer {
+    background-color: #2a2f5b;
+    position: fixed; /* Cố định vị trí của footer */
+    bottom: 0; /* Đặt footer ở vị trí dưới cùng */
+    width: 100%;
+    color: white;
+    text-align: right; /* Căn chỉnh văn bản nằm sát phía bên phải */
+    padding-right: 20px;
+}
+

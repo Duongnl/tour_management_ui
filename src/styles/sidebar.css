@@ -1,0 +1,30 @@
+.sidebar{
+    background-color: #2a2f5b;
+    color: white;
+}
+
+.offcanvas-header .btn-close {
+    filter: invert(1);
+  }
+
+  .tab-sidebar{
+    background-color:white !important;
+    border-radius: 20px !important;
+  }
+
+  .tab-sidebar:hover {
+   background-color: cornflowerblue !important;
+  }
+
+  .name-tab-sidebar{
+    color: black !important;
+  
+  }
+
+  .link-tab-sidebar{
+    text-decoration: none;
+  }
+
+  .active{
+    background-color: cornflowerblue !important; /* Màu nền khi link đang được chọn */
+  }

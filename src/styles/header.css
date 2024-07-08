@@ -1,0 +1,46 @@
+.header{
+    background-color: #2a2f5b !important;
+    margin-bottom: 10px;
+    width: 100% ;
+    position: fixed; 
+}
+
+.btn-sidebar{
+    margin-left: 10px;
+    background-color: white;
+}
+
+.btn-sidebar:hover{
+    background-color:cornflowerblue;
+}
+
+.div-user{
+    color: white;
+    margin-right: 20px;
+}
+
+
+.user-name{
+    margin-left: 20px;
+}
+
+.btn-dropdown{
+    background-color: white;
+    margin-right: 20px;
+    color: black;
+}
+.btn-dropdown:hover{
+    background-color: cornflowerblue !important;
+    color: black !important;
+}
+
+.btn-dropdown.show {
+    background-color: cornflowerblue !important;
+    color: black !important;
+}
+
+.dropdown-menu {
+    right: 0 !important;
+    left: unset !important;
+    margin-right: 20px;
+}
