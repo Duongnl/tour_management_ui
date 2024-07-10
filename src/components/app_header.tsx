@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import '@/styles/header.css'
 import { useState } from 'react';
-import AppSidebar from './app.sidebar';
+import AppSidebar from './app_sidebar';
 import { NavDropdown } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 import Image from 'next/image';

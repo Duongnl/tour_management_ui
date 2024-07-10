@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AppHeader from "@/components/app.header";
+import AppHeader from "@/components/app_header";
 import { Container } from "react-bootstrap";
-import AppFooter from "@/components/app.footer";
+import AppFooter from "@/components/app_footer";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +32,18 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
+        <ToastContainer 
+        position="top-right"
+        autoClose={1200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
       </body>
     </html>
   );
