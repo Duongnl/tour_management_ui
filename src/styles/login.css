@@ -28,5 +28,11 @@
 .div-btn-login{
     display: flex;
     justify-content: center;
+    margin-top: 35px;
+}
 
+.div-title-login{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
