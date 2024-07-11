@@ -36,7 +36,6 @@ const LoginForm = (props:any) => {
         const res = await LoginServerActions(account_name,password);
         if (res.status === "SUCCESS") {
             window.location.href = '/management';
-            // setGlobalVariable(res.result.token);
         } else {
             let errors = ExportError(res,LoginErrorCode);
             for (let i:number = 0; i<errors.length; i++) {
@@ -75,7 +74,7 @@ const LoginForm = (props:any) => {
 
                 <Form.Group  className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Mật khẩu</Form.Label>
-                    <Form.Control name="password" type="password" placeholder="Nhập mật khẩu" 
+                    <Form.Control name="password" type="text" placeholder="Nhập mật khẩu" 
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
                     onKeyDown={(e)=>onKeyDown(e)}
