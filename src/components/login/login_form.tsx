@@ -2,17 +2,24 @@
 import { Form } from "react-bootstrap"
 import { Button } from "react-bootstrap"
 import "@/styles/login.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { LoginServerActions } from "./login_server_actions"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from 'react-toastify';
 import LoginErrorCode from "./login_error_code"
 import { ExportError } from "@/utils/export_error"
+
 const LoginForm = (props:any) => {
 
     const[account_name, setAccount_name] = useState('');
     const[password,setPassword] = useState('');
-  
+
+    // useEffect(() => {
+    //     // Example of updating global variable from client
+    //     setGlobalVariable('New value from client');
+    //     setGlobalValue(getGlobalVariable());
+    // }, []);
+
 
     // const handleLogin = async () => {
     //   const res = await props.LoginServerActions(account_name, password)
@@ -29,7 +36,7 @@ const LoginForm = (props:any) => {
         const res = await LoginServerActions(account_name,password);
         if (res.status === "SUCCESS") {
             window.location.href = '/management';
-            // toast.success("Đăng nhập thành công")
+            // setGlobalVariable(res.result.token);
         } else {
             let errors = ExportError(res,LoginErrorCode);
             for (let i:number = 0; i<errors.length; i++) {
@@ -37,6 +44,14 @@ const LoginForm = (props:any) => {
             }
         }
     }
+
+    const onKeyDown = (e:any) => {
+        if(e.key == 'Enter'){
+            handleLogin();
+          }
+    }
+
+ 
 
     return (
         <>
@@ -51,6 +66,7 @@ const LoginForm = (props:any) => {
                     <Form.Control name="account_name" type="text" placeholder="Nhập tên đăng nhập"
                     value={account_name}
                     onChange={(e)=> setAccount_name(e.target.value)}
+                    onKeyDown={(e)=>onKeyDown(e)}
                     />
                     {/* <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
@@ -62,6 +78,7 @@ const LoginForm = (props:any) => {
                     <Form.Control name="password" type="password" placeholder="Nhập mật khẩu" 
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
+                    onKeyDown={(e)=>onKeyDown(e)}
                     />
                 </Form.Group>
                 {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -69,7 +86,8 @@ const LoginForm = (props:any) => {
                 </Form.Group> */}
                 <div className="div-btn-login">
                     <Button variant="primary" type="button" className="btn-login" 
-                    onClick={handleLogin}
+                    onClick={()=>handleLogin()}
+                    
                     >
                         Đăng nhập
                     </Button>
@@ -80,4 +98,6 @@ const LoginForm = (props:any) => {
     )
 }
 
-export default LoginForm
+
+
+export default LoginForm;
