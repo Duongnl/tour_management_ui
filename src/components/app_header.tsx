@@ -9,11 +9,21 @@ import AppSidebar from './app_sidebar';
 import { NavDropdown } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 import Image from 'next/image';
-const AppHeader = () => {
+import { getSessionId, removeSessionId } from '@/utils/session_store';
+import cookie from 'js-cookie';
+const AppHeader = (props:any) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
-
+    const cookieValue = cookie.get('session-id');
     const handleShowSidebar = () => {
         setShowSidebar(true)
+    }
+
+    const account = props.account;
+    console.log(cookieValue)
+
+    const handleLogout = () => {
+        cookie.remove('session-id');
+        window.location.href = '/';
     }
 
     return (
@@ -41,14 +51,16 @@ const AppHeader = () => {
                     <Dropdown>
                         <Dropdown.Toggle className='btn-dropdown'>
                             <i className="fa-solid fa-user"></i>
-                            <span className='user-name' >Nguyễn Văn A</span>
+                            <span className='user-name' >{account.result.employee.employee_name}</span>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu >
                             <Dropdown.Item href="/#">Cá nhân</Dropdown.Item>
                             <Dropdown.Item href="/#">Cài đặt</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item href="/#">Đăng xuất</Dropdown.Item>
+                            <Dropdown.Item 
+                            onClick={()=> handleLogout()}
+                            >Đăng xuất</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
 

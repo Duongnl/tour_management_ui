@@ -7,6 +7,7 @@ import AppFooter from "@/components/app_footer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -31,7 +32,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+   
         {children}
+        
         <ToastContainer 
         position="top-right"
         autoClose={1200}
