@@ -30,6 +30,16 @@ const AppSidebar = (props: Iprops) => {
         
         <Offcanvas.Body>
 
+            <Link href={"/management"} className='link-tab-sidebar' 
+          onClick={()=>setShowSidebar(false)}
+          >
+            <Navbar className =  {`${"bg-body-tertiary tab-sidebar"} ${pathName==="/management" ? "active" : ""}`}>
+              <Container>
+                <span className='name-tab-sidebar'>Tổng quan</span>
+              </Container>
+            </Navbar>
+          </Link>
+          <br/>
           <Link href={"/management/category"} className='link-tab-sidebar' 
           onClick={()=>setShowSidebar(false)}
           >

@@ -17,9 +17,7 @@ const AppHeader = (props:any) => {
     const handleShowSidebar = () => {
         setShowSidebar(true)
     }
-
     const account = props.account;
-    console.log(cookieValue)
 
     const handleLogout = () => {
         cookie.remove('session-id');

@@ -19,8 +19,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>,) {
 
-  console.log("your token :", getSessionId());
-
   const res = await fetch(
     "http://localhost:8080/api/account/myInfo",
     {

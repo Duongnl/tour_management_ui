@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap"
 const Home = () => {
     return (
         <Container style={{paddingTop:"80px"}} >
-            <h4>Home</h4>
+            <h4>Tổng quan</h4>
         </Container>
     )
 }
