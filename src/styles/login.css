@@ -1,0 +1,38 @@
+.div-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Chiều cao 100% viewport */
+    background-color: #2a2f5b;
+    /* Màu nền tùy chọn */
+}
+
+.btn-login{
+    background-color: #2a2f5b !important;
+}
+
+
+.form-login {
+
+    background-color: #fff;
+    /* Màu nền của form */
+    padding: 20px;
+    /* Khoảng cách bên trong form */
+    border-radius: 10px;
+    /* Bo góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng */
+
+}
+.div-btn-login{
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.div-title-login{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
