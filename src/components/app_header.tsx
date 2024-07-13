@@ -24,7 +24,7 @@ const AppHeader =  () => {
     ).then((res) => res.json());
 
     const { data, error, isLoading } = useSWR(
-        `http://localhost:8080/api/account/myInfo`,
+        `http://localhost:8080/api/account/my-info`,
         fetcher, {
         revalidateIfStale: true,
         revalidateOnFocus: false,
@@ -32,21 +32,6 @@ const AppHeader =  () => {
     }
     );
     
-    // const account = data;
-
-    // const res = await fetch(
-    //     "http://localhost:8080/api/account/myInfo",
-        // {
-        //   method: "GET",
-        //   headers: {
-        //     Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-        //   },
-    //     }
-    //   );
-    
-    //   const data = await res.json();
-
-  
     const handleShowSidebar = () => {
         setShowSidebar(true)
     }

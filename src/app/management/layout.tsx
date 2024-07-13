@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AppHeader from "@/components/app_header";
 import AppFooter from "@/components/app_footer";
 import { getSessionId } from "@/utils/session_store";
+import { Container } from "react-bootstrap";
 const inter = Inter({ subsets: ["latin"] });
 
 export const dynamic = "force-dynamic";
@@ -23,9 +24,10 @@ export default  function RootLayout({
   return (
     <>
       <AppHeader
-      
       />
+
       {children}
+
       <AppFooter />
     </>
   );

@@ -1,19 +1,21 @@
 "use client"
 import Table from 'react-bootstrap/Table';
-import "@/styles/table.css"
+import "@/styles/account.css"
 import { Button } from 'react-bootstrap';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import cookie from 'js-cookie';
 import Form from 'react-bootstrap/Form';
 import { mutate } from 'swr';
+import ChangeStatusModal from './change_status_modal';
 interface IProps {
     accounts: IAccount[]
-    // setShowSidebar: (value: boolean) => void
 }
 
 const AccountTable = (props: IProps) => {
     const [accounts, setAccounts] = useState(props.accounts)
-
+    const [showChangeStatusModal,setShowChangeStatusModal] = useState<boolean>(false)
+    const [account_id, setAccount_id] = useState<string>('')
+    const[checked,setChecked] = useState<boolean>(false);
 
     const fetchData = async () => {
         const res = await fetch(
@@ -27,12 +29,17 @@ const AccountTable = (props: IProps) => {
         );
         const data = await res.json();
         
-        console.log("Có vào ")
-        mutate("http://localhost:8080/api/account/myInfo")
+        mutate("http://localhost:8080/api/account/my-info")
 
         const accounts: IAccount[] = data.result
         setAccounts(accounts)
     };
+
+    const handleChangeStatus = async (account_id:string,e:boolean) => {
+       setAccount_id(account_id);
+       setShowChangeStatusModal(true)
+       setChecked(e)
+    }
 
  
     return (
@@ -63,13 +70,15 @@ const AccountTable = (props: IProps) => {
                                 <td>{account.role_name}</td>
                                 <td>{account.time}</td>
                                 <td>
-                                    {/* <Form.Check // prettier-ignore
+                                    <Form.Check className='check-active' 
+                                        checked={account.status == '1'}
+                                        onChange={(e) => handleChangeStatus(account.account_id, e.target.checked)}
                                         type="switch"
                                         id="custom-switch"
-                                    /> */}
-                                     <Button variant='warning'
+                                    />
+                                     {/* <Button variant='warning'
                                      onClick={()=> fetchData()}
-                                     >Edit</Button>
+                                     >Edit</Button> */}
                                 </td>
                                 <td>
                                     <Button variant='warning'>Edit</Button>
@@ -81,6 +90,13 @@ const AccountTable = (props: IProps) => {
 
                 </tbody>
             </Table>
+           <ChangeStatusModal
+           showChangeStatusModal= {showChangeStatusModal}
+           setShowChangeStatusModal = {setShowChangeStatusModal}
+           fetchData = {fetchData}
+           account_id= {account_id}
+           checked = {checked}
+           />
         </>
     )
 }

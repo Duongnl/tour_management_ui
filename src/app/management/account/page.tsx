@@ -26,7 +26,6 @@ const AccountPage = async () => {
                     <h4>Quản lý người dùng</h4>
                 </Row>
                 <Row>
-                    {/* Bạn có thể sử dụng fetchData như một Promise */}
                     <AccountTable accounts={accounts} />
                 </Row>
             </Container>
