@@ -14,8 +14,17 @@ interface IProps {
 const AccountTable = (props: IProps) => {
     const [accounts, setAccounts] = useState(props.accounts)
     const [showChangeStatusModal,setShowChangeStatusModal] = useState<boolean>(false)
-    const [account_id, setAccount_id] = useState<string>('')
-    const[checked,setChecked] = useState<boolean>(false);
+
+    const initAccount: IAccount = {
+        account_id: '',
+        account_name:  '',
+        email:'',
+        time:'',
+        status:'',
+        role_name:''
+    }
+    const [account, setAccount] = useState<IAccount>(initAccount)
+
 
     const fetchData = async () => {
         const res = await fetch(
@@ -35,10 +44,10 @@ const AccountTable = (props: IProps) => {
         setAccounts(accounts)
     };
 
-    const handleChangeStatus = async (account_id:string,e:boolean) => {
-       setAccount_id(account_id);
+    const handleChangeStatus = async (account:IAccount) => {
+       setAccount(account)
        setShowChangeStatusModal(true)
-       setChecked(e)
+      
     }
 
  
@@ -72,7 +81,7 @@ const AccountTable = (props: IProps) => {
                                 <td>
                                     <Form.Check className='check-active' 
                                         checked={account.status == '1'}
-                                        onChange={(e) => handleChangeStatus(account.account_id, e.target.checked)}
+                                        onChange={() => handleChangeStatus(account)}
                                         type="switch"
                                         id="custom-switch"
                                     />
@@ -94,8 +103,8 @@ const AccountTable = (props: IProps) => {
            showChangeStatusModal= {showChangeStatusModal}
            setShowChangeStatusModal = {setShowChangeStatusModal}
            fetchData = {fetchData}
-           account_id= {account_id}
-           checked = {checked}
+           account = {account}
+
            />
         </>
     )
