@@ -1,4 +1,4 @@
-'use client'
+
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { Offcanvas } from "react-bootstrap";
@@ -19,7 +19,6 @@ const AppSidebar = (props: Iprops) => {
 
   const { showSidebar, setShowSidebar } = props;
   const pathName = usePathname()
-  console.log(pathName)
 
   return (
     <>
@@ -80,8 +79,9 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
-          <Link href={"/management/account"} className='link-tab-sidebar'
+          <Link prefetch={false} href={"/management/account"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
+          
           >
             <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("account")? "active" : ""}`}>
               <Container>

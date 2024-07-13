@@ -11,18 +11,52 @@ import { Dropdown } from 'react-bootstrap';
 import Image from 'next/image';
 import { getSessionId, removeSessionId } from '@/utils/session_store';
 import cookie from 'js-cookie';
-const AppHeader = (props:any) => {
+import useSWR,{Fetcher} from "swr";
+const AppHeader =  () => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
-    const cookieValue = cookie.get('session-id');
+
+    const fetcher:Fetcher<any,string> = (url: string) => fetch(url,
+        {
+            headers: {
+              Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
+            },
+        }
+    ).then((res) => res.json());
+
+    const { data, error, isLoading } = useSWR(
+        `http://localhost:8080/api/account/myInfo`,
+        fetcher, {
+        revalidateIfStale: true,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    }
+    );
+    
+    // const account = data;
+
+    // const res = await fetch(
+    //     "http://localhost:8080/api/account/myInfo",
+        // {
+        //   method: "GET",
+        //   headers: {
+        //     Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
+        //   },
+    //     }
+    //   );
+    
+    //   const data = await res.json();
+
+  
     const handleShowSidebar = () => {
         setShowSidebar(true)
     }
-    const account = props.account;
 
     const handleLogout = () => {
         cookie.remove('session-id');
         window.location.href = '/';
     }
+
+
 
     return (
         <>
@@ -49,7 +83,7 @@ const AppHeader = (props:any) => {
                     <Dropdown>
                         <Dropdown.Toggle className='btn-dropdown'>
                             <i className="fa-solid fa-user"></i>
-                            <span className='user-name' >{account.result.employee.employee_name}</span>
+                            <span className='user-name' >{data?.result.employee.employee_name}</span>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu >
