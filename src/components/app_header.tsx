@@ -12,25 +12,9 @@ import Image from 'next/image';
 import { getSessionId, removeSessionId } from '@/utils/session_store';
 import cookie from 'js-cookie';
 import useSWR,{Fetcher} from "swr";
-const AppHeader =  () => {
+const AppHeader =  (props:any) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
-
-    const fetcher:Fetcher<any,string> = (url: string) => fetch(url,
-        {
-            headers: {
-              Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-            },
-        }
-    ).then((res) => res.json());
-
-    const { data, error, isLoading } = useSWR(
-        `http://localhost:8080/api/account/my-info`,
-        fetcher, {
-        revalidateIfStale: true,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false
-    }
-    );
+    const account = props.account
     
     const handleShowSidebar = () => {
         setShowSidebar(true)
@@ -68,7 +52,7 @@ const AppHeader =  () => {
                     <Dropdown>
                         <Dropdown.Toggle className='btn-dropdown'>
                             <i className="fa-solid fa-user"></i>
-                            <span className='user-name' >{data?.result.employee.employee_name}</span>
+                            <span className='user-name' >{account?.employee.employee_name}</span>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu >

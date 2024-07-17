@@ -3,6 +3,7 @@ import { Container, Row } from "react-bootstrap"
 import "@/styles/account.css"
 import { getSessionId } from "@/utils/session_store"
 import AccountTable from "@/components/account/account_table";
+import { Suspense } from "react";
 
 const AccountPage = async () => {
 
@@ -21,14 +22,18 @@ const AccountPage = async () => {
 
     return (
         <>
+
             <Container className="ctn-account">
                 <Row>
                     <h4>Quản lý người dùng</h4>
                 </Row>
                 <Row>
-                    <AccountTable accounts={accounts} />
+                    <Suspense>
+                        <AccountTable accounts={accounts} />
+                    </Suspense>
                 </Row>
             </Container>
+
         </>
     )
 }

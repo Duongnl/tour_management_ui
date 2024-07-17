@@ -4,16 +4,17 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import cookie from 'js-cookie';
 import { toast } from 'react-toastify';
+import { mutate } from 'swr';
 interface IProps {
   showChangeStatusModal:boolean;
-  account:IAccount
+  account:IAccountResponse
   setShowChangeStatusModal:(value:boolean) => void
-  fetchData:() =>void
+  fetchAccounts:() =>void
 }
 
 function ChangeStatusModal(props:IProps) {
 
-  const {showChangeStatusModal,account,setShowChangeStatusModal,fetchData} = props
+  const {showChangeStatusModal,account,setShowChangeStatusModal,fetchAccounts} = props
 
   const handleChangeStatus = async () => {
     const res = await fetch(
@@ -26,13 +27,12 @@ function ChangeStatusModal(props:IProps) {
         }
     );
     const data = await res.json();
-
-    fetchData();
+    fetchAccounts();
     setShowChangeStatusModal(false)
-    if (data.result.status == '0') {
-      toast.success("Đã khóa tài khoản thành công")
+    if (data.result.status == 0) {
+      toast.success(`Đã khóa tài khoản ${data.result.account_name} thành công`)
     } else {
-      toast.success("Đã mở khóa tài khoản thành công")
+      toast.success(`Đã mở khóa tài khoản ${data.result.account_name} thành công`)
     }
   }
   
@@ -44,13 +44,13 @@ function ChangeStatusModal(props:IProps) {
         <Modal.Header closeButton>
           <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Bạn có chắc chắn muốn {account.status=='0'?"mở khóa":"khóa"} tài khoản này ?</Modal.Body>
+        <Modal.Body>Bạn có chắc chắn muốn {account.status==0?"mở khóa":"khóa"} tài khoản {account.account_name} ?</Modal.Body>
         <Modal.Footer>
           <Button style={{backgroundColor:"#2a2f5b"}} onClick={()=>setShowChangeStatusModal(false)}>
             Đóng
           </Button>
           <Button variant="danger" onClick={()=>handleChangeStatus()}>
-            {account.status=='0'?"Mở khóa":"Khóa"}
+            {account.status==0?"Mở khóa":"Khóa"}
           </Button>
         </Modal.Footer>
       </Modal>

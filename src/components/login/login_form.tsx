@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { LoginServerActions } from "./login_server_actions"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from 'react-toastify';
-import LoginErrorCode from "../../exception/login_error_code"
+import AccountErrorCode from "../../exception/account_error_code"
 import { ExportError } from "@/utils/export_error"
 
 const LoginForm = () => {
@@ -20,7 +20,7 @@ const LoginForm = () => {
         if (res.status === "SUCCESS") {
             window.location.href = '/management';
         } else {
-            let errors = ExportError(res,LoginErrorCode);
+            let errors = ExportError(res,AccountErrorCode);
             for (let i:number = 0; i<errors.length; i++) {
                 toast.error(errors[i]);
             }

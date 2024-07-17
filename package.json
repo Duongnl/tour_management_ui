@@ -15,10 +15,12 @@
     "next": "^15.0.0-rc.0",
     "react": "^19.0.0-rc-85acf2d195-20240711",
     "react-bootstrap": "^2.10.4",
+    "react-bootstrap-typeahead": "^6.3.2",
     "react-dom": "^19.0.0-rc-85acf2d195-20240711",
     "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.24.1",
     "react-toastify": "^10.0.5",
+    "simple-datatables": "^9.0.4",
     "swr": "^2.2.5"
   },
   "devDependencies": {
