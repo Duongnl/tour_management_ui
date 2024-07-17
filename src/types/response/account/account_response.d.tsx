@@ -1,8 +1,8 @@
-interface IAccount {
+interface IAccountResponse {
     account_id:string;
     account_name:string;
-    email:string;
+    employee_name:string;
     time:string;
-    status:string;
+    status:number;
     role_name:string;
 }
