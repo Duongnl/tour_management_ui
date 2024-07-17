@@ -20,7 +20,7 @@ interface IProps {
   fetchAccounts:() =>void
 }
 
-const AccountModal = (props: IProps) => {
+const AccountCreateModal = (props: IProps) => {
 
   const { showAccountModal, setShowAccountModal,fetchAccounts } = props
   const [validation, setValidation] = useState<boolean[]>([]);
@@ -411,4 +411,4 @@ const AccountModal = (props: IProps) => {
   );
 }
 
-export default AccountModal;
+export default AccountCreateModal;

@@ -37,10 +37,15 @@
 .btn-dropdown.show {
     background-color: cornflowerblue !important;
     color: black !important;
+    margin-right: 20px;
+    margin-top: 0px !important;
 }
 
 .dropdown-menu {
     right: 0 !important;
     left: unset !important;
-    margin-right: 20px;
+    margin-right: 20px !important;
+}
+.dropdown{
+    margin-top: 0px !important;
 }

@@ -8,8 +8,9 @@ import Form from 'react-bootstrap/Form';
 import { mutate } from 'swr';
 import ChangeStatusModal from './change_status_modal';
 import { DataTable } from "simple-datatables"
-import AccountModal from './account_modal';
+import AccountCreateModal from './account_create_modal';
 import { Anybody } from 'next/font/google';
+import Link from 'next/link';
 interface IProps {
     accounts: IAccountResponse[]
 }
@@ -62,7 +63,15 @@ const AccountTable = (props: IProps) => {
         setShowAccountModal(true)
      
     }
-
+    var slugify = require('slugify')
+    slugify('some string', {
+        replacement: '-',  // replace spaces with replacement character, defaults to `-`
+        remove: undefined, // remove characters that match regex, defaults to `undefined`
+        lower: false,      // convert to lower case, defaults to `false`
+        strict: false,     // strip special characters except replacement, defaults to `false`
+        locale: 'vi',      // language code of the locale to use
+        trim: true         // trim leading and trailing replacement chars, defaults to `true`
+      })
 
 
     return (
@@ -109,7 +118,10 @@ const AccountTable = (props: IProps) => {
                                      >Edit</Button> */}
                                 </td>
                                 <td>
-                                    <Button variant='outline-secondary' className='btn-update'  >  <i className="fa-solid fa-user-pen"></i></Button>
+                                    <Button variant='outline-secondary'  className='btn-update' >
+                                 
+                                    <Link href={'/management/account/' + slugify(`${account.employee_name} ${account.account_id}` )}  >   <i className="fa-solid fa-user-pen"  style={{color:"black"}} ></i> </Link>
+                                    </Button>
                                 </td>
                             </tr>
                         )
@@ -124,7 +136,7 @@ const AccountTable = (props: IProps) => {
                 fetchAccounts={fetchAccounts}
                 account={account}
             />
-            <AccountModal
+            <AccountCreateModal
             showAccountModal = {showAccountModal}
             setShowAccountModal = {setShowAccountModal}
             fetchAccounts={fetchAccounts}

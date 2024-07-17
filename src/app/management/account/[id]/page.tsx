@@ -1,14 +1,12 @@
-// "use server"
-import { Container, Row } from "react-bootstrap"
-import "@/styles/account.css"
 import { getSessionId } from "@/utils/session_store"
-import AccountTable from "@/components/account/account_table";
 import { Suspense } from "react";
-
-const AccountPage = async () => {
-
+import "@/styles/account.css"
+import { Container, Row } from "react-bootstrap"
+import AccountUpdateForm from "@/components/account/account_update_form";
+const DetailAccount = async (props: any) => {
+    const { params } = props;
     const res = await fetch(
-        "http://localhost:8080/api/account",
+        `http://localhost:8080/api/account/${params.id}`,
         {
             method: "GET",
             headers: {
@@ -18,24 +16,29 @@ const AccountPage = async () => {
     );
 
     const data = await res.json();
-    const accounts = data.result;
+    const account = data.result;
+    console.log(account)
 
     return (
         <>
-
             <Container className="ctn-account">
                 <Row>
-                    <h4>Quản lý người dùng</h4>
+                    <h4>Chi tiết người dùng</h4>
                 </Row>
                 <Row>
                     <Suspense  >
-                        <AccountTable accounts={accounts} />
+                           <AccountUpdateForm
+                           account={account}
+                           />
                     </Suspense>
                 </Row>
             </Container>
 
+
+
         </>
     )
+
 }
 
-export default AccountPage;
+export default DetailAccount
