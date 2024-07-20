@@ -2,7 +2,6 @@
 import { setSessionId } from "@/utils/session_store"
 export const LoginServerActions = async (account_name: string, password: string) => {
 
-
     console.log(account_name, password)
     const res = await fetch("http://localhost:8080/api/auth/token", {
         method: "POST",
@@ -13,8 +12,9 @@ export const LoginServerActions = async (account_name: string, password: string)
     })
     const data = await res.json();
     if (data.status === "SUCCESS") {
-        setSessionId(data.result.token)
+        setSessionId(data.result.token);
     }
+
 
     return data;
 }

@@ -1,4 +1,3 @@
-
 interface IEmployeeRequest {
     employee_name:string,
     birthday:string,
