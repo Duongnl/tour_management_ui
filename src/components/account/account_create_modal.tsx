@@ -113,10 +113,13 @@ const AccountCreateModal = (props: IProps) => {
     setRole_error('')
 
     setValidation([])
-
+    setValidation(Array(10).fill(false))
+   
+    
 
   }
 
+  console.log(validation);
   const handleCreate = async () => {
     let flag: boolean = true;
     for (let i: number = 0; i < validation.length; i++) {
@@ -125,6 +128,7 @@ const AccountCreateModal = (props: IProps) => {
        break;
       }
     }
+    
 
     if (flag) {
       const initEmployeeRequest: IEmployeeRequest = {
@@ -271,7 +275,6 @@ const AccountCreateModal = (props: IProps) => {
       validation[6] = true
       setTotal_sales(Number(e));
     } else {
-      validation[6] = false
       setTotal_sales_error("Chỉ chứ số từ 0 đến 9");
     }
   }
@@ -287,7 +290,6 @@ const AccountCreateModal = (props: IProps) => {
       validation[7] = true
       setTotal_commission(Number(e));
     } else {
-      validation[7] = false
       setTotal_commission_error("Chỉ chứ số từ 0 đến 9");
     }
   }
@@ -310,12 +312,19 @@ const AccountCreateModal = (props: IProps) => {
   } 
 
   useEffect(() => {
+    validation[6] = true
+    validation[7] = true
     if (!role) {
       setRole_error("Vui lòng chọn quyền ở mục đề xuất");
       validation[9] = false;
     } else {
-      setRole_error('');
-      validation[9] = true;
+      if (role.role_id == 0) {
+        validation[9] = false;
+      } else {
+        setRole_error('');
+        validation[9] = true;
+      }
+      
     }
   }, [role]);
 
