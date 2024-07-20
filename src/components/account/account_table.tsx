@@ -120,7 +120,7 @@ const AccountTable = (props: IProps) => {
                                 <td>
                                     <Button variant='outline-secondary'  className='btn-update' >
                                  
-                                    <Link href={'/management/account/' + slugify(`${account.employee_name} ${account.account_id}` )}  >   <i className="fa-solid fa-user-pen"  style={{color:"black"}} ></i> </Link>
+                                    <Link href={'/management/account/' + slugify(`${account.employee_name} ${account.account_id}` )} className='link-update' >   <i className="fa-solid fa-user-pen"  style={{color:"black"}} ></i> </Link>
                                     </Button>
                                 </td>
                             </tr>

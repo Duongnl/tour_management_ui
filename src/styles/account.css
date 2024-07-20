@@ -38,6 +38,13 @@
    /* border: 1px solid black;
    border-radius: 5px;
    width: 30px; */
+   padding: 0px;
+}
+.link-update{
+    padding: 20px !important;
+    padding-top: 10px !important;
+    
+    
 }
 
 .btn-update:hover {
@@ -64,10 +71,21 @@
     font-size: 15px;
 }
 
+.btn-create-back {
+    margin-right: 20px;
+    background-color: #2a2f5b;
+    border: 0px;
+}
+
+.btn-create-back:hover {
+    background-color: #2a2f5b;
+}
+
 .btn-back {
     margin-right: 20px;
     background-color: #2a2f5b;
     border: 0px;
+    padding: 0px;
 }
 
 .btn-back:hover {
@@ -115,4 +133,14 @@
 
 .tab-profile{
     background-color: white !important;
+}
+
+.rbt-menu{
+    margin-right: 0px !important;
+}
+
+.link-back{
+    color: white;
+    text-decoration:none;
+    padding: 15px;
 }

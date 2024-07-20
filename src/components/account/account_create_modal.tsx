@@ -23,10 +23,10 @@ interface IProps {
 const AccountCreateModal = (props: IProps) => {
 
   const { showAccountModal, setShowAccountModal,fetchAccounts } = props
-  const [validation, setValidation] = useState<boolean[]>([]);
+  const [validation, setValidation] = useState<boolean[]>(Array(10).fill(false));
 
   const defaultRoleResponse: IRoleResponse = {
-    role_id: -1,
+    role_id: 0,
     role_name: "",
     status: 0,
   };
@@ -120,13 +120,13 @@ const AccountCreateModal = (props: IProps) => {
   const handleCreate = async () => {
     let flag: boolean = true;
     for (let i: number = 0; i < validation.length; i++) {
-      if (validation[i] == false || validation[i] == undefined) {
+      if (validation[i] == false) {
         flag = false;
        break;
       }
     }
 
-    if (flag && validation.length == 10) {
+    if (flag) {
       const initEmployeeRequest: IEmployeeRequest = {
         employee_name: employee_name,
         birthday: birthday,
@@ -262,6 +262,10 @@ const AccountCreateModal = (props: IProps) => {
 
   const handleTotal_sales = (e: string) => {
     const regex: RegExp = /^[0-9]+$/;
+    if (e == '') {
+      e='0'
+      setTotal_commission(0);
+    }
     if (regex.test(e)) {
       setTotal_sales_error('');
       validation[6] = true
@@ -274,6 +278,10 @@ const AccountCreateModal = (props: IProps) => {
 
   const handleTotal_commission = (e: string) => {
     const regex: RegExp = /^[0-9]+$/;
+    if (e == '') {
+      e='0'
+      setTotal_commission(0);
+    }
     if (regex.test(e)) {
       setTotal_commission_error('');
       validation[7] = true
@@ -295,6 +303,11 @@ const AccountCreateModal = (props: IProps) => {
     }
     setBirthday(e)
   }
+
+  const handleRole = (e:string) => {
+    validation[9] = false;
+    setRole_error("Vui lòng chọn quyền ở mục đề xuất");
+  } 
 
   useEffect(() => {
     if (!role) {
@@ -361,6 +374,7 @@ const AccountCreateModal = (props: IProps) => {
                   onChange={(role: IRoleResponse[]) => handleSelectedRole(role[0])}
                   labelKey={(role: IRoleResponse) => role.role_name}
                   options={roles}
+                  onInputChange = {(e:string)=> handleRole(e) }
                 />
                 <input type="text" className='input-error' value={role_error} style={{ marginBottom: '15px' }} disabled />
 
@@ -378,15 +392,18 @@ const AccountCreateModal = (props: IProps) => {
                 <input type="text" className='input-error' value={birthday_error} disabled style={{ marginBottom: '15px' }} />
 
                 <FloatingLabel className='mb-3' label="Tổng tiền đã bán">
-                  <Form.Control type="number" placeholder="..."
+                  <Form.Control type="text" placeholder="..."
                     onChange={(e) => handleTotal_sales(e.target.value)}
+                    value={total_sales}
                   />
                   <input type="text" value={total_sales_error} className='input-error' disabled />
                 </FloatingLabel>
 
                 <FloatingLabel className='mb-3' label="Tổng tiền hoa hồng" >
-                  <Form.Control type="number" placeholder="..."
+                  <Form.Control type="text" placeholder="..."
+                    value={total_commission}
                     onChange={(e) => handleTotal_commission(e.target.value)}
+
                   />
                   <input type="text" className='input-error' value={total_commission_error} disabled />
                 </FloatingLabel>
@@ -395,7 +412,7 @@ const AccountCreateModal = (props: IProps) => {
             </Row>
 
             <div className='div-back-create' >
-              <Button className='btn-back' 
+              <Button className='btn-create-back' 
                  onClick={() => handleHideModal()}
               >Trở lại</Button>
               <Button
