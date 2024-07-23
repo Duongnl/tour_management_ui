@@ -4,9 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AppHeader from "@/components/app_header";
 import AppFooter from "@/components/app_footer";
 import { getSessionId } from "@/utils/session_store";
+import { Container } from "react-bootstrap";
 const inter = Inter({ subsets: ["latin"] });
 
-
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,7 @@ export default async function RootLayout({
 }>,) {
 
   const res = await fetch(
-    "http://localhost:8080/api/account/myInfo",
+    "http://localhost:8080/api/account/my-info",
     {
       method: "GET",
       headers: {
@@ -30,12 +31,15 @@ export default async function RootLayout({
   );
 
   const data = await res.json();
+  const account = data.result;
   return (
     <>
       <AppHeader
-       account = {data}
+      account= {account}
       />
+
       {children}
+
       <AppFooter />
     </>
   );

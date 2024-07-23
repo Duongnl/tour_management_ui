@@ -3,6 +3,7 @@
     margin-bottom: 10px;
     width: 100% ;
     position: fixed; 
+    z-index: 100;
 }
 
 .btn-sidebar{
@@ -37,10 +38,15 @@
 .btn-dropdown.show {
     background-color: cornflowerblue !important;
     color: black !important;
+    margin-right: 20px;
+    margin-top: 0px !important;
 }
 
 .dropdown-menu {
     right: 0 !important;
     left: unset !important;
-    margin-right: 20px;
+    margin-right: 20px !important;
+}
+.dropdown{
+    margin-top: 0px !important;
 }

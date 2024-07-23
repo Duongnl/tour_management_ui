@@ -11,18 +11,21 @@ import { Dropdown } from 'react-bootstrap';
 import Image from 'next/image';
 import { getSessionId, removeSessionId } from '@/utils/session_store';
 import cookie from 'js-cookie';
-const AppHeader = (props:any) => {
+import useSWR,{Fetcher} from "swr";
+const AppHeader =  (props:any) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
-    const cookieValue = cookie.get('session-id');
+    const account = props.account
+    
     const handleShowSidebar = () => {
         setShowSidebar(true)
     }
-    const account = props.account;
 
     const handleLogout = () => {
         cookie.remove('session-id');
         window.location.href = '/';
     }
+
+
 
     return (
         <>
@@ -49,7 +52,7 @@ const AppHeader = (props:any) => {
                     <Dropdown>
                         <Dropdown.Toggle className='btn-dropdown'>
                             <i className="fa-solid fa-user"></i>
-                            <span className='user-name' >{account.result.employee.employee_name}</span>
+                            <span className='user-name' >{account?.employee.employee_name}</span>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu >

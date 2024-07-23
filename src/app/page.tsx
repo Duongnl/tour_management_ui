@@ -1,17 +1,19 @@
 import LoginForm from "@/components/login/login_form";
 import "@/styles/login.css"
-
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Container } from "react-bootstrap";
 
-const Home =  () => {
+const Home = () => {
 
   return (
 
-    <div className="div-login">
-      <LoginForm 
-      />
-    </div>
+
+      <div className="div-login">
+        <LoginForm
+        />
+      </div>
+   
+
 
 
   );

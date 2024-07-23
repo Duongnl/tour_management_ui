@@ -6,38 +6,21 @@ import { useState, useEffect } from "react"
 import { LoginServerActions } from "./login_server_actions"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from 'react-toastify';
-import LoginErrorCode from "./login_error_code"
+import AccountErrorCode from "../../exception/account_error_code"
 import { ExportError } from "@/utils/export_error"
 
-const LoginForm = (props:any) => {
+const LoginForm = () => {
 
     const[account_name, setAccount_name] = useState('');
     const[password,setPassword] = useState('');
 
-    // useEffect(() => {
-    //     // Example of updating global variable from client
-    //     setGlobalVariable('New value from client');
-    //     setGlobalValue(getGlobalVariable());
-    // }, []);
-
-
-    // const handleLogin = async () => {
-    //   const res = await props.LoginServerActions(account_name, password)
-    //   console.log(res)
-    //   if (res === "SUCCESS") {
-    //     // router.push('/management');
-
-    //   } else if (res === "FAIL") {
-
-    //   }
-    // }
 
     const handleLogin = async () => {
         const res = await LoginServerActions(account_name,password);
         if (res.status === "SUCCESS") {
             window.location.href = '/management';
         } else {
-            let errors = ExportError(res,LoginErrorCode);
+            let errors = ExportError(res,AccountErrorCode);
             for (let i:number = 0; i<errors.length; i++) {
                 toast.error(errors[i]);
             }
