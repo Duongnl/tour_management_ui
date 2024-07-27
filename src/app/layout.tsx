@@ -33,20 +33,21 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-   
+
         {children}
-        
-        <ToastContainer 
-        position="top-right"
-        autoClose={1200}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
+
+
+        <ToastContainer
+          position="top-right"
+          autoClose={1200}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
         />
       </body>
     </html>

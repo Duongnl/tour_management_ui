@@ -119,7 +119,7 @@ const AccountCreateModal = (props: IProps) => {
 
   }
 
-  console.log(validation);
+
   const handleCreate = async () => {
     let flag: boolean = true;
     for (let i: number = 0; i < validation.length; i++) {
