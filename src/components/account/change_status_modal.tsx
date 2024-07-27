@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import cookie from 'js-cookie';
 import { toast } from 'react-toastify';
 import { mutate } from 'swr';
+import { useSearchParams,useRouter,usePathname } from 'next/navigation'
 interface IProps {
   showChangeStatusModal:boolean;
   account:IAccountResponse
@@ -15,7 +16,12 @@ interface IProps {
 function ChangeStatusModal(props:IProps) {
 
   const {showChangeStatusModal,account,setShowChangeStatusModal,fetchAccounts} = props
+  const searchParams = useSearchParams();
+    // dang hoat dong
+    const status = searchParams.get('status')
+    const pathname = usePathname();
 
+    const router = useRouter()
   const handleChangeStatus = async () => {
     const res = await fetch(
         `http://localhost:8080/api/account/change-status/${account.account_id}`,
@@ -31,8 +37,14 @@ function ChangeStatusModal(props:IProps) {
     setShowChangeStatusModal(false)
     if (data.result.status == 0) {
       toast.success(`Đã khóa tài khoản ${data.result.account_name} thành công`)
+      if (status!=null) {
+        router.push(pathname)
+      }
     } else {
       toast.success(`Đã mở khóa tài khoản ${data.result.account_name} thành công`)
+      if (status!=null) {
+        router.push(pathname)
+      }
     }
   }
   

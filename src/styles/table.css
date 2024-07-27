@@ -1,40 +1,7 @@
 /* table */
-.datatable-pagination-list{
-  display: flex;
-  list-style-type: none;
-  padding-bottom: 20px;
-  padding-left: 0px;
-  justify-content: flex-end;
-}
 .table{
   margin-top: 20px;
 }
-
-.datatable-info{
-  color: white;
-  width: 0px;
-  height: 0px;
-}
-
-.datatable-sorter{
-  border: 0px;
-  background-color: white;
-}
-
-.datatable-top{
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.datatable-input{
-  border-radius: 5px;
-}
-
-.datatable-dropdown{
-  display: none;
-}
-
 /* pagination */
 .pgn{
   padding-bottom: 20px;
