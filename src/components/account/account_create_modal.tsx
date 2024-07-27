@@ -13,16 +13,17 @@ import AccountErrorCode from '@/exception/account_error_code';
 import EmployeeErrorCode from '@/exception/employee_error_code';
 import { toast } from 'react-toastify';
 import { ExportError } from '@/utils/export_error';
-
+import { useSearchParams,useRouter,usePathname } from 'next/navigation'
 interface IProps {
   showAccountModal: boolean
   setShowAccountModal: (value: boolean) => void
   fetchAccounts:() =>void
+  setSearch:(value:string)=>void
 }
 
 const AccountCreateModal = (props: IProps) => {
 
-  const { showAccountModal, setShowAccountModal,fetchAccounts } = props
+  const { showAccountModal, setShowAccountModal,fetchAccounts,setSearch } = props
   const [validation, setValidation] = useState<boolean[]>(Array(10).fill(false));
 
   const defaultRoleResponse: IRoleResponse = {
@@ -33,7 +34,8 @@ const AccountCreateModal = (props: IProps) => {
   const [role, setRole] = useState<IRoleResponse>(defaultRoleResponse)
   const[roles,setRoles] = useState<IRoleResponse[]>([])
 
-
+  const pathName = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -165,6 +167,8 @@ const AccountCreateModal = (props: IProps) => {
         toast.success(`Thêm người dùng ${account_name} thành công`)
         setShowAccountModal(false)
         fetchAccounts()
+        router.push(pathName)
+        setSearch('')
       } else {
         let errors = ExportError(data, AccountErrorCode);
         for (let i: number = 0; i < errors.length; i++) {

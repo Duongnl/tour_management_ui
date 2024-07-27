@@ -11,7 +11,6 @@ import { DataTable } from "simple-datatables"
 import AccountCreateModal from './account_create_modal';
 import { Anybody } from 'next/font/google';
 import Link from 'next/link';
-// import DataTable from 'datatables.net-dt';
 import { CreateSlug } from '@/utils/create_slug';
 import '@/styles/table.css'
 import PaginationTable from './pagination';
@@ -60,6 +59,7 @@ const AccountTable = (props: IProps) => {
         } else if (status == "all") {
             fetchAccounts()
         }
+        console.log("vao status")
     }, [status])
 
     useEffect(() => {
@@ -73,20 +73,9 @@ const AccountTable = (props: IProps) => {
 
         setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
         setNumberEnd(end);// nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
-
+        console.log("vao status")
 
     }, [currentPage])
-
-
-    // useEffect(() => {
-    //     let table = new DataTable('#myTable',{
-    //         perPage:5,
-    //     });
-    //     // Khởi tạo DataTable khi component đã được mount
-    //     return () => {
-    //         // Cleanup if necessary
-    //     };
-    // }, []);
 
     const initAccount: IAccountResponse = {
         account_id: '',
@@ -281,6 +270,7 @@ const AccountTable = (props: IProps) => {
                 showAccountModal={showAccountModal}
                 setShowAccountModal={setShowAccountModal}
                 fetchAccounts={fetchAccounts}
+                setSearch = {setSearch}
             />
 
             <PaginationTable
