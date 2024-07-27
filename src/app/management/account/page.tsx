@@ -1,4 +1,4 @@
-// "use server"
+"use server"
 import { Container, Row } from "react-bootstrap"
 import "@/styles/account.css"
 import { getSessionId } from "@/utils/session_store"

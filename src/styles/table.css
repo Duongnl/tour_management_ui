@@ -1,8 +1,62 @@
+/* table */
+.datatable-pagination-list{
+  display: flex;
+  list-style-type: none;
+  padding-bottom: 20px;
+  padding-left: 0px;
+  justify-content: flex-end;
+}
 .table{
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
-.div-add{
-   display: flex;
-   justify-content: end;
+.datatable-info{
+  color: white;
+  width: 0px;
+  height: 0px;
+}
+
+.datatable-sorter{
+  border: 0px;
+  background-color: white;
+}
+
+.datatable-top{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.datatable-input{
+  border-radius: 5px;
+}
+
+.datatable-dropdown{
+  display: none;
+}
+
+/* pagination */
+.pgn{
+  padding-bottom: 20px;
+
+}
+
+.div-pgn{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0px;
+
+}
+
+.page-link{
+  color: black !important;
+  border-radius: 0px !important;
+}
+
+.active>.page-link, .page-link.active {
+  background-color: cornflowerblue !important;
+}
+
+.pgn-link{
+  text-decoration: none;
 }
