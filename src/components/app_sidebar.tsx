@@ -90,6 +90,16 @@ const AppSidebar = (props: Iprops) => {
             </Navbar>
           </Link>
           <br/>
+          <Link href={"/management/role"} className='link-tab-sidebar'
+           onClick={()=>setShowSidebar(false)}
+          >
+            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("role")? "active" : ""}`}>
+              <Container>
+                <span className='name-tab-sidebar'>Quyền</span>
+              </Container>
+            </Navbar>
+          </Link>
+          <br/>
           <Link href={"/management/history"} className='link-tab-sidebar'
            onClick={()=>setShowSidebar(false)}
           >

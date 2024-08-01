@@ -28,7 +28,7 @@ const AccountPage = async () => {
                     <h4>Quản lý người dùng</h4>
                 </Row>
                 <Row>
-                    <Suspense  >
+                    <Suspense>
                         <AccountTable accounts={accounts} />
                     </Suspense>
                 </Row>

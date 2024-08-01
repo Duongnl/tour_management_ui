@@ -2,6 +2,7 @@
 .table{
   margin-top: 20px;
 }
+
 /* pagination */
 .pgn{
   padding-bottom: 20px;
@@ -26,4 +27,64 @@
 
 .pgn-link{
   text-decoration: none;
+}
+
+/* table */
+.btn-update{
+  color: black;
+ /* border: 1px solid black;
+ border-radius: 5px;
+ width: 30px; */
+ padding: 0px;
+}
+
+.btn-update:hover {
+  background-color: cornflowerblue;
+  color: black;
+}
+
+.btn-update:active {
+  background-color: cornflowerblue !important;
+  color: black !important;
+}
+
+.form-check-input{
+  width: 50px !important;
+  height: 20px;
+  border: 1px solid black ;
+}
+
+.form-check-input:checked{
+ background-color: #2a2f5b;
+ border: 1px solid black ;
+}
+
+.link-update{
+  padding: 20px !important;
+  padding-top: 10px !important;
+}
+
+/* add  */
+.div-add{
+  display: flex;
+  /* justify-content: flex-end; */
+  justify-content: space-between;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+.select-status{
+  width: 180px;
+  margin-left: 20px;
+}
+
+.btn-add {
+  background-color: #2a2f5b;
+  border: color(#2a2f5b) !important ;
+
+  border: 0px ;
+}
+
+.btn-add:hover{
+  background-color: #2a2f5b;
 }

@@ -8,14 +8,16 @@ import { mutate } from 'swr';
 import { useSearchParams,useRouter,usePathname } from 'next/navigation'
 interface IProps {
   showChangeStatusModal:boolean;
-  account:IAccountResponse
+  name:string
   setShowChangeStatusModal:(value:boolean) => void
-  fetchAccounts:() =>void
+  fetchData:() =>void
+  api:string
+  statusObject:number
 }
 
 function ChangeStatusModal(props:IProps) {
 
-  const {showChangeStatusModal,account,setShowChangeStatusModal,fetchAccounts} = props
+  const {showChangeStatusModal,name,setShowChangeStatusModal,fetchData,statusObject,api} = props
   const searchParams = useSearchParams();
     // dang hoat dong
     const status = searchParams.get('status')
@@ -24,7 +26,7 @@ function ChangeStatusModal(props:IProps) {
     const router = useRouter()
   const handleChangeStatus = async () => {
     const res = await fetch(
-        `http://localhost:8080/api/account/change-status/${account.account_id}`,
+        api,
         {
             method: "PUT",
             headers: {
@@ -33,15 +35,15 @@ function ChangeStatusModal(props:IProps) {
         }
     );
     const data = await res.json();
-    fetchAccounts();
+    fetchData();
     setShowChangeStatusModal(false)
     if (data.result.status == 0) {
-      toast.success(`Đã khóa tài khoản ${data.result.account_name} thành công`)
+      toast.success(`Đã khóa thành công`)
       if (status!=null) {
         router.push(pathname)
       }
     } else {
-      toast.success(`Đã mở khóa tài khoản ${data.result.account_name} thành công`)
+      toast.success(`Đã mở khóa thành công`)
       if (status!=null) {
         router.push(pathname)
       }
@@ -56,13 +58,13 @@ function ChangeStatusModal(props:IProps) {
         <Modal.Header closeButton>
           <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Bạn có chắc chắn muốn {account.status==0?"mở khóa":"khóa"} tài khoản {account.account_name} ?</Modal.Body>
+        <Modal.Body>Bạn có chắc chắn muốn {statusObject==0?"mở khóa":"khóa"} {name} ?</Modal.Body>
         <Modal.Footer>
           <Button style={{backgroundColor:"#2a2f5b"}} onClick={()=>setShowChangeStatusModal(false)}>
             Đóng
           </Button>
           <Button variant="danger" onClick={()=>handleChangeStatus()}>
-            {account.status==0?"Mở khóa":"Khóa"}
+            {statusObject==0?"Mở khóa":"Khóa"}
           </Button>
         </Modal.Footer>
       </Modal>
