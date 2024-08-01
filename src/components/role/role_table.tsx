@@ -1,72 +1,53 @@
 'use client'
 import Table from 'react-bootstrap/Table';
-import "@/styles/account.css"
-import { Button } from 'react-bootstrap';
-import { use, useEffect, useState } from 'react';
-import cookie from 'js-cookie';
 import Form from 'react-bootstrap/Form';
-import { mutate } from 'swr';
-import ChangeStatusModal from '../change_status_modal';
-import { DataTable } from "simple-datatables"
-import AccountCreateModal from './account_create_modal';
-import { Anybody } from 'next/font/google';
+import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { CreateSlug } from '@/utils/create_slug';
 import '@/styles/table.css'
+import { useState, useEffect } from 'react';
 import PaginationTable from '../pagination';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-
 import InputGroup from 'react-bootstrap/InputGroup';
+import cookie from 'js-cookie';
+import ChangeStatusModal from '../change_status_modal';
 interface IProps {
-    accounts: IAccountResponse[]
-
+    roles: IRoleResponse[]
 }
 
-const AccountTable = (props: IProps) => {
-    const [accounts, setAccounts] = useState(props.accounts)
-    const [showChangeStatusModal, setShowChangeStatusModal] = useState<boolean>(false)
-    const [showAccountModal, setShowAccountModal] = useState<boolean>(false)
-    const searchParams = useSearchParams();
+const RoleTable = (props: IProps) => {
 
-    const [accountsCopy, setAccountsCopy] = useState<IAccountResponse[]>(accounts)
+    const [roles, setRoles] = useState<IRoleResponse[]>(props.roles)
+
+    const [rolesFilter, setRolesFilter] = useState<IRoleResponse[]>(props.roles);
 
     // trang hiện tại
+    const searchParams = useSearchParams();
     const currentPage = searchParams.get('page')
-
-    // dang hoat dong
+    // kiem tra trang thai
     const status = searchParams.get('status')
 
-    const router = useRouter()
-
-
-    const pathname = usePathname();
-
     // tổng số trang
-    const [numberPages, setNumberPages] = useState<number>(Math.ceil(accounts != undefined ? accounts.length / 8 : 0))
+    const [numberPages, setNumberPages] = useState<number>(Math.ceil(roles != undefined ? roles.length / 8 : 0))
 
     // số phần tử hiển thị
     const [numberStart, setNumberStart] = useState<number>(0);
     const [numberEnd, setNumberEnd] = useState<number>(0);
 
+    // tim kiem
     const [search, setSearch] = useState<string>('')
+
+    const router = useRouter()
+    const pathname = usePathname();
+
+    const [showChangeStatusModal, setShowChangeStatusModal] = useState<boolean>(false)
+
 
     const [name, setName] = useState<string>('')
 
     const [apiChangeStatus, setApiChangeStatus] = useState<string>('')
 
     const [statusObject, setStatusObject] = useState<number> (0);
-
-
-    useEffect(() => {
-        if (status == "active") {
-            fetchActiveAccounts()
-        } else if (status == "locked") {
-            fetchLockedAccounts()
-        } else if (status == "all") {
-            fetchAccounts()
-        }
-        console.log("vao status")
-    }, [status])
 
     useEffect(() => {
         let start = 1;
@@ -79,15 +60,22 @@ const AccountTable = (props: IProps) => {
 
         setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
         setNumberEnd(end);// nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
-        console.log("vao status")
-
     }, [currentPage])
 
+    useEffect(() => {
+        if (status == "active") {
+            fetchActiveRoles()
+        } else if (status == "locked") {
+            fetchLockedRoles()
+        } else if (status == "all") {
+            fetchRoles()
+        }
+    }, [status])
 
 
-    const fetchAccounts = async () => {
+    const fetchRoles = async () => {
         const res = await fetch(
-            "http://localhost:8080/api/account",
+            "http://localhost:8080/api/role",
             {
                 method: "GET",
                 headers: {
@@ -96,16 +84,16 @@ const AccountTable = (props: IProps) => {
             }
         );
         const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
-        setAccounts(accounts)
-        const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
+        const roles: IRoleResponse[] = data.result
+        setRolesFilter(roles)
+        const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
         setNumberPages(numPages);
-        setAccountsCopy(accounts)
+        setRoles(roles)
     };
 
-    const fetchLockedAccounts = async () => {
+    const fetchLockedRoles = async () => {
         const res = await fetch(
-            "http://localhost:8080/api/account/locked",
+            "http://localhost:8080/api/role/locked",
             {
                 method: "GET",
                 headers: {
@@ -114,16 +102,18 @@ const AccountTable = (props: IProps) => {
             }
         );
         const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
-        setAccounts(accounts)
-        const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
+        const roles: IRoleResponse[] = data.result
+
+        setRolesFilter(roles)
+        const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
         setNumberPages(numPages);
-        setAccountsCopy(accounts)
+        setRoles(roles)
     };
 
-    const fetchActiveAccounts = async () => {
+
+    const fetchActiveRoles = async () => {
         const res = await fetch(
-            "http://localhost:8080/api/account/active",
+            "http://localhost:8080/api/role/active",
             {
                 method: "GET",
                 headers: {
@@ -132,53 +122,44 @@ const AccountTable = (props: IProps) => {
             }
         );
         const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
-        setAccounts(accounts)
-        const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
+        const roles: IRoleResponse[] = data.result
+        setRolesFilter(roles)
+        const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
         setNumberPages(numPages);
-        setAccountsCopy(accounts)
+        setRoles(roles)
     };
 
-
-    const handleChangeStatus = async (account: IAccountResponse) => {
-        setStatusObject(account.status)
-        setShowChangeStatusModal(true)
-        setApiChangeStatus(`http://localhost:8080/api/account/change-status/${account.account_id}`)
-        setName(account.account_name)
-    }
-
-    const handleUpdate = (account: IAccountResponse) => {
-        alert("hello")
-    }
-
-    const handleCreate = () => {
-        setShowAccountModal(true)
-
-    }
 
     const handleSelectStatus = (e: string) => {
         router.push(`${pathname}?status=${e}`)
     }
 
+
     const handleSearch = (e: string) => {
         router.push(`${pathname}?${status != null ? `status=${status}` : ''}`)
         setSearch(e)
-        const filteredData = accountsCopy.filter((item) => {
+        const filteredData = roles.filter((item) => {
             return Object.values(item).some((value) =>
                 value.toString().toLowerCase().includes(e.toLowerCase())
             );
         });
-        console.log('filter data : ', filteredData);
-        setAccounts(filteredData)
+        setRolesFilter(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 8))
+    }
+
+
+
+    const handleChangeStatus = async (role: IRoleResponse) => {
+        setStatusObject(role.status)
+        setShowChangeStatusModal(true)
+        setApiChangeStatus(`http://localhost:8080/api/role/change-status/${role.role_id}`)
+        setName(role.role_name)
     }
 
 
 
     return (
         <>
-
-
             <div className='div-add'>
                 <div style={{ display: "flex" }} >
                     <InputGroup className="input-search"
@@ -207,46 +188,39 @@ const AccountTable = (props: IProps) => {
 
 
                 <Button className='btn-add'
-                    onClick={() => handleCreate()}>
-                    <i className="fa-solid fa-user-plus" style={{ paddingRight: '10px' }}
-                    ></i>Thêm tài khoản</Button>
+                // onClick={() => handleCreate()}
+                >
+                    <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
+                    Thêm tài khoản</Button>
             </div>
-
             <Table striped bordered hover id="myTable" className="table"  >
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Tên tài khoản</th>
-                        <th>Tên</th>
-                        <th>Quyền</th>
-                        <th>Thời gian tạo</th>
+                        <th>Tên quyền</th>
                         <th>Hoạt động</th>
                         <th>Chi tiết</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {accounts?.map((account, index) => {
+                    {rolesFilter?.map((role, index) => {
                         if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
                             return (
-                                <tr key={account.account_id}>
+                                <tr key={role.role_id}>
                                     <td>{index + 1}</td>
-                                    <td>{account.account_name}</td>
-                                    <td>{account.employee_name}</td>
-                                    <td>{account.role_name}</td>
-                                    <td>{account.time}</td>
+                                    <td>{role.role_name}</td>
                                     <td>
                                         <Form.Check className='check-active'
-                                            checked={account.status == 1}
-                                            onChange={() => handleChangeStatus(account)}
+                                            checked={role.status == 1}
+                                            onChange={() => handleChangeStatus(role)}
                                             type="switch"
                                             id="custom-switch"
                                         />
                                     </td>
                                     <td>
                                         <Button variant='outline-secondary' className='btn-update' >
-
-                                            <Link href={'/management/account/' + CreateSlug(`${account.employee_name} ${account.account_id}`)} className='link-update' >   <i className="fa-solid fa-user-pen" style={{ color: "black" }} ></i>
-
+                                            <Link href={'/management/account/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
+                                                <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
                                             </Link>
                                         </Button>
                                     </td>
@@ -257,29 +231,22 @@ const AccountTable = (props: IProps) => {
 
                 </tbody>
             </Table>
-            <ChangeStatusModal
+            <PaginationTable
+                numberPages={numberPages}
+                currentPage={Number(currentPage)}
+            />
+
+             <ChangeStatusModal
                 showChangeStatusModal={showChangeStatusModal}
                 setShowChangeStatusModal={setShowChangeStatusModal}
-                fetchData={fetchAccounts}
+                fetchData={fetchRoles}
                 statusObject={statusObject}
                 name={name}
                 api={apiChangeStatus}
             />
-            <AccountCreateModal
-                showAccountModal={showAccountModal}
-                setShowAccountModal={setShowAccountModal}
-                fetchAccounts={fetchAccounts}
-                setSearch={setSearch}
-            />
-
-            <PaginationTable
-                numberPages={numberPages}
-                currentPage={Number(currentPage)}
-
-            />
-
         </>
     )
+
 }
 
-export default AccountTable
+export default RoleTable
