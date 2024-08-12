@@ -21,7 +21,7 @@ const RolePage = async () => {
     const roles = data.result;
 
     return (
-        <Container className="ctn-history">
+        <Container className="ctn-role">
             <Row>
                 <h4>Quản lý quyền</h4>
             </Row>

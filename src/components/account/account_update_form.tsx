@@ -26,11 +26,7 @@ const AccountUpdateForm = (props: IProps) => {
   const [validationEmployee, setValidationEmployee] = useState<boolean[]>(Array(4).fill(true));
 
   var Typeahead = require('react-bootstrap-typeahead').Typeahead; // CommonJS
-  const defaultRoleResponse: IRoleResponse = {
-    role_id: 0,
-    role_name: "",
-    status: 0,
-  };
+
 
   const [role, setRole] = useState<IRoleResponse>(account.role)
   const handleSelectedRole = (role: IRoleResponse) => {

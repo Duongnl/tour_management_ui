@@ -11,6 +11,9 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import InputGroup from 'react-bootstrap/InputGroup';
 import cookie from 'js-cookie';
 import ChangeStatusModal from '../change_status_modal';
+import RoleCreateModal from './role_create_modal';
+import RoleErrorCode from '@/exception/role_error_code';
+
 interface IProps {
     roles: IRoleResponse[]
 }
@@ -42,12 +45,13 @@ const RoleTable = (props: IProps) => {
 
     const [showChangeStatusModal, setShowChangeStatusModal] = useState<boolean>(false)
 
-
-    const [name, setName] = useState<string>('')
-
     const [apiChangeStatus, setApiChangeStatus] = useState<string>('')
 
     const [statusObject, setStatusObject] = useState<number> (0);
+
+    const [showRoleModal, setShowRoleModal] = useState<boolean>(false)
+
+    const [detail,setDetail] = useState<string> ('')
 
     useEffect(() => {
         let start = 1;
@@ -147,13 +151,33 @@ const RoleTable = (props: IProps) => {
         setNumberPages(Math.ceil(filteredData.length / 8))
     }
 
+    const [role_id,setRole_id] = useState<number> (0)
+    const handleChangeStatusState = () => {
+        setRoles(
+            roles.map(a=> a.role_id === role_id ? {...a, status: a.status === 1 ? 0 : 1}:a )
+        )
+        setRolesFilter(
+            rolesFilter.map(a=> a.role_id === role_id ? {...a, status: a.status === 1 ? 0 : 1}:a )
+        )
+    }
 
 
-    const handleChangeStatus = async (role: IRoleResponse) => {
+    const handleChangeStatus = (role: IRoleResponse) => {
+        setRole_id(role.role_id)
+        
         setStatusObject(role.status)
         setShowChangeStatusModal(true)
         setApiChangeStatus(`http://localhost:8080/api/role/change-status/${role.role_id}`)
-        setName(role.role_name)
+        if (role.status == 1) {
+        setDetail(`Bạn có muốn tắt quyền ${role.role_name} ?`)
+        } else {
+        setDetail(`Bạn có muốn mở quyền ${role.role_name} ?`)
+        }
+    }
+
+    const handleCreate = () => {
+        setShowRoleModal(true)
+
     }
 
 
@@ -185,13 +209,13 @@ const RoleTable = (props: IProps) => {
                         <option value="locked">Đã khóa</option>
                     </Form.Select>
                 </div>
-
+ 
 
                 <Button className='btn-add'
-                // onClick={() => handleCreate()}
+                onClick={() => handleCreate()}
                 >
                     <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
-                    Thêm tài khoản</Button>
+                    Thêm quyền</Button>
             </div>
             <Table striped bordered hover id="myTable" className="table"  >
                 <thead>
@@ -215,11 +239,12 @@ const RoleTable = (props: IProps) => {
                                             onChange={() => handleChangeStatus(role)}
                                             type="switch"
                                             id="custom-switch"
+                                            
                                         />
                                     </td>
                                     <td>
                                         <Button variant='outline-secondary' className='btn-update' >
-                                            <Link href={'/management/account/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
+                                            <Link href={'/management/role/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
                                                 <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
                                             </Link>
                                         </Button>
@@ -239,10 +264,17 @@ const RoleTable = (props: IProps) => {
              <ChangeStatusModal
                 showChangeStatusModal={showChangeStatusModal}
                 setShowChangeStatusModal={setShowChangeStatusModal}
-                fetchData={fetchRoles}
+                handleChangeStatusState = {handleChangeStatusState}
                 statusObject={statusObject}
-                name={name}
+                detail={detail}
                 api={apiChangeStatus}
+                objectError={ RoleErrorCode}
+            />
+
+            <RoleCreateModal
+               showRoleModal={showRoleModal}
+               setShowRoleModal={setShowRoleModal}
+               fetchRoles = {fetchRoles}
             />
         </>
     )

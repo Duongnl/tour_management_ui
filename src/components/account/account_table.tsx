@@ -17,6 +17,7 @@ import PaginationTable from '../pagination';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 
 import InputGroup from 'react-bootstrap/InputGroup';
+import AccountErrorCode from '@/exception/account_error_code';
 interface IProps {
     accounts: IAccountResponse[]
 
@@ -54,9 +55,9 @@ const AccountTable = (props: IProps) => {
 
     const [apiChangeStatus, setApiChangeStatus] = useState<string>('')
 
-    const [statusObject, setStatusObject] = useState<number> (0);
+    const [statusObject, setStatusObject] = useState<number>(0);
 
-
+    const [detail, setDetail] = useState<string>('')
     useEffect(() => {
         if (status == "active") {
             fetchActiveAccounts()
@@ -139,16 +140,49 @@ const AccountTable = (props: IProps) => {
         setAccountsCopy(accounts)
     };
 
+    const[account_id, setAccount_id] = useState<string>('')
+
+    const handleChangeStatusState = () => {
+        setAccounts(
+            accounts.map(a=> a.account_id === account_id ? {...a, status: a.status === 1 ? 0 : 1}:a )
+        )
+        setAccountsCopy(
+            accountsCopy.map(a=> a.account_id === account_id ? {...a, status: a.status === 1 ? 0 : 1}:a )
+        )
+    }
+
 
     const handleChangeStatus = async (account: IAccountResponse) => {
+        setAccount_id(account.account_id)
+       
         setStatusObject(account.status)
         setShowChangeStatusModal(true)
         setApiChangeStatus(`http://localhost:8080/api/account/change-status/${account.account_id}`)
-        setName(account.account_name)
-    }
 
-    const handleUpdate = (account: IAccountResponse) => {
-        alert("hello")
+        const res = await fetch(
+            `http://localhost:8080/api/account/${account.account_id}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
+                },
+            }
+        );
+        const data = await res.json();
+        const getAccountResponse:IGetAccountResponse = data.result
+        console.log(getAccountResponse)
+
+        if (getAccountResponse.role.status == 0 && account.status == 0) {
+           setDetail (`Quyền của tài khoản này bị khóa, khi mở tài khoản này thì quyền tương ứng sẽ được mở. Bạn có muốn tiếp tục mở tài khoản ${account.account_name} ?`)
+        } else {
+            if (account.status == 1) {
+                setDetail(`Bạn có muốn khóa tài khoản ${account.account_name} không ?`)
+            } else {
+                setDetail(`Bạn có muốn mở tài khoản ${account.account_name} không ?`)
+            }
+        }
+
+    
     }
 
     const handleCreate = () => {
@@ -260,10 +294,11 @@ const AccountTable = (props: IProps) => {
             <ChangeStatusModal
                 showChangeStatusModal={showChangeStatusModal}
                 setShowChangeStatusModal={setShowChangeStatusModal}
-                fetchData={fetchAccounts}
                 statusObject={statusObject}
-                name={name}
+                detail={detail}
                 api={apiChangeStatus}
+                objectError={AccountErrorCode}
+                handleChangeStatusState = {handleChangeStatusState}
             />
             <AccountCreateModal
                 showAccountModal={showAccountModal}

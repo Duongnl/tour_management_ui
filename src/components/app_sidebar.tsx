@@ -11,13 +11,13 @@ import path from "path";
 interface Iprops {
   showSidebar: boolean;
   setShowSidebar: (value: boolean) => void
-  
+  permission: string[]
 }
 
 
 const AppSidebar = (props: Iprops) => {
 
-  const { showSidebar, setShowSidebar } = props;
+  const { showSidebar, setShowSidebar, permission } = props;
   const pathName = usePathname()
 
   return (
@@ -26,94 +26,128 @@ const AppSidebar = (props: Iprops) => {
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Quản lý</Offcanvas.Title>
         </Offcanvas.Header>
-        
-        <Offcanvas.Body>
 
-            <Link href={"/management"} className='link-tab-sidebar' 
-          onClick={()=>setShowSidebar(false)}
+        <Offcanvas.Body>
+          {permission.includes("ACCESS_DASHBOARD") && (<>
+            <Link href={"/management"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName === "/management" ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Tổng quan</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+
+          {permission.includes("ACCESS_CATEGORY") && (<>
+            <Link href={"/management/category"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("category") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Danh mục</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+
+          </>)}
+
+
+          {permission.includes("ACCESS_TOUR") && (<>
+            <Link href={"/management/tour"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("tour") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Tour </span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+          {permission.includes("ACCESS_RESERVE") && (<>
+            <Link href={"/management/reserve"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("reserve") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Đặt chổ</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+
+          {permission.includes("ACCESS_CUSTOMER") && (<>
+            <Link href={"/management/customer"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("customer") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Khách hàng</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+
+          {permission.includes("ACCESS_ACCOUNT") && (<>
+            <Link prefetch={false} href={"/management/account"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("account") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Người dùng</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+
+          {permission.includes("ACCESS_ROLE") && (<>
+            <Link href={"/management/role"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("role") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Quyền</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+          {permission.includes("ACCESS_HISTORY") && (<> 
+            <Link href={"/management/history"} className='link-tab-sidebar'
+            onClick={() => setShowSidebar(false)}
           >
-            <Navbar className =  {`${"bg-body-tertiary tab-sidebar"} ${pathName==="/management" ? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Tổng quan</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/category"} className='link-tab-sidebar' 
-          onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className =  {`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("category")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Danh mục</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/tour"} className='link-tab-sidebar'
-           onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className= {`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("tour")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Tour </span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/reserve"} className='link-tab-sidebar' 
-           onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("reserve")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Đặt chổ</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/customer"} className='link-tab-sidebar'
-           onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("customer")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Khách hàng</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link prefetch={false} href={"/management/account"} className='link-tab-sidebar'
-           onClick={()=>setShowSidebar(false)}
-          
-          >
-            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("account")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Người dùng</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/role"} className='link-tab-sidebar'
-           onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("role")? "active" : ""}`}>
-              <Container>
-                <span className='name-tab-sidebar'>Quyền</span>
-              </Container>
-            </Navbar>
-          </Link>
-          <br/>
-          <Link href={"/management/history"} className='link-tab-sidebar'
-           onClick={()=>setShowSidebar(false)}
-          >
-            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("history")? "active" : ""}`}>
+            <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("history") ? "active" : ""}`}>
               <Container>
                 <span className='name-tab-sidebar'>Lịch sử</span>
               </Container>
             </Navbar>
           </Link>
-          <br/>
+          <br />
+            </>)}
+         
 
 
 
- 
+
         </Offcanvas.Body>
       </Offcanvas>
     </>

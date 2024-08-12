@@ -48,13 +48,13 @@
   color: black !important;
 }
 
-.form-check-input{
+#custom-switch{
   width: 50px !important;
   height: 20px;
   border: 1px solid black ;
 }
 
-.form-check-input:checked{
+#custom-switch:checked{
  background-color: #2a2f5b;
  border: 1px solid black ;
 }
@@ -86,5 +86,15 @@
 }
 
 .btn-add:hover{
+  background-color: #2a2f5b;
+}
+
+.btn-create-back {
+  margin-right: 20px;
+  background-color: #2a2f5b;
+  border: 0px;
+}
+
+.btn-create-back:hover {
   background-color: #2a2f5b;
 }
