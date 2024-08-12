@@ -30,7 +30,9 @@ const AccountCreateModal = (props: IProps) => {
     role_id: 0,
     role_name: "",
     status: 0,
+    permissions:[]
   };
+
   const [role, setRole] = useState<IRoleResponse>(defaultRoleResponse)
   const[roles,setRoles] = useState<IRoleResponse[]>([])
 
@@ -41,7 +43,7 @@ const AccountCreateModal = (props: IProps) => {
     const fetchRoles = async () => {
       if (showAccountModal == true) {
         const res = await fetch(
-          "http://localhost:8080/api/role",
+          "http://localhost:8080/api/role/active",
           {
             method: "GET",
             headers: {
