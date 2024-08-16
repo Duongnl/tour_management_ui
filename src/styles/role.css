@@ -51,6 +51,7 @@
    width: 300px;
    margin: 0px !important;
    margin-top: 10px !important;
+   height: 83px !important;
   
 }
 
@@ -77,3 +78,13 @@
     text-decoration:none;
     padding: 15px;
 }
+
+.btn-create-back {
+    margin-right: 20px;
+    background-color: #2a2f5b;
+    border: 0px;
+  }
+  
+  .btn-create-back:hover {
+    background-color: #2a2f5b;
+  }
