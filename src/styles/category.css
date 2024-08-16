@@ -1,3 +1,33 @@
 .ctn-category{
     padding-top: 80px;
 }
+
+.btn-create-back {
+    margin-right: 20px;
+    background-color: #2a2f5b;
+    border: 0px;
+  }
+  
+  .btn-create-back:hover {
+    background-color: #2a2f5b;
+  }
+
+  .input-error {
+    width: 100%;
+    border: 0px;
+    background-color: white;
+    color: red;
+    margin-top: 3px;
+    font-size: 15px;
+}
+
+.input-category-name{
+    height: 200px !important;
+}
+
+/* .lable-category-name ::after{
+   background-color: red !important;
+   padding: 0px !important;
+   margin: 0px !important;
+   width: 300px  !important;
+} */

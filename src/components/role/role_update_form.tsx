@@ -19,8 +19,10 @@ const RoleUpdateForm = (props: IProps) => {
     // console.log(role)
     const [permission, setPermission] = useState<string[]>([])
     const [role_name, setRole_name] = useState<string>(role.role_name)
-    const [role_name_error, setRole_name_error] = useState<string>('')
     const [validation, setValidation] = useState<boolean>(true)
+
+    const [valid,setValid] = useState<boolean>(false)
+    const[roleRes,  setRoleRes] = useState<IRoleResponse>(role)
 
     const permissionCategory: string[] = [
         "Quảng lý danh mục", "ACCESS_CATEGORY", "CREATE_CATEGORY", "UPDATE_CATEGORY", "CHANGE_CATEGORY_STATUS",
@@ -54,13 +56,12 @@ const RoleUpdateForm = (props: IProps) => {
     }, [])
 
     const handleRole_name = (e: string) => {
-        const regex: RegExp = /^[\p{L} ]{2,255}$/u;
+        setValid(true)
+        const regex: RegExp = /^(?=(.*\p{L}){2,})[\p{L} ]{2,255}$/u;
         if (regex.test(e)) {
-            setRole_name_error('');
             setValidation(true)
         } else {
             setValidation(false)
-            setRole_name_error(RoleErrorCode.ROLE_2);
         }
         setRole_name(e);
     }
@@ -69,7 +70,7 @@ const RoleUpdateForm = (props: IProps) => {
         if (validation) {
 
             const roleRequest: IRoleRequest = {
-                role_name: role_name,
+                role_name: role_name.trim(),
                 permission: permission
             }
             console.log(roleRequest)
@@ -90,6 +91,9 @@ const RoleUpdateForm = (props: IProps) => {
             const data = await res.json();
             if (data.status == "SUCCESS") {
                 toast.success("Cập nhật quyền thành công")
+                setValid(false)
+                const res:IRoleResponse = data.result
+                setRoleRes(res)
             } else {
                 let errors = ExportError(data, RoleErrorCode);
                 for (let i: number = 0; i < errors.length; i++) {
@@ -120,10 +124,12 @@ const RoleUpdateForm = (props: IProps) => {
                 <Form.Control type="text" placeholder="..."
                     value={role_name}
                     onChange={(e) => handleRole_name(e.target.value)}
+                    isValid={role_name != roleRes.role_name && valid && validation}
+                    isInvalid = {role_name !=''&&!validation}
                 />
-                <input type="text" className='input-error'
-                    value={role_name_error}
-                    disabled />
+                 <Form.Control.Feedback type="invalid">
+                            {RoleErrorCode.ROLE_2}
+                        </Form.Control.Feedback>
             </FloatingLabel>
             <Table className='table-permission' >
                 <thead>

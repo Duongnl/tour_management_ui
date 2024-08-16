@@ -17,6 +17,7 @@
     color: red;
     margin-top: 3px;
     font-size: 15px;
+    margin-bottom: 11px !important;
 }
 
 .btn-create-back {
@@ -93,3 +94,6 @@
     padding: 15px;
 }
 
+.float-lable-input{
+    height: 83px;
+}

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { Table } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
 import RoleErrorCode from '@/exception/role_error_code';
 import { toast } from 'react-toastify';
 import cookie from 'js-cookie';
@@ -22,7 +22,6 @@ const RoleCreateModal = (props: IProps) => {
     const [permission, setPermission] = useState<string[]>([])
 
     const [role_name, setRole_name] = useState<string>('')
-    const [role_name_error, setRole_name_error] = useState<string>('')
     const [validation, setValidation] = useState<boolean>(false)
 
     const deletePermission = (valueToRemove: string) => {
@@ -58,7 +57,6 @@ const RoleCreateModal = (props: IProps) => {
 
     const handleHideModal = () => {
         setShowRoleModal(false);
-        setRole_name_error('')
         setRole_name('')
         setValidation(false)
         setPermission(Array(8).fill(''))
@@ -68,7 +66,7 @@ const RoleCreateModal = (props: IProps) => {
         if (validation) {
 
             const roleRequest: IRoleRequest = {
-                role_name: role_name,
+                role_name: role_name.trim(),
                 permission: permission
             }
             console.log(roleRequest)
@@ -105,34 +103,42 @@ const RoleCreateModal = (props: IProps) => {
     }
 
     const handleRole_name = (e: string) => {
-        const regex: RegExp = /^[\p{L} ]{2,255}$/u;
+        const regex: RegExp = /^(?=(.*\p{L}){2,})[\p{L} ]{2,255}$/u;
         if (regex.test(e)) {
-            setRole_name_error('');
+          
             setValidation(true)
         } else {
             setValidation(false)
-            setRole_name_error(RoleErrorCode.ROLE_2);
         }
         setRole_name(e);
     }
 
     return (
         <>
-
+           {console.log("Validation : ",validation)}
             <Modal show={showRoleModal} fullscreen={true}
                 onHide={() => { handleHideModal() }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Thêm quyền</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    
+                    <Container>
                     <FloatingLabel className='mb-3 input-role-name' label="Tên quyền">
                         <Form.Control type="text" placeholder="..."
                             value={role_name}
                             onChange={(e) => handleRole_name(e.target.value)}
+                            isValid={validation}
+                            isInvalid = {role_name !=''&&!validation}
+                          
                         />
-                        <input type="text" className='input-error'
+             
+                         <Form.Control.Feedback type="invalid">
+                            {RoleErrorCode.ROLE_2}
+                        </Form.Control.Feedback>
+                        {/* <input type="text" className='input-error'
                             value={role_name_error}
-                            disabled />
+                            disabled /> */}
                     </FloatingLabel>
 
                     <Table className='table-permission' >
@@ -211,6 +217,7 @@ const RoleCreateModal = (props: IProps) => {
                             onClick={() => handleCreate()}
                             variant="success" >Tạo</Button>
                     </div>
+                    </Container>
                 </Modal.Body>
             </Modal>
         </>
