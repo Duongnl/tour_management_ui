@@ -147,7 +147,7 @@ const AccountCreateModal = (props: IProps) => {
       const data = await res.json();
       if (data.status == "SUCCESS") {
         toast.success(`Thêm người dùng ${account_name} thành công`)
-        setShowAccountModal(false)
+        handleHideModal()
         fetchAccounts()
         router.push(pathName)
         setSearch('')

@@ -221,6 +221,8 @@ const CategoryTable = (props: IProps) => {
             <CategoryCreateModal
             showCategoryCreateModal ={showCategoryCreateModal}
             setShowCategoryCreateModal = {setShowCategoryCreateModal}
+            fetchCategories = {fetchCategories}
+            setSearch={setSearch}
             />
         </>
     )
