@@ -275,6 +275,7 @@ const RoleTable = (props: IProps) => {
                showRoleModal={showRoleModal}
                setShowRoleModal={setShowRoleModal}
                fetchRoles = {fetchRoles}
+               setSearch={setSearch}
             />
         </>
     )

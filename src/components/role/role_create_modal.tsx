@@ -9,20 +9,26 @@ import RoleErrorCode from '@/exception/role_error_code';
 import { toast } from 'react-toastify';
 import cookie from 'js-cookie';
 import { ExportError } from '@/utils/export_error';
+
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 interface IProps {
     showRoleModal: boolean
     setShowRoleModal: (value: boolean) => void
     fetchRoles: () => void
+    setSearch: (value: string) => void
 }
 
 
 const RoleCreateModal = (props: IProps) => {
-    const { showRoleModal, setShowRoleModal, fetchRoles } = props;
+    const { showRoleModal, setShowRoleModal, fetchRoles ,setSearch} = props;
 
     const [permission, setPermission] = useState<string[]>([])
 
     const [role_name, setRole_name] = useState<string>('')
     const [validation, setValidation] = useState<boolean>(false)
+
+    const pathName = usePathname()
+    const router = useRouter()
 
     const deletePermission = (valueToRemove: string) => {
         setPermission(prevPermissions => prevPermissions.filter(perm => perm !== valueToRemove));
@@ -69,7 +75,7 @@ const RoleCreateModal = (props: IProps) => {
                 role_name: role_name.trim(),
                 permission: permission
             }
-            console.log(roleRequest)
+
 
             const res = await fetch(
                 "http://localhost:8080/api/role",
@@ -89,6 +95,8 @@ const RoleCreateModal = (props: IProps) => {
                 toast.success("Thêm mới quyền thành công")
                 handleHideModal()
                 fetchRoles()
+                router.push(pathName)
+                setSearch('')
             } else {
                 let errors = ExportError(data, RoleErrorCode);
                 for (let i: number = 0; i < errors.length; i++) {

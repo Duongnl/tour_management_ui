@@ -31,3 +31,11 @@
    margin: 0px !important;
    width: 300px  !important;
 } */
+
+.float-lable-input{
+  height: 83px;
+}
+
+.input-textarea{
+  height: 142px !important;
+}
