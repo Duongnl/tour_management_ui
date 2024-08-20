@@ -14,6 +14,7 @@ const DetailAccount =  (props: any) => {
         role_id: 0,
         role_name: '' ,
         status: 1,
+        permissions: []
     }
 
     const initEmployeeResponse:IEmployeeResponse = {

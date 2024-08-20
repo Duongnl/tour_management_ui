@@ -198,9 +198,10 @@ const AccountTable = (props: IProps) => {
         router.push(`${pathname}?${status != null ? `status=${status}` : ''}`)
         setSearch(e)
         const filteredData = accountsCopy.filter((item) => {
-            return Object.values(item).some((value) =>
-                value.toString().toLowerCase().includes(e.toLowerCase())
-            );
+            return Object.values(item).some((value) => {
+                // Kiểm tra nếu value không phải là null hoặc undefined
+                return value != null && value.toString().toLowerCase().includes(e.toLowerCase());
+            });
         });
         console.log('filter data : ', filteredData);
         setAccounts(filteredData)

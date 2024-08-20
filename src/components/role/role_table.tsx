@@ -143,9 +143,10 @@ const RoleTable = (props: IProps) => {
         router.push(`${pathname}?${status != null ? `status=${status}` : ''}`)
         setSearch(e)
         const filteredData = roles.filter((item) => {
-            return Object.values(item).some((value) =>
-                value.toString().toLowerCase().includes(e.toLowerCase())
-            );
+            return Object.values(item).some((value) => {
+                // Kiểm tra nếu value không phải là null hoặc undefined
+                return value != null && value.toString().toLowerCase().includes(e.toLowerCase());
+            });
         });
         setRolesFilter(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 8))

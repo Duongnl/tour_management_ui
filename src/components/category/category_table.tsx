@@ -8,6 +8,10 @@ import PaginationTable from '../pagination';
 import cookie from 'js-cookie';
 import CategoryCreateModal from './category_create_modal';
 import "@/styles/category.css"
+import { CreateSlug } from '@/utils/create_slug';
+import CategoryUpdateModal from './category_update_modal';
+import ChangeStatusModal from '../change_status_modal';
+import CategoryErrorCode from '@/exception/category_error_code';
 interface IProps {
     categories: ICategoryResponse[]
 }
@@ -23,6 +27,7 @@ const CategoryTable = (props: IProps) => {
     const currentPage = searchParams.get('page')
     // kiem tra trang thai
     const status = searchParams.get('status')
+    const category_slug = searchParams.get('category')
 
     // tổng số trang
     const [numberPages, setNumberPages] = useState<number>(Math.ceil(categories != undefined ? categories.length / 8 : 0))
@@ -38,6 +43,42 @@ const CategoryTable = (props: IProps) => {
     const pathname = usePathname();
 
     const [showCategoryCreateModal, setShowCategoryCreateModal] = useState<boolean>(false)
+    const [showCategoryUpdateModal, setShowCategoryUpdateModal] = useState<boolean>(false)
+
+
+    const [category_id, setCategory_id] = useState<number>(0)
+
+    const [showChangeStatusModal, setShowChangeStatusModal] = useState<boolean>(false)
+
+    const [apiChangeStatus, setApiChangeStatus] = useState<string>('')
+
+    const [statusObject, setStatusObject] = useState<number>(0);
+
+
+    const [detail, setDetail] = useState<string>('')
+
+
+    const handleChangeStatus = (category: ICategoryResponse) => {
+        setCategory_id(category.category_id)
+        setStatusObject(category.status)
+        setShowChangeStatusModal(true)
+        setApiChangeStatus(`http://localhost:8080/api/category/change-status/${category.category_id}`)
+        if (category.status == 1) {
+            setDetail(`Bạn có muốn tắt quyền ${category.category_name} ?`)
+        } else {
+            setDetail(`Bạn có muốn mở quyền ${category.category_name} ?`)
+        }
+    }
+
+    const handleChangeStatusState = () => {
+        setCategories(
+            categories.map(a => a.category_id === category_id ? { ...a, status: a.status === 1 ? 0 : 1 } : a)
+        )
+        setCategoriesFilter(
+            categoriesFilter.map(a => a.category_id === category_id ? { ...a, status: a.status === 1 ? 0 : 1 } : a)
+        )
+    }
+
 
     useEffect(() => {
         let start = 1;
@@ -57,12 +98,14 @@ const CategoryTable = (props: IProps) => {
         router.push(`${pathname}?${status != null ? `status=${status}` : ''}`)
         setSearch(e)
         const filteredData = categories.filter((item) => {
-            return Object.values(item).some((value) =>
-                value.toString().toLowerCase().includes(e.toLowerCase())
-            );
+            return Object.values(item).some((value) => {
+                // Kiểm tra nếu value không phải là null hoặc undefined
+                return value != null && value.toString().toLowerCase().includes(e.toLowerCase());
+            });
         });
         setCategoriesFilter(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 8))
+        console.log("Categories : ", categories)
     }
 
     const handleSelectStatus = (e: string) => {
@@ -78,6 +121,15 @@ const CategoryTable = (props: IProps) => {
             fetchCategories()
         }
     }, [status])
+
+    useEffect(() => {
+        console.log("Category_slug : ", category_slug)
+        if (category_slug != null && category_slug != '') {
+            setShowCategoryUpdateModal(true)
+        } else {
+            setShowCategoryUpdateModal(false)
+        }
+    }, [category_slug])
 
     const fetchCategories = async () => {
         const res = await fetch(
@@ -194,7 +246,7 @@ const CategoryTable = (props: IProps) => {
                                     <td>
                                         <Form.Check className='check-active'
                                             checked={category.status == 1}
-                                            // onChange={() => handleChangeStatus(role)}
+                                            onChange={() => handleChangeStatus(category)}
                                             type="switch"
                                             id="custom-switch"
 
@@ -202,9 +254,15 @@ const CategoryTable = (props: IProps) => {
                                     </td>
                                     <td>
                                         <Button variant='outline-secondary' className='btn-update' >
-                                            <Link href={'/management/role/'} className='link-update' >
+                                            <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
                                                 <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
                                             </Link>
+                                        </Button>
+                                        <Button variant='outline-secondary' className='btn-detail'>
+                                            <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
+                                                <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
+                                            </Link>
+
                                         </Button>
                                     </td>
                                 </tr>
@@ -219,11 +277,27 @@ const CategoryTable = (props: IProps) => {
                 currentPage={Number(currentPage)}
             />
             <CategoryCreateModal
-            showCategoryCreateModal ={showCategoryCreateModal}
-            setShowCategoryCreateModal = {setShowCategoryCreateModal}
-            fetchCategories = {fetchCategories}
-            setSearch={setSearch}
+                showCategoryCreateModal={showCategoryCreateModal}
+                setShowCategoryCreateModal={setShowCategoryCreateModal}
+                fetchCategories={fetchCategories}
+                setSearch={setSearch}
             />
+            <CategoryUpdateModal
+                showCategoryUpdateModal={showCategoryUpdateModal}
+                setShowCategoryUpdateModal={setShowCategoryUpdateModal}
+                fetchCategories={fetchCategories}
+            />
+            <ChangeStatusModal
+                showChangeStatusModal={showChangeStatusModal}
+                setShowChangeStatusModal={setShowChangeStatusModal}
+                handleChangeStatusState={handleChangeStatusState}
+                statusObject={statusObject}
+                detail={detail}
+                api={apiChangeStatus}
+                objectError={CategoryErrorCode}
+            />
+
+
         </>
     )
 }
