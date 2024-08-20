@@ -32,6 +32,25 @@
    width: 300px  !important;
 } */
 
+.btn-detail{
+  color: black;
+ /* border: 1px solid black;
+ border-radius: 5px;
+ width: 30px; */
+ padding: 0px;
+ margin-left: 20px;
+}
+
+.btn-detail:hover {
+  background-color: cornflowerblue;
+  color: black;
+}
+
+.btn-detail:active {
+  background-color: cornflowerblue !important;
+  color: black !important;
+}
+
 .float-lable-input{
   height: 83px;
 }
