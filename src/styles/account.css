@@ -2,60 +2,8 @@
     padding-top: 80px;
 }
 
-.table{
-    margin-top: 20px;
-}
 
-.div-add{
-   display: flex;
-   justify-content: flex-end;
-}
 
-.form-check-input{
-    width: 50px !important;
-    height: 20px;
-    border: 1px solid black ;
-}
-
-.form-check-input:checked{
-   background-color: #2a2f5b;
-   border: 1px solid black ;
-}
-
-.btn-add {
-    background-color: #2a2f5b;
-    border: color(#2a2f5b) !important ;
-
-    border: 0px ;
-}
-
-.btn-add:hover{
-    background-color: #2a2f5b;
-}
-
-.btn-update{
-    color: black;
-   /* border: 1px solid black;
-   border-radius: 5px;
-   width: 30px; */
-   padding: 0px;
-}
-.link-update{
-    padding: 20px !important;
-    padding-top: 10px !important;
-    
-    
-}
-
-.btn-update:hover {
-    background-color: cornflowerblue;
-    color: black;
-}
-
-.btn-update:active {
-    background-color: cornflowerblue !important;
-    color: black !important;
-}
 .div-back-create{
     display: flex;
     justify-content: flex-end;
@@ -69,6 +17,7 @@
     color: red;
     margin-top: 3px;
     font-size: 15px;
+    margin-bottom: 11px !important;
 }
 
 .btn-create-back {
@@ -143,4 +92,8 @@
     color: white;
     text-decoration:none;
     padding: 15px;
+}
+
+.float-lable-input{
+    height: 83px;
 }

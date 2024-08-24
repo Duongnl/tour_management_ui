@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import '@/styles/header.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppSidebar from './app_sidebar';
 import { NavDropdown } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
@@ -15,7 +15,17 @@ import useSWR,{Fetcher} from "swr";
 const AppHeader =  (props:any) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const account = props.account
-    
+    const [permission, setPermission] = useState<string[]>([])
+
+    useEffect(() => {
+        let permissionString:string[] = []
+        for (let i:number = 0; i< account.role.permissions.length; i++) {
+            permissionString.push(account.role.permissions[i].permission_id)
+        }
+        setPermission(permissionString)
+    }, [])
+      
+
     const handleShowSidebar = () => {
         setShowSidebar(true)
     }
@@ -24,6 +34,7 @@ const AppHeader =  (props:any) => {
         cookie.remove('session-id');
         window.location.href = '/';
     }
+    
 
 
 
@@ -74,6 +85,7 @@ const AppHeader =  (props:any) => {
             <AppSidebar
                 showSidebar={showSidebar}
                 setShowSidebar={setShowSidebar}
+                permission = {permission}
             />
         </>
     )

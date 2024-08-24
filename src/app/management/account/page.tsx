@@ -1,4 +1,4 @@
-// "use server"
+"use server"
 import { Container, Row } from "react-bootstrap"
 import "@/styles/account.css"
 import { getSessionId } from "@/utils/session_store"
@@ -28,7 +28,7 @@ const AccountPage = async () => {
                     <h4>Quản lý người dùng</h4>
                 </Row>
                 <Row>
-                    <Suspense  >
+                    <Suspense>
                         <AccountTable accounts={accounts} />
                     </Suspense>
                 </Row>

@@ -1,8 +1,92 @@
+/* table */
 .table{
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
-.div-add{
-   display: flex;
-   justify-content: end;
+/* pagination */
+.pgn{
+  padding-bottom: 20px;
+
 }
+
+.div-pgn{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0px;
+
+}
+
+.page-link{
+  color: black !important;
+  border-radius: 0px !important;
+}
+
+.active>.page-link, .page-link.active {
+  background-color: cornflowerblue !important;
+}
+
+.pgn-link{
+  text-decoration: none;
+}
+
+/* table */
+.btn-update{
+  color: black;
+ /* border: 1px solid black;
+ border-radius: 5px;
+ width: 30px; */
+ padding: 0px;
+}
+
+.btn-update:hover {
+  background-color: cornflowerblue;
+  color: black;
+}
+
+.btn-update:active {
+  background-color: cornflowerblue !important;
+  color: black !important;
+}
+
+#custom-switch{
+  width: 50px !important;
+  height: 20px;
+  border: 1px solid black ;
+}
+
+#custom-switch:checked{
+ background-color: #2a2f5b;
+ border: 1px solid black ;
+}
+
+.link-update{
+  padding: 20px !important;
+  padding-top: 10px !important;
+}
+
+/* add  */
+.div-add{
+  display: flex;
+  /* justify-content: flex-end; */
+  justify-content: space-between;
+  padding: 0px;
+  margin-top: 10px;
+}
+
+.select-status{
+  width: 180px;
+  margin-left: 20px;
+}
+
+.btn-add {
+  background-color: #2a2f5b;
+  border: color(#2a2f5b) !important ;
+
+  border: 0px ;
+}
+
+.btn-add:hover{
+  background-color: #2a2f5b;
+}
+
+
