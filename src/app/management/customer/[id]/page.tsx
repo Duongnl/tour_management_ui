@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap"
 import CustomerUpdateForm from "@/components/customer/customer_update_form";
 import cookie from 'js-cookie';
-import Loading from "@/app/loading";
+import Loading from "@/app/management/loading";
 import "@/styles/customer.css";
 const DetailCustomer =  (props: any) => {
     const { params } = props;

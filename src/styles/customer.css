@@ -15,9 +15,16 @@
     margin-top: 20px;
 }
 
-.div-add{
-   display: flex;
-   justify-content: flex-end;
+.div-add {
+    display: flex;
+    justify-content: flex-end;
+    justify-content: space-between;
+    padding: 0px;
+    margin-top: 10px;
+}
+.select-status {
+    width: 180px;
+    margin-left: 20px;
 }
 
 .form-check-input{

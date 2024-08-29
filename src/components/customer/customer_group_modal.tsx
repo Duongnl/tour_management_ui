@@ -1,4 +1,5 @@
 // File: CustomerGroupModal.jsx
+import { CreateSlug } from "@/utils/create_slug";
 import { formatDate } from "@/utils/dateUtils";
 import Link from "next/link";
 import React from "react";
@@ -40,7 +41,7 @@ const CustomerGroupModal = (props: IProps) => {
                         <Link
                           href={
                             customer.status == 1
-                              ? "/management/customer/"+customer.customer_name +"-" +customer.customer_id:"#"
+                              ? '/management/customer/' + CreateSlug(`${customer.customer_name} ${customer.customer_id}` ):"#"
                           }
                         >
                           {customer.customer_name}
