@@ -19,10 +19,10 @@ interface IProps {
 
 const CustomerCreateModal = (props: IProps) => {
   const { showCustomerModal, setShowCustomerModal, fetchCustomers } = props;
-  const [validation, setValidation] = useState<boolean[]>(Array(9).fill(false));
+  const [validation, setValidation] = useState<boolean[]>(Array(8).fill(false));
 
   const defaultRelatioshipResponse: ICustomerResponse = {
-    customer_id: 0,
+    customer_id: null,
     customer_name: "",
     status: 0,
     sex: 0,
@@ -98,13 +98,13 @@ const CustomerCreateModal = (props: IProps) => {
     setVisaExpire_error("");
 
     setValidation([]);
-    setValidation(Array(9).fill(false));
+    setValidation(Array(8).fill(false));
   };
 
   const handleSelectedRelationship = (relatioship: ICustomerResponse) => {
     setRelationship(relatioship);
     setRelationshipId_error("");
-    validation[6] = true;
+    // validation[6] = true;
   };
 
   console.log(validation);
@@ -174,9 +174,9 @@ const CustomerCreateModal = (props: IProps) => {
     const regex: RegExp = /^[\p{L} ]{2,255}$/u;
     if (regex.test(e)) {
       setRelationshipName_error("");
-      validation[7] = true;
+      validation[6] = true;
     } else {
-      validation[7] = false;
+      validation[6] = false;
       setRelationshipName_error(CustomerErrorCode.CUSTOMER_9);
     }
     setRelationshipName(e);
@@ -248,15 +248,15 @@ const CustomerCreateModal = (props: IProps) => {
       validation[4] = false;
       setBirthday_error(CustomerErrorCode.CUSTOMER_1);
     }
-    const date = new Date(e);
-    const formattedDate = date.toISOString().split("T")[0];
+    // const date = new Date(e);
+    // const formattedDate = date.toISOString().split("T")[0];
 
-    setBirthday(formattedDate);
+    setBirthday(e);
   };
 
   const handleRelationship = (e: string) => {
-    validation[6] = false;
-    setRelationshipId_error("Vui lòng chọn quyền ở mục đề xuất");
+    // validation[6] = true;
+    setRelationshipId_error("Người này là người đại diện");
   };
 
   const handleVisaExpire = (e: string) => {
@@ -264,15 +264,15 @@ const CustomerCreateModal = (props: IProps) => {
       /^((?:19|20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/;
     if (regex.test(e)) {
       setVisaExpire_error("");
-      validation[8] = true;
+      validation[7] = true;
     } else {
-      validation[8] = false;
+      validation[7] = false;
       setVisaExpire_error(CustomerErrorCode.CUSTOMER_1);
     }
-    const date = new Date(e);
-    const formattedDate = date.toISOString().split("T")[0];
+    // const date = new Date(e);
+    // const formattedDate = date.toISOString().split("T")[0];
 
-    setVisaExpire(formattedDate);
+    setVisaExpire(e);
   };
 
   const genders = [

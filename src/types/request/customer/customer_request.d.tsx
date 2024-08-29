@@ -1,7 +1,7 @@
 interface ICustomerRequest {
     customer_name:string;
     sex:number;
-    customer_rel_id:number;
+    customer_rel_id:number|null;
     relationship_name:string;
     phone_number:string;
     email:string;

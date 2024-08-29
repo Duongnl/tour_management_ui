@@ -1,5 +1,5 @@
 interface ICustomerResponse {
-    customer_id:number;
+    customer_id:number|null;
     customer_name:string;
     sex:number;
     relationship_name:string;

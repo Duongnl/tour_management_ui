@@ -88,7 +88,7 @@ const CustomerTable = (props: IProps) => {
   };
 
   const fetchLockedCustomers = async () => {
-    const res = await fetch("http://localhost:8080/api/customer/deleted", {
+    const res = await fetch("http://localhost:8080/api/customer/locked", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header

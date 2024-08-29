@@ -20,11 +20,11 @@ interface IProps {
 const CustomerUpdateForm = (props: IProps) => {
   const { customer, customers } = props;
   const [validationCustomer, setValidationCustomer] = useState<boolean[]>(
-    Array(9).fill(true)
+    Array(8).fill(true)
   );
 
   var Typeahead = require("react-bootstrap-typeahead").Typeahead; // CommonJS
-  const [relationship, SetRelationship] = useState<ICustomerResponse>(customer.customerParent);
+  const [relationship, SetRelationship] = useState<ICustomerResponse|null>(customer.customerParent==null?null:customer.customerParent);
   const handleSelectedRelationship = (relatioship: ICustomerResponse) => {
     SetRelationship(relatioship);
     setRelationship_error("");
@@ -77,9 +77,9 @@ const CustomerUpdateForm = (props: IProps) => {
     const regex: RegExp = /^[\p{L} ]{2,255}$/u;
     if (regex.test(e)) {
       setRelationshipName_error("");
-      validationCustomer[7] = true;
+      validationCustomer[6] = true;
     } else {
-      validationCustomer[7] = false;
+      validationCustomer[6] = false;
       setRelationshipName_error(CustomerErrorCode.CUSTOMER_9);
     }
     setRelationshipName(e);
@@ -139,27 +139,27 @@ const CustomerUpdateForm = (props: IProps) => {
   };
 
   const handleRelationship = (e: string) => {
-    validationCustomer[6] = false;
-    setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
+    // validationCustomer[6] = false;
+    // setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
   };
-  useEffect(() => {
-    if (!relationship) {
-      setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
-      validationCustomer[3] = false;
-    } else {
-      setRelationship_error("");
-      validationCustomer[3] = true;
-    }
-  }, [relationship]);
+  // useEffect(() => {
+  //   if (!relationship) {
+  //     setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
+  //     validationCustomer[3] = false;
+  //   } else {
+  //     setRelationship_error("");
+  //     validationCustomer[3] = true;
+  //   }
+  // }, [relationship]);
 
   const handleVisaExpire = (e: string) => {
     const regex: RegExp =
       /^((?:19|20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/;
     if (regex.test(e)) {
       setVisaExpire_error("");
-      validationCustomer[8] = true;
+      validationCustomer[7] = true;
     } else {
-      validationCustomer[8] = false;
+      validationCustomer[7] = false;
       setVisaExpire_error(CustomerErrorCode.CUSTOMER_1);
     }
     setVisaExpire(e);
@@ -181,7 +181,7 @@ const CustomerUpdateForm = (props: IProps) => {
       const initCustomerRequest: ICustomerRequest = {
         customer_name: customer_name,
         sex: sex,
-        customer_rel_id: relationship.customer_id,
+        customer_rel_id: relationship?.customer_id ?? null,
         relationship_name: relationship_name,
         phone_number: phone_number,
         email: email,
