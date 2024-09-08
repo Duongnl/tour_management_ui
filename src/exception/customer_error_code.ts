@@ -1,14 +1,18 @@
 enum CustomerErrorCode {
-    CUSTOMER_1= "Tên tài khoản đã tồn tại",
-    CUSTOMER_2 = "Tài khoản không tồn tại",
-    CUSTOMER_3 = "Sai mật khẩu",
-    CUSTOMER_4 = "Sai định dạng tài khoản",
-    CUSTOMER_5 = "Sai định dạng mật khẩu",
+    CUSTOMER_1 = "Khách hàng không tồn tại",
+    CUSTOMER_2 = "Tên khách hàng không được để trống",
+    CUSTOMER_3 = "Đường dẫn không được để trống",
+    CUSTOMER_4 = "Số điện thoại đã tồn tại",
+    CUSTOMER_5 = "Người đại diện không tồn tại",
     CUSTOMER_6 = "Tài khoản đã bị khóa",
-    CUSTOMER_7 = "Email chỉ chứa chữ cái, số, dấu . _ - . , kết thúc với @example.com",
+    CUSTOMER_7 = "Giới tính không hợp lệ",
     CUSTOMER_8 = "Số điện thoại không hợp lệ",
-    CUSTOMER_9 = "Chỉ được dùng các kí tự và khoảng trắng"
-    
+    CUSTOMER_9 = "Email chỉ chứa chữ cái, số, dấu . _ - . , kết thúc với @example.com",
+    CUSTOMER_10 = "Người đại diện không tồn tại",
+    CUSTOMER_11 = "Địa chỉ không hợp lệ",
+    CUSTOMER_12 = "Ngày sinh không hợp lệ",
+    CUSTOMER_13 = "Ngày hết hạn visa không hợp lệ",
+    CUSTOMER_14 = "Họ tên ít nhất 2 ký tự và nhiều nhất là 255 ký tự",
 }
 
 export default CustomerErrorCode

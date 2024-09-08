@@ -104,12 +104,6 @@
 .btn-back:hover {
     background-color: #2a2f5b;
 }
-.div-spinner{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
 
 .rbt-input{
     height: 58px;

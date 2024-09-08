@@ -7,6 +7,7 @@ import AppFooter from "@/components/app_footer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import '@/styles/globals.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const dynamic = "force-dynamic";

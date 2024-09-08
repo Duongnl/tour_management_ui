@@ -53,7 +53,6 @@ const CustomerTable = (props: IProps) => {
     } else if (status == "all") {
       fetchCustomers();
     }
-    console.log("vao status");
   }, [status]);
 
   useEffect(() => {
@@ -67,7 +66,6 @@ const CustomerTable = (props: IProps) => {
 
     setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
-    console.log("vao status");
   }, [currentPage]);
 
   const fetchCustomers = async () => {
@@ -160,7 +158,7 @@ const CustomerTable = (props: IProps) => {
         );
       });
     });
-    console.log("filter data : ", filteredData);
+    // console.log("filter data : ", filteredData);
     setCustomers(filteredData);
     setNumberPages(Math.ceil(filteredData.length / 8));
   };
@@ -183,8 +181,8 @@ const CustomerTable = (props: IProps) => {
   };
 
   return (
-    <>
-      <div className="div-add">
+    <div className="position-relative">
+      <div className="div-add mb-4">
         <div style={{ display: "flex" }}>
           <InputGroup className="input-search">
             <InputGroup.Text id="basic-addon1">
@@ -228,7 +226,7 @@ const CustomerTable = (props: IProps) => {
             <th>Số điện thoại</th>
             <th>Thời gian tạo</th>
             <th>Ngày sinh</th>
-            <th>Khóa</th>
+            <th>Hoạt động</th>
             <th>Chi tiết</th>
           </tr>
         </thead>
@@ -293,7 +291,7 @@ const CustomerTable = (props: IProps) => {
         numberPages={numberPages}
         currentPage={Number(currentPage)}
       />
-    </>
+    </div>
   );
 };
 

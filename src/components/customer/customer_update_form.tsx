@@ -11,6 +11,14 @@ import { toast } from "react-toastify";
 import { ExportError } from "@/utils/export_error";
 import { formatDate } from "@/utils/dateUtils";
 import CustomerGroupModal from "./customer_group_modal";
+import {
+  handleAddress,
+  handleDate,
+  handleEmail,
+  handleName,
+  handleNameAndNumber,
+  handlePhoneNumber,
+} from "@/utils/handleUtils";
 
 interface IProps {
   customer: ICustomerDetailResponse;
@@ -19,18 +27,18 @@ interface IProps {
 
 const CustomerUpdateForm = (props: IProps) => {
   const { customer, customers } = props;
-  const [validationCustomer, setValidationCustomer] = useState<boolean[]>(
-    Array(8).fill(true)
-  );
+  const [validation, setValidation] = useState<boolean[]>(Array(8).fill(true));
 
   var Typeahead = require("react-bootstrap-typeahead").Typeahead; // CommonJS
-  const [relationship, SetRelationship] = useState<ICustomerResponse|null>(customer.customerParent==null?null:customer.customerParent);
   const handleSelectedRelationship = (relatioship: ICustomerResponse) => {
     SetRelationship(relatioship);
     setRelationship_error("");
-    validationCustomer[6] = true;
+    validation[6] = true;
   };
 
+  const [relationship, SetRelationship] = useState<ICustomerResponse | null>(
+    customer.customerParent == null ? null : customer.customerParent
+  );
   const [customer_name, setCustomerName] = useState<string>(
     customer.customer_name
   );
@@ -49,129 +57,23 @@ const CustomerUpdateForm = (props: IProps) => {
   const [visa_expire, setVisaExpire] = useState<string>(
     formatDate(customer.visa_expire)
   );
-  const [selectedGroup, setSelectedGroup] = useState<ICustomerResponse[]|null>(customer.customerGroup);
-
-  const [customer_name_error, setCustomerName_error] = useState<string>("");
   const [relationship_error, setRelationship_error] = useState<string>("");
-  const [relationship_name_error, setRelationshipName_error] =
-    useState<string>("");
-  const [phone_number_error, setPhone_number_error] = useState<string>("");
-  const [email_error, setEmail_error] = useState<string>("");
-  const [address_error, setAddress_error] = useState<string>("");
-  const [birthday_error, setBirthday_error] = useState<string>("");
-  const [visa_expire_error, setVisaExpire_error] = useState<string>("");
-
-  const handleCustomer_name = (e: string) => {
-    const regex: RegExp = /^[\p{L} ]{2,255}$/u;
-    if (regex.test(e)) {
-      setCustomerName_error("");
-      validationCustomer[0] = true;
-    } else {
-      validationCustomer[0] = false;
-      setCustomerName_error(CustomerErrorCode.CUSTOMER_9);
-    }
-    setCustomerName(e);
-  };
-
-  const handleRelationship_name = (e: string) => {
-    const regex: RegExp = /^[\p{L} ]{2,255}$/u;
-    if (regex.test(e)) {
-      setRelationshipName_error("");
-      validationCustomer[6] = true;
-    } else {
-      validationCustomer[6] = false;
-      setRelationshipName_error(CustomerErrorCode.CUSTOMER_9);
-    }
-    setRelationshipName(e);
-  };
+  const [selectedGroup, setSelectedGroup] = useState<
+    ICustomerResponse[] | null
+  >(customer.customerGroup);
 
   const handleGenderChange = (value: number) => {
     setSex(value);
   };
 
-  const handleEmail = (e: string) => {
-    const regex: RegExp =
-      /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-    if (regex.test(e)) {
-      setEmail_error("");
-      validationCustomer[1] = true;
-    } else {
-      validationCustomer[1] = false;
-      setEmail_error(CustomerErrorCode.CUSTOMER_7);
-    }
-    setEmail(e);
-  };
-
-  const handlePhone_number = (e: string) => {
-    const regex: RegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
-    if (regex.test(e)) {
-      setPhone_number_error("");
-      validationCustomer[2] = true;
-    } else {
-      validationCustomer[2] = false;
-      setPhone_number_error(CustomerErrorCode.CUSTOMER_8);
-    }
-    setPhone_number(e);
-  };
-
-  const handleAddress = (e: string) => {
-    if (e.trim() !== "") {
-      setRelationshipName_error("");
-      validationCustomer[3] = true;
-    } else {
-      validationCustomer[3] = false;
-      setRelationshipName_error("Trường này không được để trống.");
-    }
-    setAddress(e);
-  };
-
-  const handleBirthday = (e: string) => {
-    const regex: RegExp =
-      /^((?:19|20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/;
-    if (regex.test(e)) {
-      setBirthday_error("");
-      validationCustomer[4] = true;
-    } else {
-      validationCustomer[4] = false;
-      setBirthday_error(CustomerErrorCode.CUSTOMER_1);
-    }
-    setBirthday(e);
-  };
-
   const handleRelationship = (e: string) => {
-    // validationCustomer[6] = false;
-    // setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
+    setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
   };
-  // useEffect(() => {
-  //   if (!relationship) {
-  //     setRelationship_error("Vui lòng chọn quyền ở mục đề xuất");
-  //     validationCustomer[3] = false;
-  //   } else {
-  //     setRelationship_error("");
-  //     validationCustomer[3] = true;
-  //   }
-  // }, [relationship]);
 
-  const handleVisaExpire = (e: string) => {
-    const regex: RegExp =
-      /^((?:19|20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])/;
-    if (regex.test(e)) {
-      setVisaExpire_error("");
-      validationCustomer[7] = true;
-    } else {
-      validationCustomer[7] = false;
-      setVisaExpire_error(CustomerErrorCode.CUSTOMER_1);
-    }
-    setVisaExpire(e);
-  };
-  console.log(validationCustomer)
   const handleUpdateCustomer = async () => {
     let flag: boolean = true;
-    for (let i: number = 0; i < validationCustomer.length; i++) {
-      if (
-        validationCustomer[i] == false ||
-        validationCustomer[i] == undefined
-      ) {
+    for (let i: number = 0; i < validation.length; i++) {
+      if (validation[i] == false || validation[i] == undefined) {
         flag = false;
         break;
       }
@@ -222,11 +124,10 @@ const CustomerUpdateForm = (props: IProps) => {
   };
 
   const [showCustomerGroupModal, setShowCustomerGroupModal] = useState(false);
-  
 
   const handleShowCustomerGroup = async () => {
     setSelectedGroup(customer.customerGroup);
-    setSelectedGroup([...customer.customerGroup,customer.customerParent]);
+    setSelectedGroup([...customer.customerGroup, customer.customerParent]);
     setShowCustomerGroupModal(true);
   };
 
@@ -234,6 +135,14 @@ const CustomerUpdateForm = (props: IProps) => {
   const handleCloseModal = () => {
     setShowCustomerGroupModal(false);
     setSelectedGroup(null);
+  };
+
+  const updateValidation = (index: number, isValid: boolean) => {
+    setValidation((prevValidation) => {
+      const newValidation = [...prevValidation];
+      newValidation[index] = isValid;
+      return newValidation;
+    });
   };
 
   return (
@@ -245,15 +154,20 @@ const CustomerUpdateForm = (props: IProps) => {
               type="text"
               placeholder="..."
               value={customer_name}
-              onChange={(e) => handleCustomer_name(e.target.value)}
               className="form-control"
+              onChange={(e) =>
+                handleName(
+                  e.target.value,
+                  (isValid) => updateValidation(0, isValid),
+                  setCustomerName
+                )
+              }
+              isValid={validation[0]}
+              isInvalid={customer_name != "" && !validation[0]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={customer_name_error}
-              disabled
-            />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_14}
+            </Form.Control.Feedback>
           </FloatingLabel>
 
           <FloatingLabel className="mb-3" label="Email">
@@ -261,15 +175,20 @@ const CustomerUpdateForm = (props: IProps) => {
               type="text"
               placeholder="..."
               value={email}
-              onChange={(e) => handleEmail(e.target.value)}
               className="form-control"
+              onChange={(e) =>
+                handleEmail(
+                  e.target.value,
+                  (isValid) => updateValidation(1, isValid),
+                  setEmail
+                )
+              }
+              isValid={validation[1]}
+              isInvalid={email != "" && !validation[1]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={email_error}
-              disabled
-            />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_9}
+            </Form.Control.Feedback>
           </FloatingLabel>
 
           <FloatingLabel className="mb-3" label="Số điện thoại">
@@ -277,15 +196,20 @@ const CustomerUpdateForm = (props: IProps) => {
               type="text"
               placeholder="..."
               value={phone_number}
-              onChange={(e) => handlePhone_number(e.target.value)}
               className="form-control"
+              onChange={(e) =>
+                handlePhoneNumber(
+                  e.target.value,
+                  (isValid) => updateValidation(2, isValid),
+                  setPhone_number
+                )
+              }
+              isValid={validation[2]}
+              isInvalid={phone_number != "" && !validation[2]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={phone_number_error}
-              disabled
-            />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_8}
+            </Form.Control.Feedback>
           </FloatingLabel>
 
           <FloatingLabel className="mb-3" label="Địa Chỉ">
@@ -293,34 +217,45 @@ const CustomerUpdateForm = (props: IProps) => {
               type="text"
               placeholder="..."
               value={address}
-              onChange={(e) => handleAddress(e.target.value)}
               className="form-control"
+              onChange={(e) =>
+                handleAddress(
+                  e.target.value,
+                  (isValid) => updateValidation(3, isValid),
+                  setAddress
+                )
+              }
+              isValid={validation[3]}
+              isInvalid={address != "" && !validation[3]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={address_error}
-              disabled
-            />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_11}
+            </Form.Control.Feedback>
           </FloatingLabel>
 
           <FloatingLabel className="mb-3" label="Ngày sinh">
-            <input
+            <Form.Control
               type="date"
               className="form-control rbt-input"
               placeholder="Ngày sinh"
               value={birthday}
-              onChange={(e) => handleBirthday(e.target.value)}
+              onChange={(e) =>
+                handleDate(
+                  e.target.value,
+                  (isValid) => updateValidation(4, isValid),
+                  setBirthday
+                )
+              }
+              isValid={validation[4]}
+              isInvalid={birthday != "" && !validation[4]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={birthday_error}
-              disabled
-            />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_12}
+            </Form.Control.Feedback>
           </FloatingLabel>
         </Col>
         <Col>
+          <FloatingLabel className="mb-3" label="Giới tính">
             <Form.Select
               aria-label="Default select example"
               className="rbt-input"
@@ -331,25 +266,8 @@ const CustomerUpdateForm = (props: IProps) => {
               <option value="0">Nữ</option>
               <option value="2">Khác</option>
             </Form.Select>
-
-            <input type="text" className="input-error" value="" disabled />
-
-          <FloatingLabel className="mb-3" label="Ngày hết hạn Visa">
-            <input
-              type="date"
-              className="form-control rbt-input"
-              placeholder="Ngày hết hạn Visa"
-              value={visa_expire}
-              onChange={(e) => handleVisaExpire(e.target.value)}
-            />
-            <input
-              type="text"
-              className="input-error"
-              value={visa_expire_error}
-              disabled
-            />
           </FloatingLabel>
-
+          <div className="form-floating mb-3">
             <Typeahead
               id="typeahead-representative" // Cung cấp ID duy nhất cho Typeahead
               selected={relationship ? [relationship] : []}
@@ -367,28 +285,56 @@ const CustomerUpdateForm = (props: IProps) => {
               value={relationship_error}
               disabled
             />
+          </div>
 
           <FloatingLabel className="mb-3" label="Quan hệ với người đại diện">
             <Form.Control
               type="text"
               placeholder="..."
               value={relationship_name}
-              onChange={(e) => handleRelationship_name(e.target.value)}
               className="form-control"
+              onChange={(e) =>
+                handleNameAndNumber(
+                  e.target.value,
+                  (isValid) => updateValidation(5, isValid),
+                  setRelationshipName
+                )
+              }
+              isValid={validation[5]}
+              isInvalid={relationship_name != "" && !validation[5]}
             />
-            <input
-              type="text"
-              className="input-error"
-              value={relationship_name_error}
-              disabled
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_14}
+            </Form.Control.Feedback>
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Hạn Visa">
+            <Form.Control
+              type="date"
+              className="form-control rbt-input"
+              placeholder="Ngày hết hạn Visa"
+              value={visa_expire}
+              onChange={(e) =>
+                handleDate(
+                  e.target.value,
+                  (isValid) => updateValidation(6, isValid),
+                  setVisaExpire
+                )
+              }
+              isValid={validation[6]}
+              isInvalid={visa_expire != "" && !validation[6]}
             />
+            <Form.Control.Feedback type="invalid">
+              {CustomerErrorCode.CUSTOMER_13}
+            </Form.Control.Feedback>
           </FloatingLabel>
 
           <Button
-            variant="outline-info"
+            variant="outline-danger"
             onClick={() => handleShowCustomerGroup()}
-            
-          >Xem các khách hàng liên quan</Button>
+            className="rbt-input"
+          >
+            Xem các khách hàng liên quan
+          </Button>
         </Col>
       </Row>
 
@@ -403,12 +349,11 @@ const CustomerUpdateForm = (props: IProps) => {
         </Button>
       </div>
 
-          <CustomerGroupModal
-            show={showCustomerGroupModal}
-            onHide={handleCloseModal}
-            group={selectedGroup}
-          />
-      
+      <CustomerGroupModal
+        show={showCustomerGroupModal}
+        onHide={handleCloseModal}
+        group={selectedGroup}
+      />
     </>
   );
 };

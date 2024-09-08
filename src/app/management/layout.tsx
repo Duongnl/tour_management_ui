@@ -5,6 +5,7 @@ import AppHeader from "@/components/app_header";
 import AppFooter from "@/components/app_footer";
 import { getSessionId } from "@/utils/session_store";
 import { Container } from "react-bootstrap";
+import { redirect } from 'next/navigation'; // Import redirect
 const inter = Inter({ subsets: ["latin"] });
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,11 @@ export default async function RootLayout({
       },
     }
   );
+  if (!res.ok) {
+    // Nếu phản hồi không thành công, chuyển hướng đến trang đăng nhập
+    redirect('./');
+    return null; // Đảm bảo rằng không có gì được render ra ngoài
+  }
 
   const data = await res.json();
   const account = data.result;
