@@ -12,12 +12,16 @@ import PaginationTable from "../pagination";
 import TourErrorCode from "@/exception/tour_error_code";
 import TourCreateModal from "./tour_create_modal";
 import Loading from "@/app/management/loading";
+import { defaultIAirlineResponse } from "@/utils/defaults";
 interface IProps {
   tours: ITourResponse[];
+  categories: ICategoryResponse[];
 }
 
 const TourTable = (props: IProps) => {
   const [tours, setTours] = useState(props.tours);
+  const [categories] = useState(props.categories);
+  const [airlines,setAirlines] = useState<IAirlineResponse[]>([defaultIAirlineResponse]);
   const [showChangeStatusModal, setShowChangeStatusModal] =
     useState<boolean>(false);
   const [showTourModal, setShowTourModal] = useState<boolean>(false);
@@ -45,7 +49,7 @@ const TourTable = (props: IProps) => {
   const [detail, setDetail] = useState<string>("");
 
   useEffect(() => {
-    if (category != null) {
+    if (category != null && category != "all") {
       if (status) {
         if (status == "active") fetchActiveTours(category);
         if (status == "locked") fetchLockedTours(category);
@@ -70,6 +74,30 @@ const TourTable = (props: IProps) => {
     setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
+  useEffect(() => {
+    const fetchAirline = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/airline/active", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookie.get("session-id")}`,
+          },
+        });
+
+        if (!res.ok) {
+          console.log(res.status);
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        const airline: IAirlineResponse[] = data.result;
+        setAirlines(airline);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+    fetchAirline();
+  }, [showTourModal]);
 
   const fetchTours = async (category_id?: string) => {
     const url = category_id
@@ -153,7 +181,7 @@ const TourTable = (props: IProps) => {
     router.push(`${pathname}?${currentParams.toString()}`);
   };
 
-  const handleCategoryClick = (e: number) => {
+  const handleSelectCategory = (e: string) => {
     router.push(`${pathname}?category=${e}`);
   };
 
@@ -213,6 +241,21 @@ const TourTable = (props: IProps) => {
             <option value="active">Đang hoạt động</option>
             <option value="locked">Đã khóa</option>
           </Form.Select>
+
+          <Form.Select
+            aria-label="Default select example"
+            className="select-status"
+            value={category || ""}
+            onChange={(e) => handleSelectCategory(e.target.value)}
+          >
+            <option hidden>Danh mục</option>
+            <option value="all">Tất cả</option>
+            {categories.map((category: ICategoryResponse, index: number) => (
+              <option key={index} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+          </Form.Select>
         </div>
 
         <Button className="btn-add" onClick={() => handleCreate()}>
@@ -248,8 +291,8 @@ const TourTable = (props: IProps) => {
                     <td>
                       <Button
                         onClick={() =>
-                          handleCategoryClick(
-                            tour.category_id ? tour.category_id : 0
+                          handleSelectCategory(
+                            (tour.category_id ? tour.category_id : 0).toString()
                           )
                         }
                         variant="outline-primary"
@@ -303,6 +346,8 @@ const TourTable = (props: IProps) => {
         showTourModal={showTourModal}
         setShowTourModal={setShowTourModal}
         fetchTours={fetchTours}
+        categories={categories}
+        airlines={airlines}
       />
       <PaginationTable
         numberPages={numberPages}

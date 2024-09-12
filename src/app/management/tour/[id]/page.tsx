@@ -13,7 +13,7 @@ const DetailTour = (props: any) => {
   const [tour, setTour] = useState<ITourDetailResponse>(
     defaultITourDetailResponse
   );
-  const [categorys, setCategorys] = useState<ICategoryResponse[]>([]);
+  const [categories, setCategories] = useState<ICategoryResponse[]>([]);
   const [airrlines, setAirlines] = useState<IAirlineResponse[]>([]);
 
   const fetchTourDetail = async () => {
@@ -41,8 +41,8 @@ const DetailTour = (props: any) => {
         },
       });
       const data = await res.json();
-      const categorys: ICategoryResponse[] = data.result;
-      setCategorys(categorys);
+      const categories: ICategoryResponse[] = data.result;
+      setCategories(categories);
     };
     const fetchAirline = async () => {
       const res = await fetch("http://localhost:8080/api/airline", {
@@ -77,7 +77,7 @@ const DetailTour = (props: any) => {
             <TourUpdateForm
               tour={tour}
               airlines={airrlines}
-              categorys={categorys}
+              categories={categories}
               fetchTour={fetchTourDetail}
             />
         </Suspense>

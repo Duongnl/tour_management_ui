@@ -19,17 +19,18 @@ import {
   handleNameAndNumber,
   handleSlug,
 } from "@/utils/handleUtils";
+import ChangeStatusModal from "../change_status_modal";
 
 interface IProps {
   tour: ITourDetailResponse;
-  categorys: ICategoryResponse[];
+  categories: ICategoryResponse[];
   airlines: IAirlineResponse[];
   fetchTour: () => void;
 }
 
 const TourUpdateForm = (props: IProps) => {
   // nhận các giá trị tour và các mảng cần thiết
-  const { tour, categorys, airlines, fetchTour } = props;
+  const { tour, categories, airlines, fetchTour } = props;
   // tạo danh sách kiểm tra giá trị hợp lệ các field
   //giá trị mặc định là true
   const [validation, setValidation] = useState<boolean[]>(Array(4).fill(true));
@@ -39,14 +40,25 @@ const TourUpdateForm = (props: IProps) => {
   //tạo các biến lưu trữ giá trị cần thiết cho tour tourtime
   const [tour_name, setTourName] = useState<string>(tour.tour_name);
   const [category, setCategory] = useState<ICategoryResponse>(
-    categorys.find((category) => category.category_id === tour.category_id) ||
+    categories.find((category) => category.category_id === tour.category_id) ||
       defaultICategoryResponse
   );
   const [tour_detail, setTourDetail] = useState<string>(tour.tour_detail);
   const [url, setUrl] = useState<string>(tour.url);
+
+  //TourTime nhận lại từ TourTimeModal
   const [tourTime, setTourTime] = useState<ITourTimeRequest>(
     defaultITourTimeRequest
   );
+
+  //listTourTime để thực hiện khóa
+  const [listTourTime,setListTourTime]=useState<ITourTimeDetailResponse[]>(tour.tourTimes)
+  const [apiChangeStatus, setApiChangeStatus] = useState<string>("");
+  const [tour_time_id, setTour_time_id] = useState<number | null>(null);
+  const [statusObject, setStatusObject] = useState<number>(0);
+  const [detail, setDetail] = useState<string>("");
+  const [showChangeStatusModal, setShowChangeStatusModal] =
+    useState<boolean>(false);
 
   //tại các biến lưu trữ giá trị nếu lỗi định dạng
   const [category_error, setCategory_error] = useState<string>("");
@@ -100,7 +112,7 @@ const TourUpdateForm = (props: IProps) => {
   // nhận sự kiện khi bấm vào cập nhật tourtime
   const handleUpdateTourTime = async (index: number) => {
     const res = await fetch(
-      `http://localhost:8080/api/tour/${tour.tour_id}/${tour.tourTimes[index].tour_time_id}`,
+      `http://localhost:8080/api/tour/${tour.tour_id}/${listTourTime[index].tour_time_id}`,
       {
         method: "PUT",
         headers: {
@@ -188,6 +200,30 @@ const TourUpdateForm = (props: IProps) => {
     });
   };
 
+  const handleChangeStatus = async (tourTime: ITourTimeDetailResponse) => {
+    setTour_time_id(tourTime.tour_time_id);
+    setStatusObject(tourTime.status);
+    setApiChangeStatus(
+      `http://localhost:8080/api/tour/change-status/${
+        tour.tour_id +`/`+ tourTime.tour_time_id
+      }`
+    );
+    setShowChangeStatusModal(true);
+    if (tourTime.status == 1) {
+      setDetail(`Bạn có muốn khóa tài khoản ${tour.tour_name} không ?`);
+    } else {
+      setDetail(`Bạn có muốn mở khóa tài khoản ${tour.tour_name} không ?`);
+    }
+  };
+
+  const handleChangeStatusState = () => {
+    setListTourTime(
+      listTourTime.map((a) =>
+        a.tour_time_id === tour_time_id ? { ...a, status: a.status === 1 ? 0 : 1 } : a
+      )
+    );
+  };
+
   return (
     <>
       <div className="row">
@@ -237,11 +273,11 @@ const TourUpdateForm = (props: IProps) => {
           <div className="form-floating mb-3">
             <Typeahead
               placeholder="Danh mục"
-              onChange={(categorys: ICategoryResponse[]) =>
-                handleSelectedCategory(categorys[0])
+              onChange={(categories: ICategoryResponse[]) =>
+                handleSelectedCategory(categories[0])
               }
               labelKey={(category: ICategoryResponse) => category.category_name}
-              options={categorys}
+              options={categories}
               onInputChange={handleCategory}
               selected={category ? [category] : []}
             />
@@ -294,33 +330,40 @@ const TourUpdateForm = (props: IProps) => {
             </Button>
           </div>
           <div className="list-tour_time">
-            {Array.from({ length: tour.tourTimes.length }, (_, index) => (
+            {Array.from({ length: listTourTime.length }, (_, index) => (
               <div
                 className={`tour_time tour_time_${index} border border-1 border-info d-block rounded-3 p-2 mb-2`}
                 key={index}
               >
-                <h5>{tour.tourTimes[index].time_name}</h5>
+                <h5>{listTourTime[index].time_name}</h5>
                 <div className="row">
                   <div className="col-md-10">
                     <div className="mb-2">
-                      Giá: {tour.tourTimes[index].price_min} VND
+                      Giá: {listTourTime[index].price_min} VND
                     </div>
                     <div className="mb-2">
                       Hãng:
-                      {tour.tourTimes[index].departureAirline?.airline_detail}
-                      {tour.tourTimes[index].returnAirline?.airline_detail}
+                      {listTourTime[index].departureAirline?.airline_detail}
+                      {listTourTime[index].returnAirline?.airline_detail}
                     </div>
                     <div className="mb-2">
-                      Ngày đi: {tour.tourTimes[index].departure_time}
+                      Ngày đi: {listTourTime[index].departure_time}
                     </div>
                     <div className="mb-2">
-                      Ngày về: {tour.tourTimes[index].departure_time}
+                      Ngày về: {listTourTime[index].departure_time}
                     </div>
                   </div>
                   <div className="col-md-2">
                     <Button variant="primary" onClick={() => handleShow(index)}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
+                    <Form.Check
+                      className="check-active"
+                      checked={listTourTime[index].status == 1}
+                      onChange={() => handleChangeStatus(listTourTime[index])}
+                      type="switch"
+                      id="custom-switch"
+                    />
                   </div>
                 </div>
               </div>
@@ -331,7 +374,7 @@ const TourUpdateForm = (props: IProps) => {
 
       <Modal show={show} onHide={handleClose} fullscreen={"lg-down"} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Tour Time Details</Modal.Title>
+          <Modal.Title>Tour Time Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {indexData > -1 ? (
@@ -339,12 +382,12 @@ const TourUpdateForm = (props: IProps) => {
               airlines={airlines}
               index={indexData}
               getTourTimeDetail={handleSetTourTimeDetail}
-              tourtime={tour.tourTimes[indexData]}
+              tourtime={listTourTime[indexData]}
             />
           ) : (
             <TourTimeModal
               airlines={airlines}
-              index={tour.tourTimes.length}
+              index={listTourTime.length}
               getTourTimeDetail={handleSetTourTimeDetail}
             />
           )}
@@ -368,6 +411,15 @@ const TourUpdateForm = (props: IProps) => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <ChangeStatusModal
+        showChangeStatusModal={showChangeStatusModal}
+        setShowChangeStatusModal={setShowChangeStatusModal}
+        statusObject={statusObject}
+        detail={detail}
+        api={apiChangeStatus}
+        objectError={TourErrorCode}
+        handleChangeStatusState={handleChangeStatusState}
+      />
     </>
   );
 };

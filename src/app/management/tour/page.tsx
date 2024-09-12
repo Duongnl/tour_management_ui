@@ -4,15 +4,24 @@ import { Suspense } from "react";
 import TourTable from "@/components/tour/tour_table";
 
 const TourPage = async () => {
-  const res = await fetch("http://localhost:8080/api/tour", {
+  const resTour = await fetch("http://localhost:8080/api/tour", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
     },
   });
 
-  const data = await res.json();
-  const tours = data.result;
+  const dataTour = await resTour.json();
+  const tours = dataTour.result;
+  const resCategory = await fetch("http://localhost:8080/api/category", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
+    },
+  });
+
+  const dataCategory = await resCategory.json();
+  const categories = dataCategory.result;
   return (
     <Container className="ctn-tour">
       <Row>
@@ -20,7 +29,7 @@ const TourPage = async () => {
       </Row>
       <Row>
         <Suspense>
-          <TourTable tours={tours} />
+          <TourTable tours={tours} categories={categories}/>
         </Suspense>
       </Row>
     </Container>

@@ -25,56 +25,53 @@ interface IProps {
   showTourModal: boolean;
   setShowTourModal: (value: boolean) => void;
   fetchTours: () => void;
+  categories:ICategoryResponse[],
+  airlines:IAirlineResponse[]
 }
 
 const TourCreateModal = (props: IProps) => {
-  const { showTourModal, setShowTourModal, fetchTours } = props;
+  const { showTourModal, setShowTourModal, fetchTours, categories,airlines} = props;
 
   const [validation, setValidation] = useState<boolean[]>(Array(4).fill(false));
-  const [categorys, setCategorys] = useState<ICategoryResponse[]>([
-    defaultICategoryResponse,
-  ]);
-  const [airlines, setAirlines] = useState<IAirlineResponse[]>([
-    defaultIAirlineResponse,
-  ]);
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      if (showTourModal == true) {
-        const res = await fetch("http://localhost:8080/api/category", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-          },
-        });
-        const data = await res.json();
-        const category: ICategoryResponse[] = data.result;
-        setCategorys(category);
-      }
-    };
-    fetchCategory();
-    const fetchAirline = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/airline", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookie.get("session-id")}`,
-          },
-        });
+  // useEffect(() => {
+  //   const fetchCategory = async () => {
+  //     if (showTourModal == true) {
+  //       const res = await fetch("http://localhost:8080/api/category/active", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
+  //         },
+  //       });
+  //       const data = await res.json();
+  //       const category: ICategoryResponse[] = data.result;
+  //       setcategories(category);
+  //     }
+  //   };
+  //   fetchCategory();
+  //   const fetchAirline = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:8080/api/airline/active", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${cookie.get("session-id")}`,
+  //         },
+  //       });
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+  //       if (!res.ok) {
+  //         console.log(res.status)
+  //         throw new Error(`HTTP error! status: ${res.status}`);
+  //       }
 
-        const data = await res.json();
-        const airline: IAirlineResponse[] = data.result;
-        setAirlines(airline);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    };
-    fetchAirline();
-  }, [showTourModal]);
+  //       const data = await res.json();
+  //       const airline: IAirlineResponse[] = data.result;
+  //       setAirlines(airline);
+  //     } catch (error) {
+  //       console.error("Fetch error:", error);
+  //     }
+  //   };
+  //   fetchAirline();
+  // }, [showTourModal]);
 
   const [tour_name, setTourName] = useState<string>("");
   const [category, setCategory] = useState<ICategoryResponse>(
@@ -266,13 +263,13 @@ const TourCreateModal = (props: IProps) => {
                 <div className="form-floating mb-3">
                   <Typeahead
                     placeholder="Danh mục"
-                    onChange={(categorys: ICategoryResponse[]) =>
-                      handleSelectedCategory(categorys[0])
+                    onChange={(categories: ICategoryResponse[]) =>
+                      handleSelectedCategory(categories[0])
                     }
                     labelKey={(category: ICategoryResponse) =>
                       category.category_name
                     }
-                    options={categorys}
+                    options={categories}
                     onInputChange={(e: string) => handleCategory(e)}
                   />
                   <input

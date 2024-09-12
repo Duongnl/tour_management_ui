@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -31,23 +31,6 @@ const CustomerCreateModal = (props: IProps) => {
   const [validation, setValidation] = useState<boolean[]>(Array(8).fill(false));
 
   const [relationships, setRelationships] = useState<ICustomerResponse[]>([]);
-
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      if (showCustomerModal == true) {
-        const res = await fetch("http://localhost:8080/api/customer/parent", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-          },
-        });
-        const data = await res.json();
-        const relationships: ICustomerResponse[] = data.result;
-        setRelationships(relationships);
-      }
-    };
-    fetchCustomers();
-  }, [showCustomerModal]);
 
   const [customer_name, setCustomerName] = useState<string>("");
   const [sex, setSex] = useState<number>(0);
