@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { Col, Container, Row } from "react-bootstrap";
-import "@/styles/tour.css";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import cookie from "js-cookie";
 import TourErrorCode from "@/exception/tour_error_code";
@@ -15,11 +14,11 @@ import { TourTimeModal } from "./tourtime_modal";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
-  defaultIAirlineResponse,
   defaultICategoryResponse,
   defaultITourTimeRequest,
 } from "@/utils/defaults";
 import { handleAddress, handleNameAndNumber, handleSlug } from "@/utils/handleUtils";
+import { fetchPostTour } from "@/utils/serviceApiClient";
 
 interface IProps {
   showTourModal: boolean;
@@ -33,45 +32,6 @@ const TourCreateModal = (props: IProps) => {
   const { showTourModal, setShowTourModal, fetchTours, categories,airlines} = props;
 
   const [validation, setValidation] = useState<boolean[]>(Array(4).fill(false));
-
-  // useEffect(() => {
-  //   const fetchCategory = async () => {
-  //     if (showTourModal == true) {
-  //       const res = await fetch("http://localhost:8080/api/category/active", {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-  //         },
-  //       });
-  //       const data = await res.json();
-  //       const category: ICategoryResponse[] = data.result;
-  //       setcategories(category);
-  //     }
-  //   };
-  //   fetchCategory();
-  //   const fetchAirline = async () => {
-  //     try {
-  //       const res = await fetch("http://localhost:8080/api/airline/active", {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${cookie.get("session-id")}`,
-  //         },
-  //       });
-
-  //       if (!res.ok) {
-  //         console.log(res.status)
-  //         throw new Error(`HTTP error! status: ${res.status}`);
-  //       }
-
-  //       const data = await res.json();
-  //       const airline: IAirlineResponse[] = data.result;
-  //       setAirlines(airline);
-  //     } catch (error) {
-  //       console.error("Fetch error:", error);
-  //     }
-  //   };
-  //   fetchAirline();
-  // }, [showTourModal]);
 
   const [tour_name, setTourName] = useState<string>("");
   const [category, setCategory] = useState<ICategoryResponse>(
@@ -124,17 +84,8 @@ const TourCreateModal = (props: IProps) => {
         url: url,
       };
       console.log("tour:", initTourRequest);
-      const res = await fetch("http://localhost:8080/api/tour", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-        },
-        body: JSON.stringify(initTourRequest),
-      });
 
-      const data = await res.json();
+      const data = await fetchPostTour(initTourRequest)
       if (data.status == "SUCCESS") {
         toast.success(`Thêm người dùng ${tour_name} thành công`);
         setShowTourModal(false);

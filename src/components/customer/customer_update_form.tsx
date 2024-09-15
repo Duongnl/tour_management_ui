@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import Button from "react-bootstrap/Button";
-import cookie from "js-cookie";
 import CustomerErrorCode from "@/exception/customer_error_code";
 import { toast } from "react-toastify";
 import { ExportError } from "@/utils/export_error";
@@ -19,6 +18,8 @@ import {
   handleNameAndNumber,
   handlePhoneNumber,
 } from "@/utils/handleUtils";
+import { fetchPutCustomer } from "@/utils/serviceApiClient";
+import { defaultICustomerResponse } from "@/utils/defaults";
 
 interface IProps {
   customer: ICustomerDetailResponse;
@@ -26,41 +27,45 @@ interface IProps {
 }
 
 const CustomerUpdateForm = (props: IProps) => {
-  const { customer, customers } = props;
+  const customerRes = props.customer;
+  const customersRes = props.customers;
   const [validation, setValidation] = useState<boolean[]>(Array(8).fill(true));
 
   var Typeahead = require("react-bootstrap-typeahead").Typeahead; // CommonJS
-  const handleSelectedRelationship = (relatioship: ICustomerResponse) => {
-    SetRelationship(relatioship);
+
+  const [relationship, setRelationship] = useState<ICustomerResponse>(
+    customerRes.customerParent ? customerRes.customerParent : defaultICustomerResponse
+  );
+
+  const handleSelectedRelationship = (relationship: ICustomerResponse) => {
+    setRelationship(relationship);
     setRelationship_error("");
     validation[6] = true;
   };
 
-  const [relationship, SetRelationship] = useState<ICustomerResponse | null>(
-    customer.customerParent == null ? null : customer.customerParent
-  );
+  
   const [customer_name, setCustomerName] = useState<string>(
-    customer.customer_name
+    customerRes.customer_name
   );
-  const [sex, setSex] = useState<number>(customer.sex);
+  const [sex, setSex] = useState<number>(customerRes.sex);
   const [relationship_name, setRelationshipName] = useState<string>(
-    customer.relationship_name
+    customerRes.relationship_name
   );
   const [phone_number, setPhone_number] = useState<string>(
-    customer.phone_number
+    customerRes.phone_number
   );
-  const [email, setEmail] = useState<string>(customer.email);
-  const [address, setAddress] = useState<string>(customer.address);
+  const [email, setEmail] = useState<string>(customerRes.email);
+  const [address, setAddress] = useState<string>(customerRes.address);
   const [birthday, setBirthday] = useState<string>(
-    formatDate(customer.birthday)
+    formatDate(customerRes.birthday)
   );
   const [visa_expire, setVisaExpire] = useState<string>(
-    formatDate(customer.visa_expire)
+    formatDate(customerRes.visa_expire)
   );
   const [relationship_error, setRelationship_error] = useState<string>("");
   const [selectedGroup, setSelectedGroup] = useState<
     ICustomerResponse[] | null
-  >(customer.customerGroup);
+  >(customerRes.customerGroup);
 
   const handleGenderChange = (value: number) => {
     setSex(value);
@@ -90,25 +95,11 @@ const CustomerUpdateForm = (props: IProps) => {
         address: address,
         birthday: birthday,
         visa_expire: visa_expire,
-        status: customer.status,
+        status: customerRes.status,
       };
-      console.log(initCustomerRequest);
-      const res = await fetch(
-        `http://localhost:8080/api/customer/${
-          customer.customer_name + "-" + customer.customer_id
-        }`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-          },
-          body: JSON.stringify(initCustomerRequest),
-        }
-      );
-
-      const data = await res.json();
+      
+      const data = await fetchPutCustomer(customerRes.customer_id.toString(),initCustomerRequest);
+      console.log(data)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${customer_name} thành công`);
       } else {
@@ -126,8 +117,8 @@ const CustomerUpdateForm = (props: IProps) => {
   const [showCustomerGroupModal, setShowCustomerGroupModal] = useState(false);
 
   const handleShowCustomerGroup = async () => {
-    setSelectedGroup(customer.customerGroup);
-    setSelectedGroup([...customer.customerGroup, customer.customerParent]);
+    setSelectedGroup(customerRes.customerGroup);
+    setSelectedGroup([...customerRes.customerGroup, customerRes.customerParent]);
     setShowCustomerGroupModal(true);
   };
 
@@ -276,7 +267,7 @@ const CustomerUpdateForm = (props: IProps) => {
                 handleSelectedRelationship(relationship[0]);
               }}
               labelKey={(selected: ICustomerResponse) => selected.customer_name} // Sử dụng thuộc tính `customer_name` để hiển thị trong Typeahead
-              options={customers}
+              options={customersRes}
               onInputChange={(e: string) => handleRelationship(e)}
             />
             <input

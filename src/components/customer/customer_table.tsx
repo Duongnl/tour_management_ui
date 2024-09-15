@@ -1,6 +1,5 @@
 "use client";
 import Table from "react-bootstrap/Table";
-import "@/styles/customer.css";
 import { Button, InputGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import cookie from "js-cookie";
@@ -13,6 +12,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { CreateSlug } from "@/utils/create_slug";
 import CustomerErrorCode from "@/exception/customer_error_code";
 import PaginationTable from "../pagination";
+import { fetchGetCustomers } from "@/utils/serviceApiClient";
 interface IProps {
   customers: ICustomerResponse[];
 }
@@ -47,11 +47,11 @@ const CustomerTable = (props: IProps) => {
 
   useEffect(() => {
     if (status == "active") {
-      fetchActiveCustomers();
+      handleFetchActiveCustomers();
     } else if (status == "locked") {
-      fetchLockedCustomers();
+      handleFetchLockedCustomers();
     } else if (status == "all") {
-      fetchCustomers();
+      handleFetchCustomers();
     }
   }, [status]);
 
@@ -68,16 +68,8 @@ const CustomerTable = (props: IProps) => {
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
 
-  const fetchCustomers = async () => {
-    const res = await fetch("http://localhost:8080/api/customer", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const customers: ICustomerResponse[] = data.result;
-    setCustomers(customers);
+  const handleFetchCustomers = async () => {
+    setCustomers( await fetchGetCustomers());
     const numPages = Math.ceil(
       customers != undefined ? customers.length / 8 : 0
     );
@@ -85,16 +77,8 @@ const CustomerTable = (props: IProps) => {
     setCustomersCopy(customers);
   };
 
-  const fetchLockedCustomers = async () => {
-    const res = await fetch("http://localhost:8080/api/customer/locked", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const customers: ICustomerResponse[] = data.result;
-    setCustomers(customers);
+  const handleFetchLockedCustomers = async () => {
+    setCustomers( await fetchGetCustomers(0));
     const numPages = Math.ceil(
       customers != undefined ? customers.length / 8 : 0
     );
@@ -102,16 +86,8 @@ const CustomerTable = (props: IProps) => {
     setCustomersCopy(customers);
   };
 
-  const fetchActiveCustomers = async () => {
-    const res = await fetch("http://localhost:8080/api/customer/active", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const customers: ICustomerResponse[] = data.result;
-    setCustomers(customers);
+  const handleFetchActiveCustomers = async () => {
+    setCustomers( await fetchGetCustomers(1));
     const numPages = Math.ceil(
       customers != undefined ? customers.length / 8 : 0
     );
@@ -285,7 +261,7 @@ const CustomerTable = (props: IProps) => {
       <CustomerCreateModal
         showCustomerModal={showCustomerModal}
         setShowCustomerModal={setShowCustomerModal}
-        fetchCustomers={fetchCustomers}
+        fetchCustomers={handleFetchCustomers}
       />
       <PaginationTable
         numberPages={numberPages}

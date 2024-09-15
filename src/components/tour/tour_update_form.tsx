@@ -5,7 +5,6 @@ import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import Button from "react-bootstrap/Button";
-import cookie from "js-cookie";
 import TourErrorCode from "@/exception/tour_error_code";
 import { toast } from "react-toastify";
 import { ExportError } from "@/utils/export_error";
@@ -20,6 +19,7 @@ import {
   handleSlug,
 } from "@/utils/handleUtils";
 import ChangeStatusModal from "../change_status_modal";
+import { fetchPostTourTime, fetchPutTour, fetchPutTourTime } from "@/utils/serviceApiClient";
 
 interface IProps {
   tour: ITourDetailResponse;
@@ -30,29 +30,31 @@ interface IProps {
 
 const TourUpdateForm = (props: IProps) => {
   // nhận các giá trị tour và các mảng cần thiết
-  const { tour, categories, airlines, fetchTour } = props;
+  const tourRes= props.tour;
+  const categoriesRes= props.categories;
+  const airlinesRes= props.airlines;
+  const fetchTour=props.fetchTour;
   // tạo danh sách kiểm tra giá trị hợp lệ các field
-  //giá trị mặc định là true
   const [validation, setValidation] = useState<boolean[]>(Array(4).fill(true));
 
   var Typeahead = require("react-bootstrap-typeahead").Typeahead; // CommonJS
 
   //tạo các biến lưu trữ giá trị cần thiết cho tour tourtime
-  const [tour_name, setTourName] = useState<string>(tour.tour_name);
+  const [tour_name, setTourName] = useState<string>(tourRes.tour_name);
   const [category, setCategory] = useState<ICategoryResponse>(
-    categories.find((category) => category.category_id === tour.category_id) ||
+    categoriesRes.find((category) => category.category_id === tourRes.category_id) ||
       defaultICategoryResponse
   );
-  const [tour_detail, setTourDetail] = useState<string>(tour.tour_detail);
-  const [url, setUrl] = useState<string>(tour.url);
+  const [tour_detail, setTourDetail] = useState<string>(tourRes.tour_detail);
+  const [url, setUrl] = useState<string>(tourRes.url);
 
   //TourTime nhận lại từ TourTimeModal
-  const [tourTime, setTourTime] = useState<ITourTimeRequest>(
+  const [tourTimeReq, setTourTimeReq] = useState<ITourTimeRequest>(
     defaultITourTimeRequest
   );
 
   //listTourTime để thực hiện khóa
-  const [listTourTime,setListTourTime]=useState<ITourTimeDetailResponse[]>(tour.tourTimes)
+  const [listTourTime,setListTourTime]=useState<ITourTimeDetailResponse[]>(tourRes.tourTimes)
   const [apiChangeStatus, setApiChangeStatus] = useState<string>("");
   const [tour_time_id, setTour_time_id] = useState<number | null>(null);
   const [statusObject, setStatusObject] = useState<number>(0);
@@ -81,20 +83,8 @@ const TourUpdateForm = (props: IProps) => {
         url: url,
       };
       console.log(initTourRequest);
-      const res = await fetch(
-        `http://localhost:8080/api/tour/${tour.tour_id}`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-          },
-          body: JSON.stringify(initTourRequest),
-        }
-      );
 
-      const data = await res.json();
+      const data = await fetchPutTour(tourRes.tour_id.toString(),initTourRequest)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${tour_name} thành công`);
       } else {
@@ -111,21 +101,9 @@ const TourUpdateForm = (props: IProps) => {
 
   // nhận sự kiện khi bấm vào cập nhật tourtime
   const handleUpdateTourTime = async (index: number) => {
-    const res = await fetch(
-      `http://localhost:8080/api/tour/${tour.tour_id}/${listTourTime[index].tour_time_id}`,
-      {
-        method: "PUT",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-        },
-        body: JSON.stringify(tourTime),
-      }
-    );
-    const data = await res.json();
+    const data = await fetchPutTourTime(tourRes.tour_id.toString(),listTourTime[index].tour_time_id.toString(),tourTimeReq)
     if (data.status == "SUCCESS") {
-      toast.success(`Cập nhật Thời gian ${tourTime.time_name} thành công`);
+      toast.success(`Cập nhật Thời gian ${tourTimeReq.time_name} thành công`);
       fetchTour();
       handleClose();
     } else {
@@ -139,18 +117,9 @@ const TourUpdateForm = (props: IProps) => {
 
   // nhận sự kiện khi bấm vào thêm tour time
   const handleCreateNewTourTime = async () => {
-    const res = await fetch(`http://localhost:8080/api/tour/${tour.tour_id}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-      body: JSON.stringify(tourTime),
-    });
-    const data = await res.json();
+    const data = await fetchPostTourTime(tourRes.tour_id.toString(),tourTimeReq)
     if (data.status == "SUCCESS") {
-      toast.success(`Thêm Thời gian ${tourTime.time_name} thành công`);
+      toast.success(`Thêm Thời gian ${tourTimeReq.time_name} thành công`);
       fetchTour();
       handleClose();
     } else {
@@ -176,7 +145,7 @@ const TourUpdateForm = (props: IProps) => {
   };
 
   const handleSetTourTimeDetail = (value: ITourTimeRequest, index?: number) => {
-    setTourTime(value);
+    setTourTimeReq(value);
   };
 
   const [show, setShow] = useState(false);
@@ -189,7 +158,7 @@ const TourUpdateForm = (props: IProps) => {
 
   const handleClose = () => {
     setShow(false); // Đóng modal
-    setTourTime(defaultITourTimeRequest);
+    setTourTimeReq(defaultITourTimeRequest);
   };
 
   const updateValidation = (index: number, isValid: boolean) => {
@@ -200,19 +169,19 @@ const TourUpdateForm = (props: IProps) => {
     });
   };
 
-  const handleChangeStatus = async (tourTime: ITourTimeDetailResponse) => {
-    setTour_time_id(tourTime.tour_time_id);
-    setStatusObject(tourTime.status);
+  const handleChangeStatus = async (tourTimeReq: ITourTimeDetailResponse) => {
+    setTour_time_id(tourTimeReq.tour_time_id);
+    setStatusObject(tourTimeReq.status);
     setApiChangeStatus(
       `http://localhost:8080/api/tour/change-status/${
-        tour.tour_id +`/`+ tourTime.tour_time_id
+        tourRes.tour_id +`/`+ tourTimeReq.tour_time_id
       }`
     );
     setShowChangeStatusModal(true);
-    if (tourTime.status == 1) {
-      setDetail(`Bạn có muốn khóa tài khoản ${tour.tour_name} không ?`);
+    if (tourTimeReq.status == 1) {
+      setDetail(`Bạn có muốn khóa tài khoản ${tourRes.tour_name} không ?`);
     } else {
-      setDetail(`Bạn có muốn mở khóa tài khoản ${tour.tour_name} không ?`);
+      setDetail(`Bạn có muốn mở khóa tài khoản ${tourRes.tour_name} không ?`);
     }
   };
 
@@ -273,11 +242,11 @@ const TourUpdateForm = (props: IProps) => {
           <div className="form-floating mb-3">
             <Typeahead
               placeholder="Danh mục"
-              onChange={(categories: ICategoryResponse[]) =>
-                handleSelectedCategory(categories[0])
+              onChange={(categoriesRes: ICategoryResponse[]) =>
+                handleSelectedCategory(categoriesRes[0])
               }
               labelKey={(category: ICategoryResponse) => category.category_name}
-              options={categories}
+              options={categoriesRes}
               onInputChange={handleCategory}
               selected={category ? [category] : []}
             />
@@ -379,14 +348,14 @@ const TourUpdateForm = (props: IProps) => {
         <Modal.Body>
           {indexData > -1 ? (
             <TourTimeModal
-              airlines={airlines}
+              airlines={airlinesRes}
               index={indexData}
               getTourTimeDetail={handleSetTourTimeDetail}
               tourtime={listTourTime[indexData]}
             />
           ) : (
             <TourTimeModal
-              airlines={airlines}
+              airlines={airlinesRes}
               index={listTourTime.length}
               getTourTimeDetail={handleSetTourTimeDetail}
             />

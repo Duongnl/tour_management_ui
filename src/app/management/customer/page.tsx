@@ -1,38 +1,28 @@
-import { Container, Row } from "react-bootstrap"
-import { getSessionId } from "@/utils/session_store"
+import { Container, Row } from "react-bootstrap";
 import { Suspense } from "react";
 import CustomerTable from "@/components/customer/customer_table";
+import { fetchGetCustomers } from "@/utils/serviceApiServer";
+import "@/styles/customer.css";
 
 const CustomerPage = async () => {
-
-    const res = await fetch(
-        "http://localhost:8080/api/customer",
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-            },
-        }
-    );
-
-    const data = await res.json();
-    const customers = data.result;
-    
+  try {
+    const customers = await fetchGetCustomers();
     return (
-        
-            <Container className="ctn-customer">
-                 <Row>
-                    <h4>
-                        Quản lý khách hàng
-                    </h4>
-                 </Row>
-                 <Row>
-                    <Suspense  >
-                        <CustomerTable customers={customers} />
-                    </Suspense>
-                </Row>
-            </Container>
-    )
-}
-
-export default CustomerPage
+      <Container className="ctn-customer">
+        <Row>
+          <h4>Quản lý khách hàng</h4>
+        </Row>
+        <Row>
+          <Suspense>
+            <CustomerTable customers={customers} />
+          </Suspense>
+        </Row>
+      </Container>
+    );
+  } catch (error) {
+    console.error(error);
+    // Handle error, e.g., show an error message
+    return <div>Error fetching data</div>;
+  }
+};
+export default CustomerPage;

@@ -14,6 +14,7 @@ export const defaultITourTimeRequest: ITourTimeRequest = {
   departure_airline_id: 0,
   return_airline_id: 0,
 };
+
 export const defaultICategoryResponse: ICategoryResponse = {
   category_id: 0,
   category_name: "",
@@ -21,6 +22,7 @@ export const defaultICategoryResponse: ICategoryResponse = {
   url: "",
   status: 0,
 };
+
 export const defaultRelatioshipResponse: ICustomerResponse = {
   customer_id: null,
   customer_name: "",
@@ -34,12 +36,14 @@ export const defaultRelatioshipResponse: ICustomerResponse = {
   visa_expire: "",
   time: "",
 };
+
 export const defaultIAirlineResponse: IAirlineResponse = {
   airline_id: 0,
   airline_name: "",
   airline_detail: "",
   status: 0,
 };
+
 export const defaultITourTimeDetailResponse: ITourTimeDetailResponse = {
   tour_time_id: 0,
   time_name: "",
@@ -58,6 +62,7 @@ export const defaultITourTimeDetailResponse: ITourTimeDetailResponse = {
   returnAirline: defaultIAirlineResponse,
   status: 0,
 };
+
 export const defaultITourDetailResponse: ITourDetailResponse = {
   tour_id: 0,
   tour_name: "",
@@ -68,6 +73,7 @@ export const defaultITourDetailResponse: ITourDetailResponse = {
   tourTimes: [defaultITourTimeDetailResponse],
   url: "",
 };
+
 export const defaultICustomerResponse: ICustomerResponse = {
   customer_id: 0,
   customer_name: "",
@@ -81,6 +87,7 @@ export const defaultICustomerResponse: ICustomerResponse = {
   time: "",
   status: 0,
 };
+
 export const defaultICustomerDetailResponse: ICustomerDetailResponse = {
   customer_id: 0,
   customer_name: "",
@@ -95,4 +102,37 @@ export const defaultICustomerDetailResponse: ICustomerDetailResponse = {
   visa_expire: "",
   customerParent: defaultICustomerResponse,
   customerGroup: [defaultICustomerResponse],
+};
+
+export const defaultIEmployeeResponse: IEmployeeResponse = {
+  employee_id: 0,
+  employee_name: "",
+  birthday: "",
+  total_commission: 0,
+  total_sales: 0,
+  status: 0,
+};
+
+export const defaultIPermissionResponse: IPermissionResponse = {
+  permission_id: "",
+  permission_name: "",
+  status: 0,
+};
+
+export const defaultIRoleResponse: IRoleResponse = {
+  role_id: 0,
+  role_name: "",
+  status: 0,
+  permissions: [defaultIPermissionResponse],
+};
+
+export const defaultIGetAccountResponse: IGetAccountResponse = {
+  account_id: "",
+  account_name: "",
+  email: "",
+  phone_number: "",
+  time: "",
+  status: 0,
+  employee: defaultIEmployeeResponse,
+  role: defaultIRoleResponse,
 };

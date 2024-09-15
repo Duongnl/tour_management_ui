@@ -4,9 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { Col, Container, Row } from "react-bootstrap";
-import "@/styles/customer.css";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import cookie from "js-cookie";
 import CustomerErrorCode from "@/exception/customer_error_code";
 import { toast } from "react-toastify";
 import { ExportError } from "@/utils/export_error";
@@ -19,6 +17,7 @@ import {
   handleNameAndNumber,
   handlePhoneNumber,
 } from "@/utils/handleUtils";
+import { fetchPostCustomer } from "@/utils/serviceApiClient";
 
 interface IProps {
   showCustomerModal: boolean;
@@ -88,17 +87,8 @@ const CustomerCreateModal = (props: IProps) => {
         status: 1,
       };
       console.log("customer:", initCustomerRequest);
-      const res = await fetch("http://localhost:8080/api/customer", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-        },
-        body: JSON.stringify(initCustomerRequest),
-      });
-
-      const data = await res.json();
+      
+      const data = await fetchPostCustomer(initCustomerRequest)
       if (data.status == "SUCCESS") {
         toast.success(`Thêm người dùng ${customer_name} thành công`);
         setShowCustomerModal(false);

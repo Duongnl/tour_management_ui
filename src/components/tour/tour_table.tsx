@@ -1,9 +1,7 @@
 "use client";
 import Table from "react-bootstrap/Table";
-import "@/styles/tour.css";
 import { Button, InputGroup, Row } from "react-bootstrap";
 import { Suspense, useEffect, useState } from "react";
-import cookie from "js-cookie";
 import Form from "react-bootstrap/Form";
 import ChangeStatusModal from "../change_status_modal";
 import Link from "next/link";
@@ -13,6 +11,7 @@ import TourErrorCode from "@/exception/tour_error_code";
 import TourCreateModal from "./tour_create_modal";
 import Loading from "@/app/management/loading";
 import { defaultIAirlineResponse } from "@/utils/defaults";
+import { fetchGetTours, fetchGetToursCategory } from "@/utils/serviceApiClient";
 interface IProps {
   tours: ITourResponse[];
   categories: ICategoryResponse[];
@@ -21,7 +20,9 @@ interface IProps {
 const TourTable = (props: IProps) => {
   const [tours, setTours] = useState(props.tours);
   const [categories] = useState(props.categories);
-  const [airlines,setAirlines] = useState<IAirlineResponse[]>([defaultIAirlineResponse]);
+  const [airlines, setAirlines] = useState<IAirlineResponse[]>([
+    defaultIAirlineResponse,
+  ]);
   const [showChangeStatusModal, setShowChangeStatusModal] =
     useState<boolean>(false);
   const [showTourModal, setShowTourModal] = useState<boolean>(false);
@@ -49,17 +50,24 @@ const TourTable = (props: IProps) => {
   const [detail, setDetail] = useState<string>("");
 
   useEffect(() => {
+    const fetchData = async () => {
+    try {
     if (category != null && category != "all") {
       if (status) {
-        if (status == "active") fetchActiveTours(category);
-        if (status == "locked") fetchLockedTours(category);
-        if (status == "all") fetchTours(category);
-      } else fetchTours(category);
+        if (status == "active") updateTourList(await fetchGetToursCategory(category,1))
+        if (status == "locked") updateTourList(await fetchGetToursCategory(category,0))
+        if (status == "all")  updateTourList(await fetchGetToursCategory(category))
+      } else updateTourList(await fetchGetToursCategory(category))
     } else {
-      if (status == "active") fetchActiveTours();
-      if (status == "locked") fetchLockedTours();
-      if (status == "all") fetchTours();
+      if (status == "active")  updateTourList(await fetchGetTours(1))
+      if (status == "locked") updateTourList(await fetchGetTours(0))
+      if (status == "all") updateTourList(await fetchGetTours())
     }
+  } catch (error) {
+    console.error("Error fetching data", error);
+  }
+}
+fetchData();
   }, [status, category]);
 
   useEffect(() => {
@@ -74,84 +82,15 @@ const TourTable = (props: IProps) => {
     setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
-  useEffect(() => {
-    const fetchAirline = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/airline/active", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookie.get("session-id")}`,
-          },
-        });
 
-        if (!res.ok) {
-          console.log(res.status);
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const data = await res.json();
-        const airline: IAirlineResponse[] = data.result;
-        setAirlines(airline);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    };
-    fetchAirline();
-  }, [showTourModal]);
-
-  const fetchTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}`
-      : "http://localhost:8080/api/tour";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
+  const updateTourList = (tours: ITourResponse[]) => {
     setTours(tours);
     const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
     setNumberPages(numPages);
     setToursCopy(tours);
   };
 
-  const fetchLockedTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}/locked`
-      : "http://localhost:8080/api/tour/locked";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
-    setTours(tours);
-    const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
-    setNumberPages(numPages);
-    setToursCopy(tours);
-  };
-
-  const fetchActiveTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}/active`
-      : "http://localhost:8080/api/tour/active";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
-    setTours(tours);
-    const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
-    setNumberPages(numPages);
-    setToursCopy(tours);
-  };
+  // const fetchActiveTours = async (category_id?: string) => {};
 
   const handleChangeStatus = async (tour: ITourResponse) => {
     setTour_id(tour.tour_id);
@@ -345,7 +284,7 @@ const TourTable = (props: IProps) => {
       <TourCreateModal
         showTourModal={showTourModal}
         setShowTourModal={setShowTourModal}
-        fetchTours={fetchTours}
+        fetchTours={fetchGetTours}
         categories={categories}
         airlines={airlines}
       />
