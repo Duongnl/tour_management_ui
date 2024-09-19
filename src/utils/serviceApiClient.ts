@@ -108,8 +108,6 @@ export const fetchGetToursCategory = async (
 
 const fetchGetAuthorizedData = async (url: string): Promise<any> => {
   try {
-    console.log("Fetching get data from URL:", url);
-
     const res = await fetch(url, {
       method: "GET", // Sửa lỗi từ "fetchGET" thành "GET"
       headers: {
@@ -126,13 +124,11 @@ const fetchGetAuthorizedData = async (url: string): Promise<any> => {
     return data.result;
   } catch (error) {
     console.error("Error fetching data:", error);
-    // Xử lý lỗi theo cách bạn muốn (ví dụ: trả về giá trị mặc định, ném lại lỗi, v.v.)
   }
 };
 
 const fetchPostAuthorizedData = async (url: string, bodyData: any) => {
   try {
-    console.log("Fetching post data from URL:", url);
     const res = await fetch(url, {
       method: "POST", // Đúng phương thức POST
       headers: {
@@ -152,7 +148,6 @@ const fetchPostAuthorizedData = async (url: string, bodyData: any) => {
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
-    // Xử lý lỗi theo cách bạn muốn (ví dụ: trả về giá trị mặc định, ném lại lỗi, v.v.)
   }
 };
 
@@ -181,7 +176,6 @@ const fetchPutAuthorizedData = async (
   bodyData: any
 ): Promise<any> => {
   try {
-    console.log("Fetching put data from URL:", url);
     const res = await fetch(url, {
       method: "PUT", // Đúng phương thức PUT
       headers: {
@@ -199,7 +193,7 @@ const fetchPutAuthorizedData = async (
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("Error in fetchPutAuthorizedData:", error);
+    console.error("Error in fetching:", error);
   }
 };
 

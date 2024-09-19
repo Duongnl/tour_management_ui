@@ -25,17 +25,6 @@
     margin-left: 20px;
 }
 
-.form-check-input{
-    width: 50px !important;
-    height: 20px;
-    border: 1px solid black ;
-}
-
-.form-check-input:checked{
-   background-color: #2a2f5b;
-   border: 1px solid black ;
-}
-
 .btn-add {
     background-color: #2a2f5b;
     border: color(#2a2f5b) !important ;
@@ -54,8 +43,6 @@
 .link-update{
     padding: 20px !important;
     padding-top: 10px !important;
-    
-    
 }
 
 .btn-update:hover {
