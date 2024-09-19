@@ -218,7 +218,7 @@ const CategoryTable = (props: IProps) => {
                         <option value="locked">Đã khóa</option>
                     </Form.Select>
                 </div>
-
+        
 
                 <Button className='btn-add'
                     onClick={() => handleCreate()}

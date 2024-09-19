@@ -31,6 +31,7 @@ export default async function RootLayout({
   );
 
   const data = await res.json();
+  
   const account = data.result;
   return (
     <>
