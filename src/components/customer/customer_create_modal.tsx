@@ -27,7 +27,7 @@ interface IProps {
 
 const CustomerCreateModal = (props: IProps) => {
   const { showCustomerModal, setShowCustomerModal, fetchCustomers } = props;
-  const [validation, setValidation] = useState<boolean[]>(Array(8).fill(false));
+  const [validation, setValidation] = useState<boolean[]>(Array(7).fill(false));
 
   const [relationships, setRelationships] = useState<ICustomerResponse[]>([]);
 
@@ -68,10 +68,13 @@ const CustomerCreateModal = (props: IProps) => {
     setRelationshipId_error("");
 
     setValidation([]);
-    setValidation(Array(8).fill(false));
+    setValidation(Array(7).fill(false));
   };
 
   const handleCreate = async () => {
+
+    console.log("validate customer : ", validation)
+
     let flag: boolean = true;
     for (let i: number = 0; i < validation.length; i++) {
       if (validation[i] == false) {
@@ -100,6 +103,7 @@ const CustomerCreateModal = (props: IProps) => {
         toast.success(`Thêm người dùng ${customer_name} thành công`);
         setShowCustomerModal(false);
         fetchCustomers();
+        handleHideModal()
       } else {
         let errors = ExportError(data, CustomerErrorCode);
         for (let i: number = 0; i < errors.length; i++) {
@@ -260,7 +264,6 @@ const CustomerCreateModal = (props: IProps) => {
                   <Typeahead
                     placeholder="Người đại diện"
                     onChange={(relationships: ICustomerResponse[]) => {
-                      validation[7]=true
                       setRelationship(relationships[0])
                       setRelationshipId_error("")
                       
@@ -271,7 +274,6 @@ const CustomerCreateModal = (props: IProps) => {
                     options={relationships}
                     onInputChange={(e: string) => {
                       setRelationshipId_error("Khách hàng này không tồn tại");
-                      validation[7] = false;
                     }}
                   />
                   <input
