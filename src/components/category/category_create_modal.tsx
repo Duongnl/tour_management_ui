@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { CreateSlug } from '@/utils/create_slug';
 import cookie from 'js-cookie';
 import { ExportError } from '@/utils/export_error';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 interface Iprops {
     showCategoryCreateModal: boolean,
     setShowCategoryCreateModal: (value: boolean) => void

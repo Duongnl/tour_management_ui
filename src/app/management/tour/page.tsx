@@ -1,13 +1,28 @@
-import "@/styles/tour.css"
-import { Container } from "react-bootstrap"
-const TourPage = () => {
-    return (
-        <Container className="ctn-tour">
-            <h4>
-                Quản lý tour
-            </h4>
-        </Container>
-    )
-}
+import { Container, Row } from "react-bootstrap";
+import TourTable from "@/components/tour/tour_table";
+import "@/styles/tour.css";
+import { fetchGetCategories, fetchGetTours } from "@/utils/serviceApiServer";
 
-export default TourPage
+const ProfilePage = async () => {
+  try {
+    const tours = await fetchGetTours();
+    const categories = await fetchGetCategories(1);
+
+    return (
+      <Container className="ctn-tour">
+        <Row>
+          <h4>Quản lý Tour</h4>
+        </Row>
+        <Row>
+          <TourTable tours={tours} categories={categories}/>
+        </Row>
+      </Container>
+    );
+  } catch (error) {
+    console.error(error);
+    // Handle error, e.g., show an error message
+    return <div>Error fetching data</div>;
+  }
+};
+
+export default ProfilePage;
