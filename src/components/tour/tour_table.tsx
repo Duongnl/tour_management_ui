@@ -51,23 +51,22 @@ const TourTable = (props: IProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-    try {
-    if (category != null && category != "all") {
-      if (status) {
-        if (status == "active") updateTourList(await fetchGetToursCategory(category,1))
-        if (status == "locked") updateTourList(await fetchGetToursCategory(category,0))
-        if (status == "all")  updateTourList(await fetchGetToursCategory(category))
-      } else updateTourList(await fetchGetToursCategory(category))
-    } else {
-      if (status == "active")  updateTourList(await fetchGetTours(1))
-      if (status == "locked") updateTourList(await fetchGetTours(0))
-      if (status == "all") updateTourList(await fetchGetTours())
-    }
-  } catch (error) {
-    console.error("Error fetching data", error);
-  }
-}
-fetchData();
+      try {
+        if (category == null || category == "all") {
+          if (status == "active") updateTourList(await fetchGetTours(1));
+          if (status == "locked") updateTourList(await fetchGetTours(0));
+          if (status == "all" || status == null)
+            updateTourList(await fetchGetTours());
+        } else {
+          if (status == "active")   updateTourList(await fetchGetToursCategory(category, 1));
+          if (status == "locked")   updateTourList(await fetchGetToursCategory(category, 0));
+          if (status == "all" || status == null)   updateTourList(await fetchGetToursCategory(category));
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchData();
   }, [status, category]);
 
   useEffect(() => {
