@@ -1,6 +1,5 @@
 'use client'
 import Table from 'react-bootstrap/Table';
-import '@/styles/reserve.css'
 import { formatCurrency } from '@/utils/string_utils';
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
@@ -74,6 +73,8 @@ const ReserveTable = (props: IProps) => {
 
     const handleSelectCategory = (e:string) => {
         setCategorySlug(e)
+
+
     }
 
     useEffect(()=>{
@@ -85,6 +86,9 @@ const ReserveTable = (props: IProps) => {
 
     const handleSetDayFilter = (e:boolean) => {
         setDayFilter(e);
+
+        
+
     }
 
     return (
