@@ -46,7 +46,8 @@ const DetailTour = (props: any) => {
               tour={tour}
               airlines={airlines}
               categories={categories}
-              fetchTour={()=>fetchGetTour(params.id)}
+              slug={params.id}
+              
             />
         </Suspense>
       </Container>
