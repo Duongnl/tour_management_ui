@@ -259,7 +259,7 @@ const CategoryTable = (props: IProps) => {
                                             </Link>
                                         </Button>
                                         <Button variant='outline-secondary' className='btn-detail'>
-                                            <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
+                                            <Link href={`./tour?category=${category.category_id}`} className='link-update' >
                                                 <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
                                             </Link>
 

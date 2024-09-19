@@ -1,3 +1,49 @@
-.ctn-reserve{
+.ctn-reserve {
     padding-top: 80px;
+}
+
+.icon-reserve {
+    margin-right: 5px;
+}
+
+.category-name {
+    font-weight: bold;
+    color: #337ab7;
+}
+
+.tour-name {
+    font-weight: bold;
+    color: #337ab7;
+}
+
+.div-text {
+    margin-bottom: 7px;
+}
+
+.text-schedule {
+    color: gray;
+    font-weight: bold;
+    font-size: 14.5px
+}
+
+.select-category {
+    margin-left: 20px;
+    width: 250px;
+    height: 38px;
+}
+
+.select-date {
+    width: 500px;
+}
+
+.div-filter {
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.input-search-reserve-tour{
+    height: 24px;
+    margin-top: 20px;
+    margin-left: 200px;
 }

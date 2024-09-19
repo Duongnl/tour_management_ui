@@ -26,7 +26,18 @@
 }
 
 .pgn-link{
-  text-decoration: none;
+  color: black;
+  border: 0px solid black;
+
+ padding: 0px;
+}
+
+.pgn-link:hover {
+  color: black;
+}
+
+.pgn-link:active {
+  color: black !important;
 }
 
 /* table */

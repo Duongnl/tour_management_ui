@@ -1,12 +1,50 @@
 import "@/styles/reserve.css"
-import { Container } from "react-bootstrap"
+import { Container, Row } from "react-bootstrap"
+import { Suspense } from "react";
+import { getSessionId } from "@/utils/session_store"
+import ReserveTable from "@/components/reserve/reserve_table";
+const ReservePage = async () => {
 
-const ReservePage = () => {
+    const res = await fetch(
+        "http://localhost:8080/api/reserve/tour",
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
+            },
+        }
+    );
+
+    const data = await res.json();
+    const reserveTours = data.result;
+
+    const resCategogies = await fetch(
+        "http://localhost:8080/api/category",
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
+            },
+        }
+    );
+
+    const dataCategories = await resCategogies.json();
+    const categories = dataCategories.result;
+
+
     return (
         <Container className="ctn-reserve">
-            <h4>
-                Quản lý đặt chổ
-            </h4>
+            <Row>
+                <h4>Đặt chổ</h4>
+            </Row>
+            <Row>
+                <Suspense>
+                  <ReserveTable
+                    reserveTours = {reserveTours}
+                    categories = {categories}
+                  />
+                </Suspense>
+            </Row>
         </Container>
     )
 }

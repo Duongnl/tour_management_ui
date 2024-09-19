@@ -9,8 +9,7 @@ const Home = () => {
 
 
       <div className="div-login">
-        <LoginForm
-        />
+        <LoginForm isPageLogin={true}/>
       </div>
    
 

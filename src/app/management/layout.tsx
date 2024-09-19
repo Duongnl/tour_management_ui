@@ -5,6 +5,8 @@ import AppHeader from "@/components/app_header";
 import AppFooter from "@/components/app_footer";
 import { getSessionId } from "@/utils/session_store";
 import { Container } from "react-bootstrap";
+import { redirect } from 'next/navigation'; // Import redirect
+import LoginForm from "@/components/login/login_form";
 const inter = Inter({ subsets: ["latin"] });
 
 export const dynamic = "force-dynamic";
@@ -29,6 +31,10 @@ export default async function RootLayout({
       },
     }
   );
+  if (!res.ok) {
+    
+    return <div className="div-login"><LoginForm isPageLogin={false}/></div>; // Đảm bảo rằng không có gì được render ra ngoài
+  }
 
   const data = await res.json();
   
