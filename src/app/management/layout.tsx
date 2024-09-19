@@ -33,7 +33,7 @@ export default async function RootLayout({
   );
   if (!res.ok) {
     
-    return <div className="div-login"><LoginForm/></div>; // Đảm bảo rằng không có gì được render ra ngoài
+    return <div className="div-login"><LoginForm isPageLogin={false}/></div>; // Đảm bảo rằng không có gì được render ra ngoài
   }
 
   const data = await res.json();

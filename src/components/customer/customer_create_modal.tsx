@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -17,7 +17,7 @@ import {
   handleNameAndNumber,
   handlePhoneNumber,
 } from "@/utils/handleUtils";
-import { fetchPostCustomer } from "@/utils/serviceApiClient";
+import { fetchGetParents, fetchPostCustomer } from "@/utils/serviceApiClient";
 
 interface IProps {
   showCustomerModal: boolean;
@@ -45,6 +45,13 @@ const CustomerCreateModal = (props: IProps) => {
   var Typeahead = require("react-bootstrap-typeahead").Typeahead; // CommonJS
 
   const [relationship_id_error, setRelationshipId_error] = useState<string>("");
+
+  useEffect(()=>{
+    const getData =async ()  =>  {
+      setRelationships(await fetchGetParents())
+    }
+    getData();
+  },[])
 
   const handleHideModal = () => {
     setShowCustomerModal(false);

@@ -12,7 +12,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { CreateSlug } from "@/utils/create_slug";
 import CustomerErrorCode from "@/exception/customer_error_code";
 import PaginationTable from "../pagination";
-import { fetchGetCustomers } from "@/utils/serviceApiClient";
+import { fetchGetCustomers, fetchGetParents } from "@/utils/serviceApiClient";
 interface IProps {
   customers: ICustomerResponse[];
 }
