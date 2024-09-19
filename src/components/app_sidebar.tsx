@@ -19,6 +19,7 @@ const AppSidebar = (props: Iprops) => {
 
   const { showSidebar, setShowSidebar, permission } = props;
   const pathName = usePathname()
+  
 
   return (
     <>

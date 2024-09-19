@@ -40,6 +40,8 @@ const DetailAccount =  (props: any) => {
     const [account, setAccount] = useState<IGetAccountResponse> (initGetAccountResponse);
     const [roles, setRoles] = useState<IRoleResponse[]> ([]);
     
+   
+    
  
     
     useEffect (()=>{
@@ -56,7 +58,7 @@ const DetailAccount =  (props: any) => {
         
             const accountData = await resGetAccount.json();
             const account:IGetAccountResponse = accountData.result;
-            setAccount(account)
+             setAccount(account)
         }
 
         const fetchRoles =  async()=>{
@@ -72,7 +74,7 @@ const DetailAccount =  (props: any) => {
         
             const RoleData = await resRoles.json();
             const roles:IRoleResponse[] = RoleData.result;
-            setRoles(roles)
+             setRoles(roles)
         }
  
         const fetchData = async () => {
@@ -81,13 +83,12 @@ const DetailAccount =  (props: any) => {
             setLoading(false);
           };
       
-          fetchData();
+         fetchData();
     },[])
     
     if (loading) {
         return <Loading></Loading>
     }
-
 
     return (
         <>
