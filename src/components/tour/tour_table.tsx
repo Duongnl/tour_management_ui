@@ -1,9 +1,7 @@
 "use client";
 import Table from "react-bootstrap/Table";
-import "@/styles/tour.css";
 import { Button, InputGroup, Row } from "react-bootstrap";
 import { Suspense, useEffect, useState } from "react";
-import cookie from "js-cookie";
 import Form from "react-bootstrap/Form";
 import ChangeStatusModal from "../change_status_modal";
 import Link from "next/link";
@@ -12,12 +10,19 @@ import PaginationTable from "../pagination";
 import TourErrorCode from "@/exception/tour_error_code";
 import TourCreateModal from "./tour_create_modal";
 import Loading from "@/app/management/loading";
+import { defaultIAirlineResponse } from "@/utils/defaults";
+import { fetchGetTours, fetchGetToursCategory } from "@/utils/serviceApiClient";
 interface IProps {
   tours: ITourResponse[];
+  categories: ICategoryResponse[];
 }
 
 const TourTable = (props: IProps) => {
   const [tours, setTours] = useState(props.tours);
+  const [categories] = useState(props.categories);
+  const [airlines, setAirlines] = useState<IAirlineResponse[]>([
+    defaultIAirlineResponse,
+  ]);
   const [showChangeStatusModal, setShowChangeStatusModal] =
     useState<boolean>(false);
   const [showTourModal, setShowTourModal] = useState<boolean>(false);
@@ -45,17 +50,24 @@ const TourTable = (props: IProps) => {
   const [detail, setDetail] = useState<string>("");
 
   useEffect(() => {
-    if (category != null) {
+    const fetchData = async () => {
+    try {
+    if (category != null && category != "all") {
       if (status) {
-        if (status == "active") fetchActiveTours(category);
-        if (status == "locked") fetchLockedTours(category);
-        if (status == "all") fetchTours(category);
-      } else fetchTours(category);
+        if (status == "active") updateTourList(await fetchGetToursCategory(category,1))
+        if (status == "locked") updateTourList(await fetchGetToursCategory(category,0))
+        if (status == "all")  updateTourList(await fetchGetToursCategory(category))
+      } else updateTourList(await fetchGetToursCategory(category))
     } else {
-      if (status == "active") fetchActiveTours();
-      if (status == "locked") fetchLockedTours();
-      if (status == "all") fetchTours();
+      if (status == "active")  updateTourList(await fetchGetTours(1))
+      if (status == "locked") updateTourList(await fetchGetTours(0))
+      if (status == "all") updateTourList(await fetchGetTours())
     }
+  } catch (error) {
+    console.error("Error fetching data", error);
+  }
+}
+fetchData();
   }, [status, category]);
 
   useEffect(() => {
@@ -71,59 +83,14 @@ const TourTable = (props: IProps) => {
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
 
-  const fetchTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}`
-      : "http://localhost:8080/api/tour";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
+  const updateTourList = (tours: ITourResponse[]) => {
     setTours(tours);
     const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
     setNumberPages(numPages);
     setToursCopy(tours);
   };
 
-  const fetchLockedTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}/locked`
-      : "http://localhost:8080/api/tour/locked";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
-    setTours(tours);
-    const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
-    setNumberPages(numPages);
-    setToursCopy(tours);
-  };
-
-  const fetchActiveTours = async (category_id?: string) => {
-    const url = category_id
-      ? `http://localhost:8080/api/tour/category/${category_id}/active`
-      : "http://localhost:8080/api/tour/active";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-      },
-    });
-    const data = await res.json();
-    const tours: ITourResponse[] = data.result;
-    setTours(tours);
-    const numPages = Math.ceil(tours != undefined ? tours.length / 8 : 0);
-    setNumberPages(numPages);
-    setToursCopy(tours);
-  };
+  // const fetchActiveTours = async (category_id?: string) => {};
 
   const handleChangeStatus = async (tour: ITourResponse) => {
     setTour_id(tour.tour_id);
@@ -153,7 +120,7 @@ const TourTable = (props: IProps) => {
     router.push(`${pathname}?${currentParams.toString()}`);
   };
 
-  const handleCategoryClick = (e: number) => {
+  const handleSelectCategory = (e: string) => {
     router.push(`${pathname}?category=${e}`);
   };
 
@@ -213,6 +180,21 @@ const TourTable = (props: IProps) => {
             <option value="active">Đang hoạt động</option>
             <option value="locked">Đã khóa</option>
           </Form.Select>
+
+          <Form.Select
+            aria-label="Default select example"
+            className="select-status"
+            value={category || ""}
+            onChange={(e) => handleSelectCategory(e.target.value)}
+          >
+            <option hidden>Danh mục</option>
+            <option value="all">Tất cả</option>
+            {categories.map((category: ICategoryResponse, index: number) => (
+              <option key={index} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+          </Form.Select>
         </div>
 
         <Button className="btn-add" onClick={() => handleCreate()}>
@@ -248,8 +230,8 @@ const TourTable = (props: IProps) => {
                     <td>
                       <Button
                         onClick={() =>
-                          handleCategoryClick(
-                            tour.category_id ? tour.category_id : 0
+                          handleSelectCategory(
+                            (tour.category_id ? tour.category_id : 0).toString()
                           )
                         }
                         variant="outline-primary"
@@ -302,7 +284,9 @@ const TourTable = (props: IProps) => {
       <TourCreateModal
         showTourModal={showTourModal}
         setShowTourModal={setShowTourModal}
-        fetchTours={fetchTours}
+        fetchTours={fetchGetTours}
+        categories={categories}
+        airlines={airlines}
       />
       <PaginationTable
         numberPages={numberPages}

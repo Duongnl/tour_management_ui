@@ -1,30 +1,28 @@
 import { Container, Row } from "react-bootstrap";
-import { getSessionId } from "@/utils/session_store";
-import { Suspense } from "react";
 import TourTable from "@/components/tour/tour_table";
+import "@/styles/tour.css";
+import { fetchGetCategories, fetchGetTours } from "@/utils/serviceApiServer";
 
-const TourPage = async () => {
-  const res = await fetch("http://localhost:8080/api/tour", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-    },
-  });
+const ProfilePage = async () => {
+  try {
+    const tours = await fetchGetTours();
+    const categories = await fetchGetCategories(1);
 
-  const data = await res.json();
-  const tours = data.result;
-  return (
-    <Container className="ctn-tour">
-      <Row>
-        <h4>Quản lý Tour</h4>
-      </Row>
-      <Row>
-        <Suspense>
-          <TourTable tours={tours} />
-        </Suspense>
-      </Row>
-    </Container>
-  );
+    return (
+      <Container className="ctn-tour">
+        <Row>
+          <h4>Quản lý Tour</h4>
+        </Row>
+        <Row>
+          <TourTable tours={tours} categories={categories}/>
+        </Row>
+      </Container>
+    );
+  } catch (error) {
+    console.error(error);
+    // Handle error, e.g., show an error message
+    return <div>Error fetching data</div>;
+  }
 };
 
-export default TourPage;
+export default ProfilePage;
