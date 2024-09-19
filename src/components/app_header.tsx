@@ -12,10 +12,13 @@ import Image from 'next/image';
 import { getSessionId, removeSessionId } from '@/utils/session_store';
 import cookie from 'js-cookie';
 import useSWR,{Fetcher} from "swr";
+import Link from "next/link";
+import { usePathname } from 'next/navigation'
 const AppHeader =  (props:any) => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const account = props.account
     const [permission, setPermission] = useState<string[]>([])
+    const pathName = usePathname()
 
     useEffect(() => {
         let permissionString:string[] = []
@@ -67,8 +70,13 @@ const AppHeader =  (props:any) => {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu >
-                            <Dropdown.Item href="/#">Cá nhân</Dropdown.Item>
-                            <Dropdown.Item href="/#">Cài đặt</Dropdown.Item>
+                            <Dropdown.Item as={'button'} >
+                            <Link href={`/management/profile`}>Cá nhân </Link>
+                            </Dropdown.Item>
+
+                           
+                            
+                            <Dropdown.Item href="/#">Thông tin đặt chổ</Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item 
                             onClick={()=> handleLogout()}

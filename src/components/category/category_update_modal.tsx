@@ -122,7 +122,7 @@ const CategoryUpdateModal = (props:IProps) => {
             const categoryRequest: ICategoryRequest = {
                 category_name: category_name,
                 category_detail: category_detail,
-                url: url
+                url: url == '' ? CreateSlug(category_name) : url,
             }
 
             const res = await fetch(
@@ -187,7 +187,7 @@ const CategoryUpdateModal = (props:IProps) => {
                         <Form.Control type="text" placeholder="..."
                             value={url}
                             onChange={(e) => handleCategoryUrl(e.target.value)}
-                            isValid={url!= category.url && validation[1]}
+                            isValid={url!= category.url && validation[1] && url!=''}
                             isInvalid={url != '' && !validation[1]}
                         />
                         <Form.Control.Feedback type="invalid">

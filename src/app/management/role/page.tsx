@@ -19,7 +19,7 @@ const RolePage = async () => {
 
     const data = await res.json();
     const roles = data.result;
-
+   
     return (
         <Container className="ctn-role">
             <Row>
