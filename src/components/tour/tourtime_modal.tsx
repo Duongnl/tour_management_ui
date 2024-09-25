@@ -10,15 +10,14 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { defaultIAirlineResponse } from "@/utils/defaults";
+import { defaultIAirlineResponse, defaultITourTimeRequest } from "@/utils/defaults";
 import TourTimeErrorCode from "@/exception/tourtime_error_code";
-import { toast } from "react-toastify";
 
 interface IProps {
   tourtime?: ITourTimeDetailResponse;
   airlines: IAirlineResponse[];
   index: number;
-  getTourTimeDetail: (value: ITourTimeRequest, index: number) => void;
+  getTourTimeDetail: (value: ITourTimeRequest,validationCheck:boolean, index: number) => void;
 }
 
 export const TourTimeModal = (props: IProps) => {
@@ -92,7 +91,6 @@ export const TourTimeModal = (props: IProps) => {
 
   useEffect(() => {
     if (validation.every((value) => value === true)) {
-      toast.info("Thông Tin khởi hành tour hợp lệ");
       const initITourTimeRequest: ITourTimeRequest = {
         time_name: time_name,
         departure_time: departure_date,
@@ -109,8 +107,9 @@ export const TourTimeModal = (props: IProps) => {
         departure_airline_id: departure_airline?.airline_id,
         return_airline_id: return_airline?.airline_id,
       };
-      getTourTimeDetail(initITourTimeRequest, index);
+      getTourTimeDetail(initITourTimeRequest,true,index);
     }
+    else getTourTimeDetail(defaultITourTimeRequest,false,index);
   }, [
     time_name,
     departure_date,

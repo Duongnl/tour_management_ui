@@ -70,7 +70,7 @@ function PaginationTable(props: IProps) {
                         // <Link href={`${pathname}?page=${number}${status != null?`&status=${status}`:''}`} className='pgn-link'
                         // onChange={(e)=>handleChangePage(number)}
                         // >
-                        <Button className='pgn-link'
+                        <Button key={index} className='pgn-link'
                         onClick={()=>handleChangePage(number)}
                         >
                             

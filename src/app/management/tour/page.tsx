@@ -14,7 +14,7 @@ const ProfilePage = async () => {
           <h4>Quản lý Tour</h4>
         </Row>
         <Row>
-          <TourTable tours={tours} categories={categories}/>
+          <TourTable tours={tours} categories={categories} />
         </Row>
       </Container>
     );
