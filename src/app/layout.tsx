@@ -34,7 +34,7 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         /> */}
       </head>
-      <body className= {`${inter.className} vh-100`}>
+      <body className= {`${inter.className}`}>
 
         {children}
 

@@ -2,10 +2,14 @@
 import { Suspense, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import TourUpdateForm from "@/components/tour/tour_update_form";
-import Loading from "@/app/management/loading";
+import Loading from "@/components/loading";
 import "@/styles/tour.css";
 import { defaultITourDetailResponse } from "@/utils/defaults";
-import { fetchGetAirlines, fetchGetCategories, fetchGetTour } from "@/utils/serviceApiClient";
+import {
+  fetchGetAirlines,
+  fetchGetCategories,
+  fetchGetTour,
+} from "@/utils/serviceApiClient";
 const DetailTour = (props: any) => {
   const { params } = props;
   const [loading, setLoading] = useState(true);
@@ -16,14 +20,13 @@ const DetailTour = (props: any) => {
   const [categories, setCategories] = useState<ICategoryResponse[]>([]);
   const [airlines, setAirlines] = useState<IAirlineResponse[]>([]);
 
-
   useEffect(() => {
     setLoading(true);
     const getData = async () => {
       try {
         setCategories(await fetchGetCategories(1));
         setAirlines(await fetchGetAirlines(1));
-        setTour(await fetchGetTour(params.id))
+        setTour(await fetchGetTour(params.id));
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {
@@ -41,14 +44,13 @@ const DetailTour = (props: any) => {
     <>
       <Container className="ctn-tour">
         <Suspense>
-            <h4>Chi tiết Tour</h4>
-            <TourUpdateForm
-              tour={tour}
-              airlines={airlines}
-              categories={categories}
-              slug={params.id}
-              
-            />
+          <h4>Chi tiết Tour</h4>
+          <TourUpdateForm
+            tour={tour}
+            airlines={airlines}
+            categories={categories}
+            slug={params.id}
+          />
         </Suspense>
       </Container>
     </>

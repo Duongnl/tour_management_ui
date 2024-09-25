@@ -30,12 +30,12 @@ interface IProps {
   tour: ITourDetailResponse;
   categories: ICategoryResponse[];
   airlines: IAirlineResponse[];
-  slug:string
+  slug: string;
 }
 
 const TourUpdateForm = (props: IProps) => {
   // nhận các giá trị tour và các mảng cần thiết
-  const [tourRes,setTourRes] = useState(props.tour);
+  const [tourRes, setTourRes] = useState(props.tour);
   const categoriesRes = props.categories;
   const airlinesRes = props.airlines;
   const slug = props.slug;
@@ -56,10 +56,9 @@ const TourUpdateForm = (props: IProps) => {
   );
   const [tour_detail, setTourDetail] = useState<string>(tourRes.tour_detail);
   const [url, setUrl] = useState<string>(tourRes.url);
-  useEffect(()=>{
-    setListTourTime(tourRes.tourTimes)
-  },[tourRes])
-
+  useEffect(() => {
+    setListTourTime(tourRes.tourTimes);
+  }, [tourRes]);
 
   //TourTime nhận lại từ TourTimeModal
   const [tourTimeReq, setTourTimeReq] = useState<ITourTimeRequest>(
@@ -104,7 +103,7 @@ const TourUpdateForm = (props: IProps) => {
         initTourRequest
       );
       if (data.status == "SUCCESS") {
-        setTourRes(await fetchGetTour(slug))
+        setTourRes(await fetchGetTour(slug));
         toast.success(`Cập nhật tour ${initTourRequest.tour_name} thành công`);
         handleClose();
       } else {
@@ -128,7 +127,7 @@ const TourUpdateForm = (props: IProps) => {
         tourTimeReq
       );
       if (data.status == "SUCCESS") {
-        setTourRes(await fetchGetTour(slug))
+        setTourRes(await fetchGetTour(slug));
         toast.success(`Cập nhật Thời gian ${tourTimeReq.time_name} thành công`);
         handleClose();
       } else {
@@ -149,7 +148,7 @@ const TourUpdateForm = (props: IProps) => {
         tourTimeReq
       );
       if (data.status == "SUCCESS") {
-        setTourRes(await fetchGetTour(slug))
+        setTourRes(await fetchGetTour(slug));
         toast.success(`Thêm Thời gian ${tourTimeReq.time_name} thành công`);
         handleClose();
       } else {
@@ -177,7 +176,7 @@ const TourUpdateForm = (props: IProps) => {
 
   const handleSetTourTimeDetail = (
     value: ITourTimeRequest,
-    validationCheck: boolean,
+    validationCheck: boolean
   ) => {
     if (validationCheck) {
       setTourTimeReq(value);
@@ -323,11 +322,11 @@ const TourUpdateForm = (props: IProps) => {
 
           <div className="div-back-create">
             <Button className="btn-back">
-              <Link href={"/management/tour/"} className="link-back">
+              <Link href={"/management/tour/"} className="link-back px-2 text-decoration-none text-white">
                 Thoát
               </Link>
             </Button>
-            <Button onClick={() => handleUpdateTour()} variant="success">
+            <Button onClick={() => handleUpdateTour()} variant="success" className="mx-2">
               Cập nhật Tour
             </Button>
           </div>
@@ -353,8 +352,8 @@ const TourUpdateForm = (props: IProps) => {
                     </div>
                     <div className="mb-2">
                       Hãng:
-                      {listTourTime[index].departureAirline?.airline_detail}
-                      {listTourTime[index].returnAirline?.airline_detail}
+                      {`${listTourTime[index].departureAirline?.airline_detail} - 
+                      ${listTourTime[index].returnAirline?.airline_detail}`}
                     </div>
                     <div className="mb-2">
                       Ngày đi: {listTourTime[index].departure_time}

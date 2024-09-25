@@ -115,11 +115,6 @@ const fetchGetAuthorizedData = async (url: string): Promise<any> => {
       },
     });
 
-    // Kiểm tra mã trạng thái HTTP
-    if (!res.ok) {
-      console.log(res.text());
-    }
-
     const data = await res.json();
     return data.result;
   } catch (error) {
@@ -138,11 +133,6 @@ const fetchPostAuthorizedData = async (url: string, bodyData: any) => {
       },
       body: JSON.stringify(bodyData), // Gửi dữ liệu JSON
     });
-
-    // Kiểm tra mã trạng thái HTTP
-    if (!res.ok) {
-      console.log(res.text());
-    }
 
     const data = await res.json();
     return data;
@@ -185,10 +175,6 @@ const fetchPutAuthorizedData = async (
       },
       body: JSON.stringify(bodyData), // Gửi dữ liệu JSON
     });
-
-    if (!res.ok) {
-      console.log(res.text());
-    }
 
     const data = await res.json();
     return data;

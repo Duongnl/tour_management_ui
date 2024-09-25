@@ -9,9 +9,10 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import PaginationTable from "../pagination";
 import TourErrorCode from "@/exception/tour_error_code";
 import TourCreateModal from "./tour_create_modal";
-import Loading from "@/app/management/loading";
+import Loading from "@/components/loading";
 import { defaultIAirlineResponse } from "@/utils/defaults";
 import { fetchGetTours, fetchGetToursCategory } from "@/utils/serviceApiClient";
+import "@/styles/table.css"
 interface IProps {
   tours: ITourResponse[];
   categories: ICategoryResponse[];
@@ -213,7 +214,7 @@ const TourTable = (props: IProps) => {
             <th>Tên danh mục</th>
             <th>Mã danh mục</th>
             <th>Chi tiết</th>
-            <th>Khóa</th>
+            <th>Hoạt động</th>
             <th>Chi tiết</th>
           </tr>
         </thead>
