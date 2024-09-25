@@ -6,6 +6,128 @@
 .mb-3.form-floating {
   height: 70px;
 }
+
+.table {
+  margin-top: 20px;
+}
+
+.div-add {
+  display: flex;
+  justify-content: flex-end;
+  justify-content: space-between;
+  padding: 0px;
+  margin-top: 10px;
+}
+.select-status {
+  width: 180px;
+  margin-left: 20px;
+}
+
+.btn-add {
+  background-color: #2a2f5b;
+  border: color(#2a2f5b) !important ;
+
+  border: 0px;
+}
+
+.btn-add:hover {
+  background-color: #2a2f5b;
+}
+
+.btn-update {
+  color: black;
+  padding: 0px;
+}
+.link-update {
+  padding: 20px !important;
+  padding-top: 10px !important;
+}
+
+.btn-update:hover {
+  background-color: cornflowerblue;
+  color: black;
+}
+
+.btn-update:active {
+  background-color: cornflowerblue !important;
+  color: black !important;
+}
+.div-back-create {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.input-error {
+  width: 100%;
+  border: 0px;
+  background-color: white;
+  color: red;
+  margin-top: 3px;
+  font-size: 15px;
+}
+
+.btn-create-back {
+  margin-right: 20px;
+  background-color: #2a2f5b;
+  border: 0px;
+}
+
+.btn-create-back:hover {
+  background-color: #2a2f5b;
+}
+
+.btn-back {
+  margin-right: 20px;
+  background-color: #2a2f5b;
+  border: 0px;
+  padding: 0px;
+}
+
+.btn-back:hover {
+  background-color: #2a2f5b;
+}
+
+.rbt-input {
+  height: 58px;
+}
+
+.show {
+  margin-right: 0px;
+  margin-top: 5px;
+}
+
+.active {
+  background-color: cornflowerblue !important;
+}
+
+.nav-link {
+  color: black;
+}
+
+.tab-content {
+  background-color: white;
+}
+
+.tab-account {
+  background-color: white !important;
+}
+
+.tab-profile {
+  background-color: white !important;
+}
+
+.rbt-menu {
+  margin-right: 0px !important;
+}
+
+.link-back {
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+}
+.fade.modal.show {
+  padding: 0 !important;
+}
 /* styles/slider.css */
 .swiper-container {
   width: 100%;
