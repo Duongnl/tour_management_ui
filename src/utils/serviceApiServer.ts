@@ -26,16 +26,16 @@ export const fetchGetTours = async (status?: number): Promise<ITourResponse[]> =
 export const fetchGetCategories = async (
   status?: number
 ): Promise<ICategoryResponse[]> => {
-  let url = `${BASE_URL}/tour`;
+  let url = `${BASE_URL}/category`;
   switch (status) {
     case 0:
-      url = `${BASE_URL}/tour/locked`;
+      url = `${BASE_URL}/category/locked`;
       break;
     case 1:
-      url = `${BASE_URL}/tour/active`;
+      url = `${BASE_URL}/category/active`;
       break;
     default:
-      url = `${BASE_URL}/tour`;
+      url = `${BASE_URL}/category`;
   }
   return fetchGetAuthorizedData(url);
 };

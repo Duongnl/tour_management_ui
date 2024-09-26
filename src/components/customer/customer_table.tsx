@@ -134,7 +134,6 @@ const CustomerTable = (props: IProps) => {
         );
       });
     });
-    // console.log("filter data : ", filteredData);
     setCustomers(filteredData);
     setNumberPages(Math.ceil(filteredData.length / 8));
   };

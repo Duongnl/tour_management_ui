@@ -40,16 +40,16 @@ export const fetchGetTours = async (
 export const fetchGetCategories = async (
   status?: number
 ): Promise<ICategoryResponse[]> => {
-  let url = `http://localhost:8080/api/tour`;
+  let url = `http://localhost:8080/api/category`;
   switch (status) {
     case 0:
-      url = `http://localhost:8080/api/tour/locked`;
+      url = `http://localhost:8080/api/category/locked`;
       break;
     case 1:
-      url = `http://localhost:8080/api/tour/active`;
+      url = `http://localhost:8080/api/category/active`;
       break;
     default:
-      url = `http://localhost:8080/api/tour`;
+      url = `http://localhost:8080/api/category`;
   }
   return fetchGetAuthorizedData(url);
 };
@@ -196,6 +196,22 @@ export const fetchPutTour = async (
   updateData: ITourUpdateRequest
 ): Promise<any> => {
   const url = `http://localhost:8080/api/tour/${tourId}`;
+  return fetchPutAuthorizedData(url, updateData);
+};
+
+export const fetchPutEmployee = async (
+  slug: string,
+  updateData: IEmployeeRequest
+): Promise<any> => {
+  const url = `http://localhost:8080/api/account/employee/${slug}`;
+  return fetchPutAuthorizedData(url, updateData);
+};
+
+export const fetchPutAccount = async (
+  slug: string,
+  updateData: IAccountUpdateRequest
+): Promise<any> => {
+  const url = `http://localhost:8080/api/account/${slug}`;
   return fetchPutAuthorizedData(url, updateData);
 };
 

@@ -8,7 +8,7 @@ import HistoryTable from "@/components/history/history_table";
 
 const HistoryPage = async() => {
     const res = await fetch(
-        "http://localhost:8080/api/history",
+        "http://localhost:8080/api/history/order-by-time",
         {
             method: "GET",
             headers: {

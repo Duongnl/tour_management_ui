@@ -14,22 +14,31 @@ import { TourTimeModal } from "./tourtime_modal";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
+  defaultIAirlineResponse,
   defaultICategoryResponse,
   defaultITourTimeRequest,
 } from "@/utils/defaults";
 import { handleAddress, handleNameAndNumber, handleSlug } from "@/utils/handleUtils";
-import { fetchPostTour } from "@/utils/serviceApiClient";
+import { fetchGetAirlines, fetchGetCategories, fetchPostTour } from "@/utils/serviceApiClient";
 
 interface IProps {
   showTourModal: boolean;
   setShowTourModal: (value: boolean) => void;
   fetchTours: () => void;
-  categories:ICategoryResponse[],
-  airlines:IAirlineResponse[]
 }
 
 const TourCreateModal = (props: IProps) => {
-  const { showTourModal, setShowTourModal, fetchTours, categories,airlines} = props;
+  const { showTourModal, setShowTourModal, fetchTours} = props;
+
+  const [categories,setCategories]=useState<ICategoryResponse[]>([defaultICategoryResponse]);
+  const [airlines,setAirlines]=useState<IAirlineResponse[]>([defaultIAirlineResponse]);
+  useEffect(()=>{
+    const getData = async()=>{
+      setAirlines(await fetchGetAirlines(1));
+      setCategories(await fetchGetCategories(1))
+    }
+    if(showTourModal)getData();
+  },[showTourModal])
 
   const [validation, setValidation] = useState<boolean[]>(Array(4).fill(false));
 
@@ -110,7 +119,7 @@ const TourCreateModal = (props: IProps) => {
 
   const handleCategory = (e: string) => {
     validation[3] = false;
-    setCategory_error("Người này là người đại diện");
+    setCategory_error(TourErrorCode.TOUR_3);
   };
 
   const handleValueSlides = (value: string) => {
@@ -188,7 +197,7 @@ const TourCreateModal = (props: IProps) => {
                     isInvalid={tour_name != "" && !validation[0]}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {TourErrorCode.TOUR_1}
+                    {TourErrorCode.TOUR_5}
                   </Form.Control.Feedback>
                 </FloatingLabel>
 
@@ -210,7 +219,7 @@ const TourCreateModal = (props: IProps) => {
                     isInvalid={tour_detail != "" && !validation[1]}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {TourErrorCode.TOUR_1}
+                    {TourErrorCode.TOUR_6}
                   </Form.Control.Feedback>
                 </FloatingLabel>
 
@@ -252,7 +261,7 @@ const TourCreateModal = (props: IProps) => {
                     isInvalid={url != "" && !validation[2]}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {TourErrorCode.TOUR_1}
+                    {TourErrorCode.TOUR_7}
                   </Form.Control.Feedback>
                 </FloatingLabel>
 
@@ -289,7 +298,7 @@ const TourCreateModal = (props: IProps) => {
                               <TourTimeModal
                                 airlines={airlines}
                                 index={index}
-                                getTourTimeDetail={handleSetValueTourTime}
+                                getTourTimeDetail={()=>handleSetValueTourTime}
                               />
                             </SwiperSlide>
                           )
