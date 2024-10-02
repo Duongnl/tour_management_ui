@@ -6,6 +6,7 @@ interface IReserveTourTimeResponse {
      quantity_reserve:number,
      quantity_left:number,
      visa_expire:string,
+     commission:number,
 
      departure_time:string,
      return_time:string,

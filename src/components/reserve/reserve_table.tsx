@@ -1,20 +1,24 @@
 'use client'
 import Table from 'react-bootstrap/Table';
-import '@/styles/reserve.css'
 import { formatCurrency } from '@/utils/string_utils';
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import PaginationTable from '../pagination';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import cookie from 'js-cookie';
+import { CreateSlug } from '@/utils/create_slug';
+import Link from 'next/link';
+import { Button } from 'react-bootstrap';
+import "@/styles/reserve.css"
 interface IProps {
     reserveTours: IReserveTourResponse[]
-    categories : ICategoryResponse[]
+    categories: ICategoryResponse[]
 }
 
 
 const ReserveTable = (props: IProps) => {
-    const{categories}= props
+    const { categories } = props
 
     const [reserveTours, setReserveTours] = useState<IReserveTourResponse[]>(props.reserveTours)
 
@@ -30,19 +34,23 @@ const ReserveTable = (props: IProps) => {
     // trang hiện tại
     const searchParams = useSearchParams();
     const currentPage = searchParams.get('page')
-    const startDayParams =  searchParams.get('startDay')
-    const endDayParams =  searchParams.get('endDay')
+    const startDayParams = searchParams.get('startDay')
+    const endDayParams = searchParams.get('endDay')
     const categoryParams = searchParams.get('category')
     const dayFilterParams = searchParams.get('dayFilter')
-    
-    
 
-    const[startDay, setStartDay] = useState<string> (startDayParams==null?'':startDayParams)
-    const[endDay, setEndDay] = useState <string>(endDayParams==null?'':endDayParams)
-    const[dayFilter, setDayFilter] = useState<boolean> (dayFilterParams=='false' || dayFilterParams == 'true'?
-        (dayFilterParams=='false'?false:true)
-    :false )
-    const[categorySlug,setCategorySlug] = useState<string> (categoryParams==null?'':categoryParams)
+
+
+    // tim kiem
+    const [search, setSearch] = useState<string>('')
+
+
+    const [startDay, setStartDay] = useState<string>(startDayParams == null ? '' : startDayParams)
+    const [endDay, setEndDay] = useState<string>(endDayParams == null ? '' : endDayParams)
+    const [dayFilter, setDayFilter] = useState<boolean>(dayFilterParams == 'false' || dayFilterParams == 'true' ?
+        (dayFilterParams == 'false' ? false : true)
+        : false)
+    const [categorySlug, setCategorySlug] = useState<string>(categoryParams == null ? '' : categoryParams)
 
     const router = useRouter()
     const pathname = usePathname();
@@ -61,31 +69,124 @@ const ReserveTable = (props: IProps) => {
         setNumberEnd(end);// nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
     }, [currentPage])
 
-    
-    const handleStartDay = (e:string) => {
+
+    const handleSearch = (e: string) => {
+        setSearch(e)
+        const filteredData = reserveTours.filter((item) => {
+            return Object.values(item).some((value) => {
+                // Kiểm tra nếu value không phải là null hoặc undefined
+                return value != null && value.toString().toLowerCase().includes(e.toLowerCase());
+            });
+        });
+        setReserveToursFilter(filteredData)
+        setNumberPages(Math.ceil(filteredData.length / 8))
+    }
+
+    const fetchFilterReserveTours = async (initDataFilter: IReserveTourFilterRequest) => {
+        const res = await fetch(
+            "http://localhost:8080/api/reserve/filter-reserve-tour",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
+                },
+                body: JSON.stringify(initDataFilter)
+            }
+        );
+        const data = await res.json();
+        const reserveToursRes: IReserveTourResponse[] = data.result
+        setReserveToursFilter(reserveToursRes)
+        const numPages = Math.ceil(reserveToursRes != undefined ? reserveToursRes.length / 3 : 0);
+        setNumberPages(numPages);
+        setReserveTours(reserveToursRes)
+        console.log("result >>> ", data)
+    };
+
+    const handleStartDay = (e: string) => {
         setStartDay(e)
 
+        if (endDay != '' && dayFilter) {
+            const initDataFilter: IReserveTourFilterRequest = {
+                start_date: e,
+                end_date: endDay,
+                date_filter: dayFilter,
+                category_slug: categorySlug,
+            }
+            fetchFilterReserveTours(initDataFilter)
+            console.log("Data fiter start day >>> ", initDataFilter)
+        }
+
+
+
     }
 
-    const handleEndDay = (e:string) => {
+
+    const handleEndDay = (e: string) => {
         setEndDay(e)
 
+        if (startDay != '' && dayFilter) {
+            const initDataFilter: IReserveTourFilterRequest = {
+                start_date: startDay,
+                end_date: e,
+                date_filter: dayFilter,
+                category_slug: categorySlug,
+            }
+            fetchFilterReserveTours(initDataFilter)
+            console.log("Data fiter end day >>> ", initDataFilter)
+        }
     }
 
-    const handleSelectCategory = (e:string) => {
+    const handleSelectCategory = async (e: string) => {
         setCategorySlug(e)
+
+        const initDataFilter: IReserveTourFilterRequest = {
+            start_date: dayFilter ? startDay : '',
+            end_date: dayFilter ? endDay : '',
+            date_filter: dayFilter,
+            category_slug: e,
+        }
+
+        console.log("Data fiter category >>> ", initDataFilter)
+        fetchFilterReserveTours(initDataFilter)
+
     }
 
-    useEffect(()=>{
+    useEffect(() => {
 
         router.push(`${pathname}?category=${categorySlug}&&dayFilter=${dayFilter}&&startDay=${startDay}&&endDay=${endDay}`)
-        
-        
-    },[dayFilter, startDay,endDay,categorySlug])
 
-    const handleSetDayFilter = (e:boolean) => {
+
+    }, [dayFilter, startDay, endDay, categorySlug])
+
+    const handleSetDayFilter = (e: boolean) => {
         setDayFilter(e);
+
+        if (endDay != '' && startDay != '') {
+
+            if (e) {
+                const initDataFilter: IReserveTourFilterRequest = {
+                    start_date: startDay,
+                    end_date: endDay,
+                    date_filter: e,
+                    category_slug: categorySlug,
+                }
+                fetchFilterReserveTours(initDataFilter)
+                console.log("Data fiter date >>> ", initDataFilter)
+            } else {
+                const initDataFilter: IReserveTourFilterRequest = {
+                    start_date: '',
+                    end_date: '',
+                    date_filter: false,
+                    category_slug: categorySlug,
+                }
+                fetchFilterReserveTours(initDataFilter)
+                console.log("Data fiter date >>> ", initDataFilter)
+            }
+        }
     }
+
 
     return (
         <>
@@ -93,34 +194,34 @@ const ReserveTable = (props: IProps) => {
                 <div style={{ display: "flex", paddingLeft: '0px', marginTop: '20px' }} >
                     <InputGroup className="mb-3 select-date">
                         <InputGroup.Checkbox aria-label="Checkbox for following text input"
-                        checked={dayFilter}
-                        onChange={(e) => {handleSetDayFilter(e.target.checked)}}
+                            checked={dayFilter}
+                            onChange={(e) => { handleSetDayFilter(e.target.checked) }}
                         />
                         <Form.Control aria-label="Text input with checkbox"
                             type='date'
                             value={startDay}
-                            onChange={(e) => {handleStartDay(e.target.value)}}
+                            onChange={(e) => { handleStartDay(e.target.value) }}
                         />
                         <Form.Control aria-label="Text input with checkbox"
                             type='date'
                             value={endDay}
-                            onChange={(e) => {handleEndDay(e.target.value)}}
+                            onChange={(e) => { handleEndDay(e.target.value) }}
                         />
                     </InputGroup>
 
                     <Form.Select aria-label="Default select example" className='select-category'
-                    // value={status || ''} // Đặt giá trị hiện tại
-                    onChange={(e) => handleSelectCategory(e.target.value)}
+                        // value={status || ''} // Đặt giá trị hiện tại
+                        onChange={(e) => handleSelectCategory(e.target.value)}
                     >
                         <option hidden>Danh mục</option>
-                        <option value='all-category' >Tất cả danh mục</option>
-                        {categories?.map((category,index)=>(
-                            <>  
-                                   <option value={`${category.url}-${category.category_id}`} >{category.category_name}</option>
+                        <option value='' >Tất cả danh mục</option>
+                        {categories?.map((category, index) => (
+                            <>
+                                <option value={`${category.url}-${category.category_id}`} >{category.category_name}</option>
                             </>
                         ))}
 
-                     
+
                     </Form.Select>
                 </div>
 
@@ -132,8 +233,8 @@ const ReserveTable = (props: IProps) => {
                     <Form.Control
                         placeholder="Tìm kiếm"
                         aria-describedby="basic-addon1"
-                    // value={search}
-                    // onChange={(e) => handleSearch(e.target.value)}
+                        value={search}
+                        onChange={(e) => handleSearch(e.target.value)}
                     />
                 </InputGroup>
             </div>
@@ -191,7 +292,17 @@ const ReserveTable = (props: IProps) => {
                                                 <span style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }} >{`${formatCurrency(reserveTour.tourTime.price_min)}`}  </span>
                                             </td>
                                             <td>
+                                                {/* <Button
+                                                    variant="success"
+                                                >Đặt chổ</Button> */}
+                                                <Button variant='outline-secondary' className='btn-reserve' >
+                                                    <Link href={'/management/reserve/' + CreateSlug(`${reserveTour.tourTime.time_name} ${reserveTour.tourTime.tour_time_id}`)} className='link-reserve' >
+                                                        Đặt chổ
+                                                    </Link>
+                                                </Button>
 
+
+                                            
                                             </td>
                                         </tr>
                                     </>
