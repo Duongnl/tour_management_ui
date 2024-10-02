@@ -19,7 +19,7 @@ const AppSidebar = (props: Iprops) => {
 
   const { showSidebar, setShowSidebar, permission } = props;
   const pathName = usePathname()
-  
+  console.log(pathName)
 
   return (
     <>
@@ -80,6 +80,20 @@ const AppSidebar = (props: Iprops) => {
               <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("reserve") ? "active" : ""}`}>
                 <Container>
                   <span className='name-tab-sidebar'>Đặt chổ</span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
+
+          {permission.includes("ACCESS_BOOKED") && (<>
+            <Link href={"/management/booked"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("booked") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Thông tin đặt chổ</span>
                 </Container>
               </Navbar>
             </Link>
