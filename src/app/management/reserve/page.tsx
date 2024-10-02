@@ -1,3 +1,4 @@
+'use server'
 import "@/styles/reserve.css"
 import { Container, Row } from "react-bootstrap"
 import { Suspense } from "react";
