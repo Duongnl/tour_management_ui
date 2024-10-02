@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import CustomerUpdateForm from "@/components/customer/customer_update_form";
-import Loading from "@/app/management/loading";
 import "@/styles/customer.css";
 import { defaultICustomerDetailResponse } from "@/utils/defaults";
 import { fetchGetCustomer, fetchGetParents } from "@/utils/serviceApiClient";
+import Loading from "@/components/loading";
 
 const DetailCustomer = (props: any) => {
   const { params } = props;
@@ -39,8 +39,9 @@ const DetailCustomer = (props: any) => {
           <h4>Chi tiết khách hàng</h4>
         </Row>
         <Row>
-          {loading ? (<Loading />) : 
-          (
+          {loading ? (
+            <Loading />
+          ) : (
             <CustomerUpdateForm customer={customer} customers={parents} />
           )}
         </Row>

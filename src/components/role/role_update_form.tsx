@@ -143,8 +143,8 @@ const RoleUpdateForm = (props: IProps) => {
                 </thead>
                 <tbody>
 
-                    {permissionDefault.map(pd => (
-                        <tr>
+                    {permissionDefault.map((pd,index) => (
+                        <tr key={index}>
                             {
                                 pd.map((pdt, index) => {
                                     if (index == 0) {

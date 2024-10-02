@@ -4,8 +4,8 @@ import { fetchGetAccount } from "@/utils/serviceApiServer";
 import ProfileModal from "@/components/account/profile_modal";
 import { defaultIGetAccountResponse } from "@/utils/defaults";
 
-const Profile = async (props: any) => {
-  let account:IGetAccountResponse = defaultIGetAccountResponse;
+const Profile = async () => {
+  let account: IGetAccountResponse = defaultIGetAccountResponse;
   try {
     account = await fetchGetAccount();
   } catch (error) {
@@ -16,9 +16,8 @@ const Profile = async (props: any) => {
     return (
       <>
         <Container className="ctn-profile">
-          <Row>account
-            <ProfileModal account={account}/>
-            
+          <Row>
+            <ProfileModal account={account} />
           </Row>
         </Container>
       </>

@@ -133,14 +133,17 @@ const TourCreateModal = (props: IProps) => {
     }
   };
 
-  const handleSetValueTourTime = (value: ITourTimeRequest, index: number) => {
-    setTourTimes((prevDetails) => {
-      // Tạo một bản sao của mảng prevDetails
-      const updatedDetails = [...prevDetails];
-      // Cập nhật hoặc thêm đối tượng mới tại vị trí index
-      updatedDetails[index] = value;
-      return updatedDetails;
-    });
+  const handleSetValueTourTime = (value: ITourTimeRequest,validationCheck:boolean, index: number) => {
+    if(validationCheck){
+      setTourTimes((prevDetails) => {
+        // Tạo một bản sao của mảng prevDetails
+        const updatedDetails = [...prevDetails];
+        // Cập nhật hoặc thêm đối tượng mới tại vị trí index
+        updatedDetails[index] = value;
+        return updatedDetails;
+      });
+    }
+    else toast.error("Thông Tin khởi hành tour không hợp lệ");
   };
 
   const updateValidation = (index: number, isValid: boolean) => {

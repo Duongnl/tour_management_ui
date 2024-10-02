@@ -168,7 +168,7 @@ const RoleCreateModal = (props: IProps) => {
                                     {
                                         pd.map((pdt, index) => {
                                             if (index == 0) {
-                                                return (<td>{pdt}</td>)
+                                                return (<td key={index}>{pdt}</td>)
                                             } else {
                                                 return (<>
                                                     <td>

@@ -331,7 +331,7 @@ const CustomerUpdateForm = (props: IProps) => {
 
       <div className="div-back-create">
         <Button className="btn-back">
-          <Link href={"/management/customer/"} className="link-back">
+          <Link href={"/management/customer/"} className="link-back px-2 text-decoration-none text-white">
             Trở lại
           </Link>
         </Button>

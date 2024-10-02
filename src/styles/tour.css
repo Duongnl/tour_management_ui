@@ -1,14 +1,10 @@
+/* css tour */
+
 .ctn-tour {
   padding-top: 80px;
 }
-* {
-  box-sizing: border-box;
-}
 .mb-3.form-floating {
   height: 70px;
-}
-.ctn-account {
-  padding-top: 80px;
 }
 
 .table {
@@ -25,17 +21,6 @@
 .select-status {
   width: 180px;
   margin-left: 20px;
-}
-
-.form-check-input {
-  width: 50px !important;
-  height: 20px;
-  border: 1px solid black;
-}
-
-.form-check-input:checked {
-  background-color: #2a2f5b;
-  border: 1px solid black;
 }
 
 .btn-add {
@@ -143,7 +128,6 @@
 .fade.modal.show {
   padding: 0 !important;
 }
-
 /* styles/slider.css */
 .swiper-container {
   width: 100%;
