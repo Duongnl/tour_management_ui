@@ -136,3 +136,14 @@ export const defaultIGetAccountResponse: IGetAccountResponse = {
   employee: defaultIEmployeeResponse,
   role: defaultIRoleResponse,
 };
+export const defaultIDataReportInYearEmployee: IDataReportInYearEmployee = {
+  employeeName: "",
+  months:[0],
+  total: 0,
+};
+export const defaultIDataReportInMonth: IDataReportInMonth = {
+  days:[0],
+  total:0,
+  month:"",
+  year:"",
+};

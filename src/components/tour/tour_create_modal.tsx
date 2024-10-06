@@ -240,7 +240,6 @@ const TourCreateModal = (props: IProps) => {
                     className="input-error"
                     value={category_error}
                     disabled
-                    only-read
                   />
                 </div>
 
