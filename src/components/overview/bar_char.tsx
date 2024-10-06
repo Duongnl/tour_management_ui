@@ -26,27 +26,25 @@ const BarChart = (props: Props) => {
   const [year, setYear] = useState<number>(today.getFullYear());
 
   const fetchData = async () => {
-    let data: IDataReportInYearEmployee[]=[];
-    if (option == 1) 
-      data = await fetchGetReportCommission(year);
-    if (option == 2)
-      data = await fetchGetReportSale(year);
+    let data: IDataReportInYearEmployee[] = [];
+    if (option == 1) data = await fetchGetReportCommission(year);
+    if (option == 2) data = await fetchGetReportSale(year);
     setDataYear(data);
   };
 
   useEffect(() => {
-    console.log(dataYear);
-    let updatedTotalMonths = Array(dataYear[0].months.length).fill(0);
+    if (dataYear.length > 0) {
+      let updatedTotalMonths = Array(dataYear[0].months.length).fill(0);
 
-    dataYear.forEach((element) => {
-      for (var i = 0; i < element.months.length; i++) {
-        updatedTotalMonths[i] =
-          (updatedTotalMonths[i] || 0) + element.months[i]; // Đảm bảo phần tử đã tồn tại
-      }
-    });
+      dataYear.forEach((element) => {
+        for (var i = 0; i < element.months.length; i++) {
+          updatedTotalMonths[i] =
+            (updatedTotalMonths[i] || 0) + element.months[i]; // Đảm bảo phần tử đã tồn tại
+        }
+      });
 
-    console.log(updatedTotalMonths);
-    setTotalMonths(updatedTotalMonths);
+      setTotalMonths(updatedTotalMonths);
+    }
   }, [dataYear]);
 
   const data = {
@@ -66,7 +64,7 @@ const BarChart = (props: Props) => {
     ],
     datasets: [
       {
-        label: "Doanh thu (VNĐ)",
+        label: title+" năm "+year+" (VNĐ)",
         data: totalMonths,
         backgroundColor: color != null ? color : "rgba(75, 192, 192, 1)",
         borderColor: color != null ? color : "rgba(75, 192, 192, 1)",
@@ -77,6 +75,7 @@ const BarChart = (props: Props) => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
@@ -87,9 +86,12 @@ const BarChart = (props: Props) => {
       },
     },
     scales: {
-      y: {
-        beginAtZero: true,
-      },
+      yAxes: [
+        {
+          type: "linear",
+          beginAtZero: true,
+        },
+      ],
     },
   };
 
@@ -110,7 +112,7 @@ const BarChart = (props: Props) => {
         </Form.Select>
         <Button onClick={fetchData}>Lọc</Button>
       </div>
-      <Bar data={data} options={options} />;
+      <Bar data={data} options={options} />
     </>
   );
 };

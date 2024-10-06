@@ -7,30 +7,9 @@ import {
   fetchGetReportCommission,
   fetchGetReportSale,
 } from "@/utils/serviceApiServer";
+import "@/styles/overview.css"
 import { Container, Row } from "react-bootstrap";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement, // Đăng ký thêm LineElement cho biểu đồ đường
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
-// Đăng ký tất cả các thành phần liên quan, bao gồm LinearScale và LineElement
-ChartJS.register(
-  CategoryScale,
-  LinearScale, // Đảm bảo LinearScale đã được đăng ký
-  BarElement,
-  LineElement, // Đăng ký LineElement cho LineChart
-  PointElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 const Home = async () => {
   try {
@@ -44,16 +23,16 @@ const Home = async () => {
       <Container style={{ paddingTop: "80px", marginBottom: "40px" }}>
         <h4>Tổng quan</h4>
         <div className="row">
-          <div className="col col-6">
+          <div className="col col-md-6">
             <BarChart
-              title="Hoa hồng năm 2024"
+              title="Hoa hồng"
               data={reportCommissions}
               option={1}
             />
           </div>
-          <div className="col col-6">
+          <div className="col col-md-6">
             <BarChart
-              title="Doanh thu năm 2024"
+              title="Doanh thu"
               data={reportSales}
               color={"#f56868"}
               option={1}

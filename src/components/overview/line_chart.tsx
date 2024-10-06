@@ -1,12 +1,6 @@
 "use client";
 import { Line } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  LinearScale,
-  CategoryScale,
-  LineElement,
-  BarElement,
-  PointElement,
   ChartOptions,
 } from "chart.js";
 import { Button, Form } from "react-bootstrap";
@@ -18,14 +12,6 @@ import {
 import TourErrorCode from "@/exception/tour_error_code";
 import { toast } from "react-toastify";
 
-// Đăng ký các thành phần Chart.js
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  BarElement,
-  PointElement
-);
 
 interface Props {
   dataSales: IDataReportInMonth[];
@@ -73,56 +59,53 @@ const LineChart = ({
           borderColor: "rgba(75,192,192,1)",
           backgroundColor: "rgba(75,192,192,0.2)",
           fill: true,
-          yAxisID: "y",
+          yAxisID: "y1",
         },
         {
           label: "Hoa hồng",
           data: commissionData,
           borderColor: "#f56868",
-          backgroundColor: "#f56868",
           fill: true,
-          yAxisID: "y1",
+          yAxisID: "y2",
         },
       ],
     };
   };
 
-  const options: ChartOptions<"line"> = {
+  const options = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: "center" as const,
-        display: true,
-      },
-      title: {
-        display: true,
-        text: "Doanh thu và Hoa hồng",
-      },
+    maintainAspectRatio: false,
+    legend: {
+      display: true,
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Doanh thu và Hoa hồng',
     },
     scales: {
-      x: {
-        type: "category",
+      xAxes: [{
+        type: 'category',
         ticks: {
           autoSkip: true,
           maxTicksLimit: 12,
         },
-        grid: {
+      }],
+      yAxes: [{
+        id: "y1",
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: "y2",
+        type: 'linear',
+        position: 'right',
+        gridLines: {
           display: false,
         },
-      },
-      y: {
-        type: "linear",
-        position: "left",
-      },
-      y1: {
-        type: "linear",
-        position: "right",
-        grid: {
-          display: false,
-        },
-      },
+      }],
     },
   };
+  
 
   const fetchData = async () => {
     if (from_month > to_month) {
@@ -180,7 +163,7 @@ const LineChart = ({
         </Form.Select>
         <Button onClick={fetchData}>Lọc</Button>
       </div>
-      <Line data={generateChartData()} options={options} />
+      <Line data={generateChartData()} options={options} redraw />
     </>
   );
 };

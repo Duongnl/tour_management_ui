@@ -32,7 +32,6 @@ const TableReport = (props: IProps) => {
 
     setDataSales(sales);
     setDataCommissions(commissions);
-    console.log(sales,commissions)
   };
 
   // Hàm tạo danh sách năm

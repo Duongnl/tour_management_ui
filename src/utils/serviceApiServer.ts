@@ -1,6 +1,6 @@
 import { getSessionId } from "@/utils/session_store";
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL_API_LOCAL_HOST;
+const BASE_URL = process.env.NEXT_PUBLIC_URL_API_LOCALHOST;
 
 export const fetchGetTour = async (tourId: number) => {
   let url = `/tour/${tourId}`;
