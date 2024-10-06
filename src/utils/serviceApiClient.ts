@@ -171,7 +171,6 @@ export const fetchGetReportCommission = async (
 
 const fetchGetAuthorizedData = async (url: string): Promise<any> => {
   try {
-    console.log(url);
     const res = await fetch(url_api + url, {
       method: "GET", // Sửa lỗi từ "fetchGET" thành "GET"
       headers: {

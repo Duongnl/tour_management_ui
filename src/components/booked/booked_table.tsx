@@ -17,7 +17,7 @@ interface IProps {
 }
 
 
-const ReserveTable = (props: IProps) => {
+const BookedTable = (props: IProps) => {
     const { categories } = props
 
     const [reserveTours, setReserveTours] = useState<IReserveTourResponse[]>(props.reserveTours)
@@ -85,8 +85,6 @@ const ReserveTable = (props: IProps) => {
         };
 
         const filteredData = reserveTours.filter((item) => searchInObject(item, e));
-
-
         setReserveToursFilter(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 3))
     }
@@ -110,6 +108,7 @@ const ReserveTable = (props: IProps) => {
         const numPages = Math.ceil(reserveToursRes != undefined ? reserveToursRes.length / 3 : 0);
         setNumberPages(numPages);
         setReserveTours(reserveToursRes)
+        console.log("result >>> ", data)
     };
 
     const handleStartDay = (e: string) => {
@@ -300,18 +299,18 @@ const ReserveTable = (props: IProps) => {
                                                 <span style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }} >{`${formatCurrency(reserveTour.tourTime.price_min)}`}  </span>
                                             </td>
                                             <td>
-                                                {/* <Button
-                                                    variant="success"
-                                                >Đặt chổ</Button> */}
-
-                                                {reserveTour.tourTime.quantity_left > 0 ? (<>
+                                                {/* {reserveTour.tourTime.quantity_left > 0 ? (<>
                                                     <Button variant='outline-secondary' className='btn-reserve' >
                                                     <Link href={'/management/reserve/' + CreateSlug(`${reserveTour.tourTime.time_name} ${reserveTour.tourTime.tour_time_id}`)} className='link-reserve' >
                                                         Đặt chổ
                                                     </Link>
                                                 </Button>
-                                                </>) : (<> <span  style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }}> Hết chổ </span> </>) }
-                                              
+                                                </>) : (<> <span  style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }}> Hết chổ </span> </>) } */}
+                                                <Button variant='outline-secondary' className='btn-reserve' >
+                                                    <Link href={'/management/booked/' + CreateSlug(`${reserveTour.tourTime.time_name} ${reserveTour.tourTime.tour_time_id}`)} className='link-reserve' >
+                                                       Xem chi tiết
+                                                    </Link>
+                                                </Button>
                                             </td>
                                         </tr>
                                     </>
@@ -330,4 +329,4 @@ const ReserveTable = (props: IProps) => {
     )
 }
 
-export default ReserveTable
+export default BookedTable
