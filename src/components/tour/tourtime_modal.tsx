@@ -285,7 +285,6 @@ export const TourTimeModal = (props: IProps) => {
             className="input-error"
             value={departure_airline_error}
             disabled
-            only-read
           />
         </div>
 
@@ -310,7 +309,6 @@ export const TourTimeModal = (props: IProps) => {
             className="input-error"
             value={return_airline_error}
             disabled
-            only-read
           />
         </div>
 

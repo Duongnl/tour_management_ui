@@ -171,7 +171,8 @@ const TourUpdateForm = (props: IProps) => {
 
   const handleCategory = () => {
     validation[3] = false;
-    setCategory_error("Người này là người đại diện");
+    setCategory_error(TourErrorCode.TOUR_3);
+
   };
 
   const handleSetTourTimeDetail = (
@@ -253,7 +254,7 @@ const TourUpdateForm = (props: IProps) => {
               isInvalid={tour_name != "" && !validation[0]}
             />
             <Form.Control.Feedback type="invalid">
-              {TourErrorCode.TOUR_1}
+              {TourErrorCode.TOUR_5}
             </Form.Control.Feedback>
           </FloatingLabel>
 
@@ -275,7 +276,7 @@ const TourUpdateForm = (props: IProps) => {
               isInvalid={tour_detail != "" && !validation[1]}
             />
             <Form.Control.Feedback type="invalid">
-              {TourErrorCode.TOUR_1}
+              {TourErrorCode.TOUR_6}
             </Form.Control.Feedback>
           </FloatingLabel>
 
@@ -295,7 +296,6 @@ const TourUpdateForm = (props: IProps) => {
               className="input-error"
               value={category_error}
               disabled
-              only-read
             />
           </div>
 
@@ -316,7 +316,7 @@ const TourUpdateForm = (props: IProps) => {
               isInvalid={url != "" && !validation[2]}
             />
             <Form.Control.Feedback type="invalid">
-              {TourErrorCode.TOUR_1}
+              {TourErrorCode.TOUR_7}
             </Form.Control.Feedback>
           </FloatingLabel>
 

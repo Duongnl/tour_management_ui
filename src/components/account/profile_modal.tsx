@@ -6,20 +6,28 @@ import AccountErrorCode from "@/exception/account_error_code";
 import EmployeeErrorCode from "@/exception/employee_error_code";
 import { toast } from "react-toastify";
 import { ExportError } from "@/utils/export_error";
-import { handleDate, handleEmail, handleName, handlePhoneNumber } from "@/utils/handleUtils";
+import {
+  handleDate,
+  handleEmail,
+  handleName,
+  handlePhoneNumber,
+} from "@/utils/handleUtils";
 import { CreateSlug } from "@/utils/create_slug";
+import { fetchPutAccount, fetchPutEmployee } from "@/utils/serviceApiClient";
 interface IProps {
   account: IGetAccountResponse;
 }
 
 const ProfileModal = (props: IProps) => {
   // const [key, setKey] = useState('account');
-  const [accountRes, setAccountRes] = useState<IGetAccountResponse>(props.account);
+  const [accountRes, setAccountRes] = useState<IGetAccountResponse>(
+    props.account
+  );
   const [validationAccount, setValidationAccount] = useState<boolean[]>(
-    Array(6).fill(true)
+    Array(2).fill(true)
   );
   const [validationEmployee, setValidationEmployee] = useState<boolean[]>(
-    Array(4).fill(true)
+    Array(2).fill(true)
   );
 
   const [account_name, setAccount_name] = useState<string>(
@@ -28,123 +36,95 @@ const ProfileModal = (props: IProps) => {
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
   const [email, setEmail] = useState<string>(accountRes.email);
-  const [phone_number, setPhone_number] = useState<string>(accountRes.phone_number);
-  const [birthday, setBirthday] = useState<string>(accountRes.employee.birthday);
-  const [employee_name, setEmployee_name] = useState<string>(accountRes.employee.employee_name)
-  const url = CreateSlug(accountRes.employee.employee_name)+"-"+accountRes.account_id;
+  const [phone_number, setPhone_number] = useState<string>(
+    accountRes.phone_number
+  );
+  const [birthday, setBirthday] = useState<string>(
+    accountRes.employee.birthday
+  );
+  const [employee_name, setEmployee_name] = useState<string>(
+    accountRes.employee.employee_name
+  );
+  const url =
+    CreateSlug(accountRes.employee.employee_name) + "-" + accountRes.account_id;
 
-
-  const handleUpdateAccount = async () => {
-    let flag: boolean = true;
-    // for (let i: number = 0; i < validationAccount.length; i++) {
-    //   if (validationAccount[i] == false || validationAccount[i] == undefined) {
-    //     flag = false;
-    //     break;
-    //   }
-    // }
-
-    if (flag) {
-      let accountRequest;
-      if (password != "") {
-        accountRequest = {
-          account_name: account_name,
-          email: email,
-          phone_number: phone_number,
-          password: password,
-          role_id: accountRes.role.role_id,
-        };
-      } else {
-        accountRequest = {
-          account_name: account_name,
-          email: email,
-          phone_number: phone_number,
-          role_id: accountRes.role.role_id,
-        };
+  const handleUpdateProfile = async () => {
+    let flag1: boolean = true;
+    for (let i: number = 0; i < validationEmployee.length; i++) {
+      if (validationEmployee[i] == false) {
+        flag1 = false;
+        break;
       }
-
-      console.log(accountRequest);
-      const res = await fetch(`http://localhost:8080/api/account/${url}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-        },
-        body: JSON.stringify(accountRequest),
-      });
-
-      const data = await res.json();
-      if (data.status == "SUCCESS") {
-        toast.success(`Cập nhật người dùng ${account_name} thành công`);
-        setPassword("");
-        setRepassword("");
-
-      } else {
-        let errors = ExportError(data, AccountErrorCode);
-        for (let i: number = 0; i < errors.length; i++) {
-          toast.error(errors[i]);
-        }
-        console.log("response:", data);
-      }
-    } else {
-      toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
     }
-  };
+    let flag2: boolean = true;
+    for (let i: number = 0; i < validationAccount.length; i++) {
+      if (validationAccount[i] == false || validationAccount[i] == undefined) {
+        flag2 = false;
+        break;
+      }
+    }
 
-  const handleUpdateEmployee = async () => {
-    let flag: boolean = true;
-    // for (let i: number = 0; i < validationEmployee.length; i++) {
-    //   if (validationEmployee[i] == false) {
-    //     flag = false;
-    //     break;
-    //   }
-    // }
-    if (flag) {
+    if (flag1 && flag2) {
       const employeeRequest: IEmployeeRequest = {
         employee_name: employee_name.trim(),
         birthday: birthday,
         total_commission: accountRes.employee.total_commission,
         total_sales: accountRes.employee.total_sales,
       };
-      
 
-      const res = await fetch(
-        `http://localhost:8080/api/account/employee/${url}`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookie.get("session-id")}`, // Set Authorization header
-          },
-          body: JSON.stringify(employeeRequest),
-        }
-      );
+      let accountRequest: IAccountUpdateRequest = {
+        account_name: account_name,
+        email: email,
+        phone_number: phone_number,
+        role_id: accountRes.role.role_id,
+      };
 
-      const data = await res.json();
-      console.log(data);
-      if (data.status == "SUCCESS") {
-        toast.success(`Cập nhật người dùng ${account_name} thành công`);
-      } else {
-        let errors = ExportError(data, EmployeeErrorCode);
-        for (let i: number = 0; i < errors.length; i++) {
-          toast.error(errors[i]);
-        }
-        console.log("response:", data);
+      if (password != "" && password === repassword) {
+        accountRequest.password = password;
       }
-    } else {
-      toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
-    }
+
+      const putData = async (): Promise<void> => {
+        try {
+          const [accountResponse, employeeResponse] = await Promise.all([
+            fetchPutAccount(url, accountRequest),
+            fetchPutEmployee(url, employeeRequest),
+          ]);
+
+          if (
+            accountResponse.status === "SUCCESS" &&
+            employeeResponse.status === "SUCCESS"
+          ) {
+            toast.success(`Cập nhật người dùng ${account_name} thành công`);
+            setPassword("");
+            setRepassword("");
+          } else {
+            let errors1 = ExportError(accountResponse, EmployeeErrorCode);
+            for (let i: number = 0; i < errors1.length; i++) {
+              toast.error(errors1[i]);
+            }
+            let errors2 = ExportError(employeeResponse, EmployeeErrorCode);
+            for (let i: number = 0; i < errors2.length; i++) {
+              toast.error(errors2[i]);
+            }
+          }
+        } catch (error) {
+          console.error("Có lỗi xảy ra:", error);
+          // Xử lý lỗi chung nếu xảy ra sự cố trong bất kỳ hàm fetch nào
+        }
+      };
+      putData();
+    } else toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
   };
 
-  const handleUpdateProfile = async () => {
-    toast.info("đã bấm");
-    handleUpdateEmployee();
-    handleUpdateAccount();
-  };
-
-  const updateValidation = (index: number, isValid: boolean) => {
+  const updateValidationAccount = (index: number, isValid: boolean) => {
     setValidationAccount((prevValidation) => {
+      const newValidation = [...prevValidation];
+      newValidation[index] = isValid;
+      return newValidation;
+    });
+  };
+  const updateValidationEmployee = (index: number, isValid: boolean) => {
+    setValidationEmployee((prevValidation) => {
       const newValidation = [...prevValidation];
       newValidation[index] = isValid;
       return newValidation;
@@ -182,6 +162,7 @@ const ProfileModal = (props: IProps) => {
                   className="form-control"
                   placeholder="first name"
                   value={account_name}
+                  readOnly
                 />
               </div>
 
@@ -192,13 +173,16 @@ const ProfileModal = (props: IProps) => {
                   className="form-control"
                   placeholder="enter phone number"
                   value={phone_number}
-                  onChange={(e) =>handlePhoneNumber(
-                    e.target.value,
-                    (isValid) => updateValidation(1, isValid),
+                  onChange={(e) =>
+                    handlePhoneNumber(
+                      e.target.value,
+                      (isValid) => updateValidationAccount(1, isValid),
                       setPhone_number
-                  )}
+                    )
+                  }
                 />
               </div>
+
               <div className="col-md-12">
                 <label className="labels">Email</label>
                 <input
@@ -209,7 +193,7 @@ const ProfileModal = (props: IProps) => {
                   onChange={(e) =>
                     handleEmail(
                       e.target.value,
-                      (isValid) => updateValidation(1, isValid),
+                      (isValid) => updateValidationAccount(2, isValid),
                       setEmail
                     )
                   }
@@ -227,7 +211,7 @@ const ProfileModal = (props: IProps) => {
                   onChange={(e) =>
                     handleName(
                       e.target.value,
-                      (isValid) => updateValidation(1, isValid),
+                      (isValid) => updateValidationEmployee(1, isValid),
                       setEmployee_name
                     )
                   }
@@ -243,7 +227,7 @@ const ProfileModal = (props: IProps) => {
                   onChange={(e) =>
                     handleDate(
                       e.target.value,
-                      (isValid) => updateValidation(1, isValid),
+                      (isValid) => updateValidationEmployee(2, isValid),
                       setBirthday
                     )
                   }
@@ -273,7 +257,7 @@ const ProfileModal = (props: IProps) => {
             <div className="mt-5 text-center">
               <Button
                 className="btn btn-primary profile-button"
-                onClick={()=>handleUpdateProfile()}
+                onClick={() => handleUpdateProfile()}
               >
                 Cập nhật tài khoản
               </Button>

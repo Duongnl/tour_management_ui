@@ -99,7 +99,6 @@ const CustomerUpdateForm = (props: IProps) => {
       };
       
       const data = await fetchPutCustomer(customerRes.customer_id.toString(),initCustomerRequest);
-      console.log(data)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${customer_name} thành công`);
       } else {

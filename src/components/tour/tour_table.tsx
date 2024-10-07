@@ -11,8 +11,12 @@ import TourErrorCode from "@/exception/tour_error_code";
 import TourCreateModal from "./tour_create_modal";
 import Loading from "@/components/loading";
 import { defaultIAirlineResponse } from "@/utils/defaults";
-import { fetchGetTours, fetchGetToursCategory } from "@/utils/serviceApiClient";
-import "@/styles/table.css"
+import {
+  fetchGetAirlines,
+  fetchGetTours,
+  fetchGetToursCategory,
+} from "@/utils/serviceApiClient";
+import "@/styles/table.css";
 interface IProps {
   tours: ITourResponse[];
   categories: ICategoryResponse[];
@@ -59,9 +63,12 @@ const TourTable = (props: IProps) => {
           if (status == "all" || status == null)
             updateTourList(await fetchGetTours());
         } else {
-          if (status == "active")   updateTourList(await fetchGetToursCategory(category, 1));
-          if (status == "locked")   updateTourList(await fetchGetToursCategory(category, 0));
-          if (status == "all" || status == null)   updateTourList(await fetchGetToursCategory(category));
+          if (status == "active")
+            updateTourList(await fetchGetToursCategory(category, 1));
+          if (status == "locked")
+            updateTourList(await fetchGetToursCategory(category, 0));
+          if (status == "all" || status == null)
+            updateTourList(await fetchGetToursCategory(category));
         }
       } catch (error) {
         console.error("Error fetching data", error);
@@ -82,6 +89,13 @@ const TourTable = (props: IProps) => {
     setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
+
+  useEffect(() => {
+    const getData = async () => {
+      setAirlines(await fetchGetAirlines(1));
+    };
+    if (showTourModal) getData();
+  }, [showTourModal]);
 
   const updateTourList = (tours: ITourResponse[]) => {
     setTours(tours);
@@ -285,8 +299,6 @@ const TourTable = (props: IProps) => {
         showTourModal={showTourModal}
         setShowTourModal={setShowTourModal}
         fetchTours={fetchGetTours}
-        categories={categories}
-        airlines={airlines}
       />
       <PaginationTable
         numberPages={numberPages}

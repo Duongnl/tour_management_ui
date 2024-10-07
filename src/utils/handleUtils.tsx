@@ -22,7 +22,7 @@ export const handleNameAndNumber = (
   setValue: React.Dispatch<React.SetStateAction<string>>,
   setValueError?: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  const regex: RegExp = /^(?=(.*\p{L}){2,})[\p{L}\p{N} ]{2,255}$/u;
+  const regex: RegExp = /^(?=(.*\p{L}){2,})[\p{L}\p{N},() ]{2,2550}$/u;
   if (regex.test(e)) {
     if (setValueError) setValueError("");
     setValidation(true);
