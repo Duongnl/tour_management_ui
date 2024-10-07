@@ -1,6 +1,6 @@
 import cookie from "js-cookie";
 
-const url_api = process.env.NEXT_PUBLIC_URL_API;
+const url_api = process.env.NEXT_PUBLIC_URL_API?process.env.NEXT_PUBLIC_URL_API:process.env.NEXT_PUBLIC_URL_API_LOCALHOST;
 
 export const fetchGetTour = async (
   tourId: string

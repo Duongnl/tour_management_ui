@@ -1,15 +1,11 @@
 "use client";
 import { Line } from "react-chartjs-2";
-import {
-  ChartOptions,
-} from "chart.js";
 import { Button, Form } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import {
   fetchGetDataCommission,
   fetchGetDataSale,
 } from "@/utils/serviceApiClient";
-import TourErrorCode from "@/exception/tour_error_code";
 import { toast } from "react-toastify";
 
 
@@ -34,7 +30,6 @@ const LineChart = ({
   const [to_month, setToMonth] = useState<number>(today.getMonth() + 1);
 
   const generateChartData = () => {
-    // if(dataSale==undefined||dataCommission==undefined)
     const labels: string[] = [];
     const salesData: number[] = [];
     const commissionData: number[] = [];
@@ -163,7 +158,7 @@ const LineChart = ({
         </Form.Select>
         <Button onClick={fetchData}>Lọc</Button>
       </div>
-      <Line data={generateChartData()} options={options} redraw />
+      <Line data={generateChartData()} options={options}/>
     </>
   );
 };
