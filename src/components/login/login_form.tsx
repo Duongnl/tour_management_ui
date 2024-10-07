@@ -20,8 +20,54 @@ const LoginForm = (props: IProps) => {
   const handleLogin = async () => {
     const res = await LoginServerActions(account_name, password);
     if (res.status === "SUCCESS") {
-      if (props.isPageLogin) window.location.href = "/management";
-      else window.location.reload();
+      if (props.isPageLogin) {
+
+        const resRole = await fetch(
+          "http://localhost:8080/api/account/my-info",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${res.result.token}`, // Set Authorization header
+            },
+          }
+        );
+        const data = await resRole.json();
+        const account:IGetAccountResponse = data.result;
+
+        // window.location.href = "/management";
+       
+        let permissionString: string[] = [];
+        for (let i: number = 0; i < account.role.permissions.length; i++) {
+          permissionString.push(account.role.permissions[i].permission_id);
+        }
+        console.log("Login success data >>> ",  permissionString)
+        if (permissionString.includes("ACCESS_DASHBOARD")) {
+            window.location.href = "/management";
+        } else if (permissionString.includes("ACCESS_CATEGORY")) {
+           window.location.href = "/management/category";
+        } else if (permissionString.includes("ACCESS_TOUR")) {
+           window.location.href = "/management/tour";
+         } else if (permissionString.includes("ACCESS_RESERVE")) {
+            window.location.href = "/management/reserve";
+        } else if (permissionString.includes("ACCESS_BOOKED")) {
+           window.location.href = "/management/booked";
+        } else if (permissionString.includes("ACCESS_CUSTOMER")) {
+           window.location.href = "/management/customer";
+        }else if (permissionString.includes("ACCESS_ACCOUNT")) {
+          window.location.href = "/management/account";
+       }else if (permissionString.includes("ACCESS_ROLE")) {
+        window.location.href = "/management/role";
+       }else if (permissionString.includes("ACCESS_HISTORY")) {
+        window.location.href = "/management/history";
+       } else {
+          toast.error("Bạn không có bất kỳ quyền truy cập nào")
+       }
+
+
+      }
+      else {
+        window.location.reload();
+      } 
     } else {
       let errors = ExportError(res, AccountErrorCode);
       for (let i: number = 0; i < errors.length; i++) {

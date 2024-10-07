@@ -11,6 +11,8 @@ import PaginationTable from '../pagination';
 import { formatCurrency } from '@/utils/string_utils';
 import cookie from 'js-cookie';
 import { toast } from 'react-toastify';
+import ReserveErrorCode from '@/exception/reserve_error_code';
+import { ExportError } from "@/utils/export_error";
 interface IProps {
     reserveResponses: IReserveResponse[],
     slug: string
@@ -217,7 +219,10 @@ const BookedCustomer = (props: IProps) => {
             router.push(`${pathname}`)
             setSearch('')
         } else {
-            toast.success("Thay đổi trạng thái thất bại")
+            let errors = ExportError(data, ReserveErrorCode);
+            for (let i: number = 0; i < errors.length; i++) {
+              toast.error(errors[i]);
+            }
         }
 
      

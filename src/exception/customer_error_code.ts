@@ -13,6 +13,7 @@ enum CustomerErrorCode {
     CUSTOMER_12 = "Ngày sinh không hợp lệ",
     CUSTOMER_13 = "Ngày hết hạn visa không hợp lệ",
     CUSTOMER_14 = "Họ tên ít nhất 2 ký tự và nhiều nhất là 255 ký tự",
+    PERMISSION_2 = "Bạn không có quyền thao tác"
 }
 
 export default CustomerErrorCode

@@ -33,8 +33,8 @@ const BarChart = (props: Props) => {
   };
 
   useEffect(() => {
-    if (dataYear.length > 0) {
-      let updatedTotalMonths = Array(dataYear[0].months.length).fill(0);
+    if (dataYear?.length > 0) {
+      let updatedTotalMonths = Array(dataYear[0]?.months.length).fill(0);
 
       dataYear.forEach((element) => {
         for (var i = 0; i < element.months.length; i++) {

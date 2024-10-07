@@ -30,9 +30,9 @@ const RoleUpdateForm = (props: IProps) => {
     const permissionTour: string[] = [
         "Quản lý tour", "ACCESS_TOUR", "CREATE_TOUR", "UPDATE_TOUR", "CHANGE_TOUR_STATUS",
     ]
-    const permissionReserve: string[] = [
-        "Quản lý đặt chổ", "ACCESS_RESERVE", "CREATE_RESERVE", "UPDATE_RESERVE", "CHANGE_RESERVE_STATUS",
-    ]
+    // const permissionReserve: string[] = [
+    //     "Quản lý đặt chổ", "ACCESS_RESERVE", "CREATE_RESERVE", "UPDATE_RESERVE", "CHANGE_RESERVE_STATUS",
+    // ]
     const permissionCustomer: string[] = [
         "Quản lý khách hàng", "ACCESS_CUSTOMER", "CREATE_CUSTOMER", "UPDATE_CUSTOMER", "CHANGE_CUSTOMER_STATUS",
     ]
@@ -44,7 +44,7 @@ const RoleUpdateForm = (props: IProps) => {
     ]
 
     const permissionDefault: string[][] = [
-        permissionCategory, permissionTour, permissionReserve, permissionCustomer, permissionAccount, permissionRole
+        permissionCategory, permissionTour, permissionCustomer, permissionAccount, permissionRole
     ]
 
     useEffect(() => {
@@ -185,20 +185,75 @@ const RoleUpdateForm = (props: IProps) => {
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>Truy cập lịch sử</td>
-                            <td>
+                    <tr>
+                        <td>Truy cập lịch sử</td>
+                        <td>
+                            <Form.Check // prettier-ignore
+                                checked={permission.includes("ACCESS_HISTORY")}
+                                type={'checkbox'}
+                                id={'permission'}
+                                onChange={(e) => {
+                                    e.target.checked == true ?
+                                        addPermission("ACCESS_HISTORY") : deletePermission("ACCESS_HISTORY")
+                                }}
+                            />
+                        </td>
+                    </tr>
+
+                    <tr>
+                                <td>Đặt chổ</td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                      checked={permission.includes("ACCESS_RESERVE")}
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("ACCESS_RESERVE") : deletePermission("ACCESS_RESERVE")
+                                        }}
+                                    />
+                                </td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                      checked={permission.includes("CREATE_RESERVE")}
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("CREATE_RESERVE") : deletePermission("CREATE_RESERVE")
+                                        }}
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Thông tin đặt chổ</td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                      checked={permission.includes("ACCESS_BOOKED")}
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("ACCESS_BOOKED") : deletePermission("ACCESS_BOOKED")
+                                        }}
+                                    />
+                                </td>
+                                <td>
+                                   
+                                </td>
+                                <td>
                                 <Form.Check // prettier-ignore
-                                    checked={permission.includes("ACCESS_HISTORY")}
-                                    type={'checkbox'}
-                                    id={'permission'}
-                                    onChange={(e) => {
-                                        e.target.checked == true ?
-                                            addPermission("ACCESS_HISTORY") : deletePermission("ACCESS_HISTORY")
-                                    }}
-                                />
-                            </td>
-                        </tr>
+                                  checked={permission.includes("UPDATE_BOOKED")}
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("UPDATE_BOOKED") : deletePermission("UPDATE_BOOKED")
+                                        }}
+                                    />
+                                </td>
+                            </tr>
 
                     </tbody>
                 </Table>
