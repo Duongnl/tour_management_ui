@@ -6,6 +6,8 @@ import ReserveCustomerCreateModal from "./reserve_customer_create_modal";
 import { toast } from "react-toastify";
 import { formatCurrency } from '@/utils/string_utils';
 import "@/styles/reserve.css"
+import ReserveErrorCode from '@/exception/reserve_error_code';
+import { ExportError } from "@/utils/export_error";
 interface IProps {
     reserveTour: IReserveTourResponse;
 }
@@ -100,7 +102,10 @@ const ReserveCustomer = (props: IProps) => {
                 toast.success("Đặt chổ thành công")
                 setReserveRequests([])
             } else {
-                toast.error("Không đủ chổ")
+                let errors = ExportError(data, ReserveErrorCode);
+                for (let i: number = 0; i < errors.length; i++) {
+                  toast.error(errors[i]);
+                }
             }
             console.log("Reserve requests >>> ", initReserveRequests)
             console.log("result >>> ", data)

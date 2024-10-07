@@ -44,9 +44,13 @@ const RoleCreateModal = (props: IProps) => {
     const permissionTour: string[] = [
         "Quản lý tour", "ACCESS_TOUR", "CREATE_TOUR", "UPDATE_TOUR", "CHANGE_TOUR_STATUS",
     ]
-    const permissionReserve: string[] = [
-        "Quản lý đặt chổ", "ACCESS_RESERVE", "CREATE_RESERVE", "UPDATE_RESERVE", "CHANGE_RESERVE_STATUS",
-    ]
+    // const permissionReserve: string[] = [
+    //     "Quản lý đặt chổ", "ACCESS_RESERVE", "CREATE_RESERVE",
+    // ]
+    // const permissionBooked: string[] = [
+    //     "Thông tin đặt chổ", "ACCESS_BOOKED", "UPDATE_BOOKED",
+    // ]
+    
     const permissionCustomer: string[] = [
         "Quản lý khách hàng", "ACCESS_CUSTOMER", "CREATE_CUSTOMER", "UPDATE_CUSTOMER", "CHANGE_CUSTOMER_STATUS",
     ]
@@ -58,7 +62,7 @@ const RoleCreateModal = (props: IProps) => {
     ]
 
     const permissionDefault: string[][] = [
-        permissionCategory, permissionTour, permissionReserve, permissionCustomer, permissionAccount, permissionRole
+        permissionCategory, permissionTour,permissionCustomer, permissionAccount, permissionRole
     ]
 
     const handleHideModal = () => {
@@ -215,6 +219,59 @@ const RoleCreateModal = (props: IProps) => {
                                     />
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td>Đặt chổ</td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("ACCESS_RESERVE") : deletePermission("ACCESS_RESERVE")
+                                        }}
+                                    />
+                                </td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("CREATE_RESERVE") : deletePermission("CREATE_RESERVE")
+                                        }}
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Thông tin đặt chổ</td>
+                                <td>
+                                    <Form.Check // prettier-ignore
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("ACCESS_BOOKED") : deletePermission("ACCESS_BOOKED")
+                                        }}
+                                    />
+                                </td>
+                                <td>
+                                   
+                                </td>
+                                <td>
+                                <Form.Check // prettier-ignore
+                                        type={'checkbox'}
+                                        id={'permission'}
+                                        onChange={(e) => {
+                                            e.target.checked == true ?
+                                                addPermission("UPDATE_BOOKED") : deletePermission("UPDATE_BOOKED")
+                                        }}
+                                    />
+                                </td>
+                            </tr>
+
+
 
 
                         </tbody>

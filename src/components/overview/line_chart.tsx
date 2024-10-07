@@ -34,14 +34,14 @@ const LineChart = ({
     const salesData: number[] = [];
     const commissionData: number[] = [];
 
-    dataSale.forEach(({ days, month, year }) => {
+    dataSale?.forEach(({ days, month, year }) => {
       days.forEach((item, index) => {
         salesData.push(item);
         labels.push(`${index + 1}/${month}/${year}`);
       });
     });
 
-    dataCommission.forEach(({ days }) => {
+    dataCommission?.forEach(({ days }) => {
       days.forEach((item) => commissionData.push(item));
     });
 
