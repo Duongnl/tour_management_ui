@@ -219,73 +219,74 @@ const TourTable = (props: IProps) => {
           Thêm Tour
         </Button>
       </div>
-
-      <Table striped bordered hover className="table">
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên Tour</th>
-            <th>Tên danh mục</th>
-            <th>Mã danh mục</th>
-            <th>Chi tiết</th>
-            <th>Hoạt động</th>
-            <th>Chi tiết</th>
-          </tr>
-        </thead>
-        <tbody>
-          <Suspense fallback={<Loading />}>
-            {tours?.map((tour, index) => {
-              if (index + 1 >= numberStart && index + 1 <= numberEnd) {
-                return (
-                  <tr key={tour.tour_id}>
-                    <td>{index + 1}</td>
-                    <td>{tour.tour_name}</td>
-                    <td>{tour.category_name}</td>
-                    <td>
-                      <Button
-                        onClick={() =>
-                          handleSelectCategory(
-                            (tour.category_id ? tour.category_id : 0).toString()
-                          )
-                        }
-                        variant="outline-primary"
-                      >
-                        {tour.category_id}
-                      </Button>
-                    </td>
-                    <td>{tour.tour_detail}</td>
-                    <td>
-                      <Form.Check
-                        className="check-active"
-                        checked={tour.status == 1}
-                        onChange={() => handleChangeStatus(tour)}
-                        type="switch"
-                        id="custom-switch"
-                      />
-                    </td>
-                    <td>
-                      <Button
-                        variant="outline-secondary"
-                        className="btn-update"
-                      >
-                        <Link
-                          href={"/management/tour/" + tour.tour_id}
-                          className="link-update"
+      <div className="table-wrapper">
+        <Table striped bordered hover className="table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên Tour</th>
+              <th>Tên danh mục</th>
+              <th>Mã danh mục</th>
+              <th>Chi tiết</th>
+              <th>Hoạt động</th>
+              <th>Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <Suspense fallback={<Loading />}>
+              {tours?.map((tour, index) => {
+                if (index + 1 >= numberStart && index + 1 <= numberEnd) {
+                  return (
+                    <tr key={tour.tour_id}>
+                      <td>{index + 1}</td>
+                      <td>{tour.tour_name}</td>
+                      <td>{tour.category_name}</td>
+                      <td>
+                        <Button
+                          onClick={() =>
+                            handleSelectCategory(
+                              (tour.category_id ? tour.category_id : 0).toString()
+                            )
+                          }
+                          variant="outline-primary"
                         >
-                          <i
-                            className="fa-solid fa-user-pen"
-                            style={{ color: "black" }}
-                          ></i>
-                        </Link>
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              }
-            })}
-          </Suspense>
-        </tbody>
-      </Table>
+                          {tour.category_id}
+                        </Button>
+                      </td>
+                      <td>{tour.tour_detail}</td>
+                      <td>
+                        <Form.Check
+                          className="check-active"
+                          checked={tour.status == 1}
+                          onChange={() => handleChangeStatus(tour)}
+                          type="switch"
+                          id="custom-switch"
+                        />
+                      </td>
+                      <td>
+                        <Button
+                          variant="outline-secondary"
+                          className="btn-update"
+                        >
+                          <Link
+                            href={"/management/tour/" + tour.tour_id}
+                            className="link-update"
+                          >
+                            <i
+                              className="fa-solid fa-user-pen"
+                              style={{ color: "black" }}
+                            ></i>
+                          </Link>
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
+            </Suspense>
+          </tbody>
+        </Table>
+      </div>
       <ChangeStatusModal
         showChangeStatusModal={showChangeStatusModal}
         setShowChangeStatusModal={setShowChangeStatusModal}

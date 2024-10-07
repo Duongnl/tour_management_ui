@@ -131,76 +131,78 @@ const RoleUpdateForm = (props: IProps) => {
                             {RoleErrorCode.ROLE_2}
                         </Form.Control.Feedback>
             </FloatingLabel>
-            <Table className='table-permission' >
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th><p className='text-permission' >Truy cập</p></th>
-                        <th><p className='text-permission' >Thêm mới</p></th>
-                        <th><p className='text-permission' >Chỉnh sửa</p></th>
-                        <th><p className='text-permission' >Khóa, mở khóa</p></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {permissionDefault.map((pd,index) => (
-                        <tr key={index}>
-                            {
-                                pd.map((pdt, index) => {
-                                    if (index == 0) {
-                                        return (<td>{pdt}</td>)
-                                    } else {
-                                        return (<>
-                                            <td>
-                                                <Form.Check // prettier-ignore
-                                                    checked={permission.includes(pdt)}
-                                                    type={'checkbox'}
-                                                    id={'permission'}
-                                                    onChange={(e) => {
-                                                        e.target.checked == true ?
-                                                            addPermission(pdt) : deletePermission(pdt)
-                                                    }}
-                                                />
-                                            </td>
-                                        </>)
-                                    }
-                                })
-                            }
+            <div className="table-wrapper">
+                <Table className='table-permission' >
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><p className='text-permission' >Truy cập</p></th>
+                            <th><p className='text-permission' >Thêm mới</p></th>
+                            <th><p className='text-permission' >Chỉnh sửa</p></th>
+                            <th><p className='text-permission' >Khóa, mở khóa</p></th>
                         </tr>
-                    ))}
+                    </thead>
+                    <tbody>
 
-                    <tr>
-                        <td>Truy cập tổng quan</td>
-                        <td>
-                            <Form.Check // prettier-ignore
-                                checked={permission.includes("ACCESS_DASHBOARD")}
-                                type={'checkbox'}
-                                id={'permission'}
-                                onChange={(e) => {
-                                    e.target.checked == true ?
-                                        addPermission("ACCESS_DASHBOARD") : deletePermission("ACCESS_DASHBOARD")
-                                }}
-                            />
-                        </td>
-                    </tr>
+                        {permissionDefault.map((pd,index) => (
+                            <tr key={index}>
+                                {
+                                    pd.map((pdt, index) => {
+                                        if (index == 0) {
+                                            return (<td>{pdt}</td>)
+                                        } else {
+                                            return (<>
+                                                <td>
+                                                    <Form.Check // prettier-ignore
+                                                        checked={permission.includes(pdt)}
+                                                        type={'checkbox'}
+                                                        id={'permission'}
+                                                        onChange={(e) => {
+                                                            e.target.checked == true ?
+                                                                addPermission(pdt) : deletePermission(pdt)
+                                                        }}
+                                                    />
+                                                </td>
+                                            </>)
+                                        }
+                                    })
+                                }
+                            </tr>
+                        ))}
 
-                    <tr>
-                        <td>Truy cập lịch sử</td>
-                        <td>
-                            <Form.Check // prettier-ignore
-                                checked={permission.includes("ACCESS_HISTORY")}
-                                type={'checkbox'}
-                                id={'permission'}
-                                onChange={(e) => {
-                                    e.target.checked == true ?
-                                        addPermission("ACCESS_HISTORY") : deletePermission("ACCESS_HISTORY")
-                                }}
-                            />
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>Truy cập tổng quan</td>
+                            <td>
+                                <Form.Check // prettier-ignore
+                                    checked={permission.includes("ACCESS_DASHBOARD")}
+                                    type={'checkbox'}
+                                    id={'permission'}
+                                    onChange={(e) => {
+                                        e.target.checked == true ?
+                                            addPermission("ACCESS_DASHBOARD") : deletePermission("ACCESS_DASHBOARD")
+                                    }}
+                                />
+                            </td>
+                        </tr>
 
-                </tbody>
-            </Table>
+                        <tr>
+                            <td>Truy cập lịch sử</td>
+                            <td>
+                                <Form.Check // prettier-ignore
+                                    checked={permission.includes("ACCESS_HISTORY")}
+                                    type={'checkbox'}
+                                    id={'permission'}
+                                    onChange={(e) => {
+                                        e.target.checked == true ?
+                                            addPermission("ACCESS_HISTORY") : deletePermission("ACCESS_HISTORY")
+                                    }}
+                                />
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </Table>
+            </div>
             <div className='div-back-create' >
                 <Button className='btn-back'>
                     <Link href={'/management/role/'} className='link-back' >Trở lại</Link>

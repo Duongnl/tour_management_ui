@@ -247,81 +247,82 @@ const ReserveTable = (props: IProps) => {
                 </InputGroup>
             </div>
 
+            <div className="table-wrapper">
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Tour</th>
+                            <th>Số chổ</th>
+                            <th>Thời gian</th>
+                            <th>Hãng bay</th>
+                            <th>Giá</th>
+                            <th>Đặt chổ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            reserveToursFilter?.map((reserveTour, index) => {
+                                if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                    return (
+                                        <>
+                                            <tr key={index} >
+                                                <td>
+                                                    <div className='div-text' >
+                                                        <i className="fa-solid fa-location-dot" style={{ color: 'red' }}></i>  <span className='category-name' >{reserveTour.category_name}</span> <br />
+                                                    </div>
+                                                    <i className="fa-solid fa-globe" style={{ color: 'green' }}></i> <span className='tour-name' >{reserveTour.tour_name}</span>
+                                                </td>
+                                                <td>
+                                                    <div className='div-text' >
+                                                        <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'blue' }}></i>  <span style={{ color: "#337ab7" }} >  {`Đã bán: ${reserveTour.tourTime.quantity_sell}`} </span><br />
+                                                    </div>
+                                                    <div className='div-text' >
+                                                        <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'red' }}></i>   <span style={{ color: "#337ab7" }} > {`Giữ chổ: ${reserveTour.tourTime.quantity_reserve}`} </span><br />
+                                                    </div>
+                                                    <div className='div-text' >
+                                                        <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'green' }}></i>   <span style={{ color: "green" }} >{`Còn lại: ${reserveTour.tourTime.quantity_left}`} </span> <br />
+                                                    </div>
+                                                    <i className="fa-brands fa-cc-visa" style={{ color: 'red' }} ></i>  <span style={{ color: "red" }} >{`Hạn visa: ${reserveTour.tourTime.visa_expire}`}</span>
+                                                </td>
+                                                <td>
+                                                    <div className='div-text'>
+                                                        <i className="fa-regular fa-calendar-days" style={{ color: 'green' }} ></i> <span className='text-schedule'> {`Đi: ${reserveTour.tourTime.departure_date}`}</span>  <br />
+                                                    </div>
+                                                    <i className="fa-regular fa-calendar-days" style={{ color: 'green' }} ></i> <span className='text-schedule'>  {`Về: ${reserveTour.tourTime.return_date}`} </span>
+                                                </td>
+                                                <td>
+                                                    <div className='div-text'>
+                                                        <i className="fa-solid fa-plane-departure" style={{ color: 'green' }} ></i>  <span className='text-schedule'>  {`Đi:  ${reserveTour.tourTime.departureAirline.airline_name} ${reserveTour.tourTime.departureAirline.airline_detail} ${reserveTour.tourTime.departure_time}`} </span> <br />
+                                                    </div>
+                                                    <i className="fa-solid fa-plane-departure" style={{ color: 'green' }} ></i> <span className='text-schedule'>  {`Về:  ${reserveTour.tourTime.returnAirline.airline_name} ${reserveTour.tourTime.returnAirline.airline_detail} ${reserveTour.tourTime.return_time}`} </span>
+                                                </td>
+                                                <td>
+                                                    <span style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }} >{`${formatCurrency(reserveTour.tourTime.price_min)}`}  </span>
+                                                </td>
+                                                <td>
+                                                    {/* <Button
+                                                        variant="success"
+                                                    >Đặt chổ</Button> */}
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Tour</th>
-                        <th>Số chổ</th>
-                        <th>Thời gian</th>
-                        <th>Hãng bay</th>
-                        <th>Giá</th>
-                        <th>Đặt chổ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        reserveToursFilter?.map((reserveTour, index) => {
-                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                                return (
-                                    <>
-                                        <tr key={index} >
-                                            <td>
-                                                <div className='div-text' >
-                                                    <i className="fa-solid fa-location-dot" style={{ color: 'red' }}></i>  <span className='category-name' >{reserveTour.category_name}</span> <br />
-                                                </div>
-                                                <i className="fa-solid fa-globe" style={{ color: 'green' }}></i> <span className='tour-name' >{reserveTour.tour_name}</span>
-                                            </td>
-                                            <td>
-                                                <div className='div-text' >
-                                                    <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'blue' }}></i>  <span style={{ color: "#337ab7" }} >  {`Đã bán: ${reserveTour.tourTime.quantity_sell}`} </span><br />
-                                                </div>
-                                                <div className='div-text' >
-                                                    <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'red' }}></i>   <span style={{ color: "#337ab7" }} > {`Giữ chổ: ${reserveTour.tourTime.quantity_reserve}`} </span><br />
-                                                </div>
-                                                <div className='div-text' >
-                                                    <i className="fa-solid fa-user-plus icon-reserve" style={{ color: 'green' }}></i>   <span style={{ color: "green" }} >{`Còn lại: ${reserveTour.tourTime.quantity_left}`} </span> <br />
-                                                </div>
-                                                <i className="fa-brands fa-cc-visa" style={{ color: 'red' }} ></i>  <span style={{ color: "red" }} >{`Hạn visa: ${reserveTour.tourTime.visa_expire}`}</span>
-                                            </td>
-                                            <td>
-                                                <div className='div-text'>
-                                                    <i className="fa-regular fa-calendar-days" style={{ color: 'green' }} ></i> <span className='text-schedule'> {`Đi: ${reserveTour.tourTime.departure_date}`}</span>  <br />
-                                                </div>
-                                                <i className="fa-regular fa-calendar-days" style={{ color: 'green' }} ></i> <span className='text-schedule'>  {`Về: ${reserveTour.tourTime.return_date}`} </span>
-                                            </td>
-                                            <td>
-                                                <div className='div-text'>
-                                                    <i className="fa-solid fa-plane-departure" style={{ color: 'green' }} ></i>  <span className='text-schedule'>  {`Đi:  ${reserveTour.tourTime.departureAirline.airline_name} ${reserveTour.tourTime.departureAirline.airline_detail} ${reserveTour.tourTime.departure_time}`} </span> <br />
-                                                </div>
-                                                <i className="fa-solid fa-plane-departure" style={{ color: 'green' }} ></i> <span className='text-schedule'>  {`Về:  ${reserveTour.tourTime.returnAirline.airline_name} ${reserveTour.tourTime.returnAirline.airline_detail} ${reserveTour.tourTime.return_time}`} </span>
-                                            </td>
-                                            <td>
-                                                <span style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }} >{`${formatCurrency(reserveTour.tourTime.price_min)}`}  </span>
-                                            </td>
-                                            <td>
-                                                {/* <Button
-                                                    variant="success"
-                                                >Đặt chổ</Button> */}
+                                                    {reserveTour.tourTime.quantity_left > 0 ? (<>
+                                                        <Button variant='outline-secondary' className='btn-reserve' >
+                                                        <Link href={'/management/reserve/' + CreateSlug(`${reserveTour.tourTime.time_name} ${reserveTour.tourTime.tour_time_id}`)} className='link-reserve' >
+                                                            Đặt chổ
+                                                        </Link>
+                                                    </Button>
+                                                    </>) : (<> <span  style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }}> Hết chổ </span> </>) }
+                                                
+                                                </td>
+                                            </tr>
+                                        </>
+                                    )
+                                }
 
-                                                {reserveTour.tourTime.quantity_left > 0 ? (<>
-                                                    <Button variant='outline-secondary' className='btn-reserve' >
-                                                    <Link href={'/management/reserve/' + CreateSlug(`${reserveTour.tourTime.time_name} ${reserveTour.tourTime.tour_time_id}`)} className='link-reserve' >
-                                                        Đặt chổ
-                                                    </Link>
-                                                </Button>
-                                                </>) : (<> <span  style={{ color: "red", fontSize: '20px', fontWeight: 'bold' }}> Hết chổ </span> </>) }
-                                              
-                                            </td>
-                                        </tr>
-                                    </>
-                                )
-                            }
-
-                        })
-                    }
-                </tbody>
-            </Table>
+                            })
+                        }
+                    </tbody>
+                </Table>
+            </div>
             <PaginationTable
                 numberPages={numberPages}
                 currentPage={Number(currentPage)}

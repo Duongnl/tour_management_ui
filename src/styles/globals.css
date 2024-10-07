@@ -41,3 +41,9 @@ a {
   margin-top: 3px;
   font-size: 15px;
 }
+.table-wrapper{
+  overflow: auto;
+}
+.min-width-primary{
+  min-width: 120px;
+}

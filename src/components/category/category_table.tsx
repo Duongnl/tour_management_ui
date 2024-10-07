@@ -226,52 +226,53 @@ const CategoryTable = (props: IProps) => {
                     <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
                     Thêm danh mục</Button>
             </div>
+            <div className="table-wrapper">
+                <Table striped bordered hover id="myTable" className="table"  >
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên danh mục</th>
+                            <th>Hoạt động</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {categoriesFilter?.map((category, index) => {
+                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                return (
+                                    <tr key={category.category_id}>
+                                        <td>{index + 1}</td>
+                                        <td>{category.category_name}</td>
+                                        <td>
+                                            <Form.Check className='check-active'
+                                                checked={category.status == 1}
+                                                onChange={() => handleChangeStatus(category)}
+                                                type="switch"
+                                                id="custom-switch"
 
-            <Table striped bordered hover id="myTable" className="table"  >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên danh mục</th>
-                        <th>Hoạt động</th>
-                        <th>Chi tiết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {categoriesFilter?.map((category, index) => {
-                        if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                            return (
-                                <tr key={category.category_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{category.category_name}</td>
-                                    <td>
-                                        <Form.Check className='check-active'
-                                            checked={category.status == 1}
-                                            onChange={() => handleChangeStatus(category)}
-                                            type="switch"
-                                            id="custom-switch"
+                                            />
+                                        </td>
+                                        <td>
+                                            <Button variant='outline-secondary' className='btn-update' >
+                                                <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
+                                                    <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
+                                                </Link>
+                                            </Button>
+                                            <Button variant='outline-secondary' className='btn-detail'>
+                                                <Link href={`./tour?category=${category.category_id}`} className='link-update' >
+                                                    <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
+                                                </Link>
 
-                                        />
-                                    </td>
-                                    <td>
-                                        <Button variant='outline-secondary' className='btn-update' >
-                                            <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
-                                                <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
-                                            </Link>
-                                        </Button>
-                                        <Button variant='outline-secondary' className='btn-detail'>
-                                            <Link href={`./tour?category=${category.category_id}`} className='link-update' >
-                                                <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
-                                            </Link>
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        })}
 
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    })}
-
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
             <PaginationTable
                 numberPages={numberPages}
                 currentPage={Number(currentPage)}

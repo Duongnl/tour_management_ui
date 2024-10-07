@@ -219,45 +219,47 @@ const RoleTable = (props: IProps) => {
                     <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
                     Thêm quyền</Button>
             </div>
-            <Table striped bordered hover id="myTable" className="table"  >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên quyền</th>
-                        <th>Hoạt động</th>
-                        <th>Chi tiết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rolesFilter?.map((role, index) => {
-                        if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                            return (
-                                <tr key={role.role_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{role.role_name}</td>
-                                    <td>
-                                        <Form.Check className='check-active'
-                                            checked={role.status == 1}
-                                            onChange={() => handleChangeStatus(role)}
-                                            type="switch"
-                                            id="custom-switch"
-                                            
-                                        />
-                                    </td>
-                                    <td>
-                                        <Button variant='outline-secondary' className='btn-update' >
-                                            <Link href={'/management/role/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
-                                                <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
-                                            </Link>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    })}
+            <div className="table-wrapper">
+                <Table striped bordered hover id="myTable" className="table"  >
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên quyền</th>
+                            <th>Hoạt động</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rolesFilter?.map((role, index) => {
+                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                return (
+                                    <tr key={role.role_id}>
+                                        <td>{index + 1}</td>
+                                        <td>{role.role_name}</td>
+                                        <td>
+                                            <Form.Check className='check-active'
+                                                checked={role.status == 1}
+                                                onChange={() => handleChangeStatus(role)}
+                                                type="switch"
+                                                id="custom-switch"
+                                                
+                                            />
+                                        </td>
+                                        <td>
+                                            <Button variant='outline-secondary' className='btn-update' >
+                                                <Link href={'/management/role/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
+                                                    <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
+                                                </Link>
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        })}
 
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
             <PaginationTable
                 numberPages={numberPages}
                 currentPage={Number(currentPage)}

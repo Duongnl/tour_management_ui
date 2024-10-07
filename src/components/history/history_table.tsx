@@ -121,33 +121,34 @@ const HistoryTable = (props: IProps) => {
           />
         </FloatingLabel>
       </div>
-
-      <Table striped bordered hover style={{ marginTop: "20px" }}>
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên Tài Khoản </th>
-            <th>Lịch sử </th>
-            <th>Thời Gian</th>
-            <th>Trạng Thái</th>
-          </tr>
-        </thead>
-        <tbody>
-          {historiesFilter?.map((history, index) => {
-            if (index + 1 >= numberStart && index + 1 <= numberEnd) {
-              return (
-                <tr key={history.history_id}>
-                  <td>{index + 1}</td>
-                  <td>{history.account_name}</td>
-                  <td>{history.history_detail}</td>
-                  <td>{history.time}</td>
-                  <td>{history.status}</td>
-                </tr>
-              );
-            }
-          })}
-        </tbody>
-      </Table>
+      <div className="table-wrapper">
+        <Table striped bordered hover style={{ marginTop: "20px" }}>
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên Tài Khoản </th>
+              <th>Lịch sử </th>
+              <th>Thời Gian</th>
+              <th>Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            {historiesFilter?.map((history, index) => {
+              if (index + 1 >= numberStart && index + 1 <= numberEnd) {
+                return (
+                  <tr key={history.history_id}>
+                    <td>{index + 1}</td>
+                    <td>{history.account_name}</td>
+                    <td>{history.history_detail}</td>
+                    <td>{history.time}</td>
+                    <td>{history.status}</td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </Table>
+        </div>
       <PaginationTable
         numberPages={numberPages}
         currentPage={Number(currentPage)}

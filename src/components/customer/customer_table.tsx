@@ -156,35 +156,31 @@ const CustomerTable = (props: IProps) => {
   };
 
   return (
-    <div className="position-relative">
-      <div className="div-add mb-4">
-        <div style={{ display: "flex" }}>
-          <InputGroup className="input-search">
-            <InputGroup.Text id="basic-addon1">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </InputGroup.Text>
-            <Form.Control
-              placeholder="Tìm kiếm"
-              aria-describedby="basic-addon1"
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
-          </InputGroup>
-
-          <Form.Select
-            aria-label="Default select example"
-            className="select-status"
-            value={status || ""} // Đặt giá trị hiện tại
-            onChange={(e) => handleSelectStatus(e.target.value)}
-          >
-            <option hidden>Trạng thái</option>
-            <option value="all">Tất cả</option>
-            <option value="active">Đang hoạt động</option>
-            <option value="locked">Đã khóa</option>
-          </Form.Select>
-        </div>
-
-        <Button className="btn-add" onClick={() => handleCreate()}>
+    <>
+      <div className="div-add mb-4 d-flex flex-wrap">
+        <InputGroup className="input-search min-width-primary mb-2">
+          <InputGroup.Text id="basic-addon1">
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </InputGroup.Text>
+          <Form.Control
+            placeholder="Tìm kiếm"
+            aria-describedby="basic-addon1"
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </InputGroup>
+        <Form.Select
+          aria-label="Default select example"
+          className="select-status min-width-primary mb-2"
+          value={status || ""} // Đặt giá trị hiện tại
+          onChange={(e) => handleSelectStatus(e.target.value)}
+        >
+          <option hidden>Trạng thái</option>
+          <option value="all">Tất cả</option>
+          <option value="active">Đang hoạt động</option>
+          <option value="locked">Đã khóa</option>
+        </Form.Select>
+        <Button className="btn-add min-width-primary mb-2" onClick={() => handleCreate()}>
           <i
             className="fa-solid fa-user-plus"
             style={{ paddingRight: "10px" }}
@@ -192,62 +188,63 @@ const CustomerTable = (props: IProps) => {
           Thêm khách hàng
         </Button>
       </div>
-
-      <Table striped bordered hover className="table">
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên khách hàng</th>
-            <th>Số điện thoại</th>
-            <th>Thời gian tạo</th>
-            <th>Ngày sinh</th>
-            <th>Hoạt động</th>
-            <th>Chi tiết</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customers?.map((customer, index) => {
-            if (index + 1 >= numberStart && index + 1 <= numberEnd) {
-              return (
-                <tr key={customer.customer_id}>
-                  <td>{index + 1}</td>
-                  <td>{customer.customer_name}</td>
-                  <td>{customer.phone_number}</td>
-                  <td>{formatDateHour(customer.time)}</td>
-                  <td>{formatDateHour(customer.birthday)}</td>
-                  <td>
-                    <Form.Check
-                      className="check-active"
-                      checked={customer.status == 1}
-                      onChange={() => handleChangeStatus(customer)}
-                      type="switch"
-                      id="custom-switch"
-                    />
-                  </td>
-                  <td>
-                    <Button variant="outline-secondary" className="btn-update">
-                      <Link
-                        href={
-                          "/management/customer/" +
-                          CreateSlug(
-                            `${customer.customer_name} ${customer.customer_id}`
-                          )
-                        }
-                        className="link-update"
-                      >
-                        <i
-                          className="fa-solid fa-user-pen"
-                          style={{ color: "black" }}
-                        ></i>
-                      </Link>
-                    </Button>
-                  </td>
-                </tr>
-              );
-            }
-          })}
-        </tbody>
-      </Table>
+      <div className="table-wrapper">
+        <Table striped bordered hover className="table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên khách hàng</th>
+              <th>Số điện thoại</th>
+              <th>Thời gian tạo</th>
+              <th>Ngày sinh</th>
+              <th>Hoạt động</th>
+              <th>Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            {customers?.map((customer, index) => {
+              if (index + 1 >= numberStart && index + 1 <= numberEnd) {
+                return (
+                  <tr key={customer.customer_id}>
+                    <td>{index + 1}</td>
+                    <td>{customer.customer_name}</td>
+                    <td>{customer.phone_number}</td>
+                    <td>{formatDateHour(customer.time)}</td>
+                    <td>{formatDateHour(customer.birthday)}</td>
+                    <td>
+                      <Form.Check
+                        className="check-active"
+                        checked={customer.status == 1}
+                        onChange={() => handleChangeStatus(customer)}
+                        type="switch"
+                        id="custom-switch"
+                      />
+                    </td>
+                    <td>
+                      <Button variant="outline-secondary" className="btn-update">
+                        <Link
+                          href={
+                            "/management/customer/" +
+                            CreateSlug(
+                              `${customer.customer_name} ${customer.customer_id}`
+                            )
+                          }
+                          className="link-update"
+                        >
+                          <i
+                            className="fa-solid fa-user-pen"
+                            style={{ color: "black" }}
+                          ></i>
+                        </Link>
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </Table>
+      </div>
       <ChangeStatusModal
         showChangeStatusModal={showChangeStatusModal}
         setShowChangeStatusModal={setShowChangeStatusModal}
@@ -266,7 +263,7 @@ const CustomerTable = (props: IProps) => {
         numberPages={numberPages}
         currentPage={Number(currentPage)}
       />
-    </div>
+    </>
   );
 };
 

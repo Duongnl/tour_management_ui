@@ -253,50 +253,52 @@ const BookedCustomer = (props: IProps) => {
                     </Form.Select>
                 </div>
             </div>
-            <Table striped bordered hover id="myTable" className="table"  >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên khách hàng</th>
-                        <th>Tên nhân viên</th>
-                        <th>Note</th>
-                        <th>Giá</th>
-                        <th>Thời gian</th>
-                        <th>Hoa hồng</th>
-                        <th>Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {reservesFilter?.map((reserve, index) => {
-                        if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                            return (
-                                <tr key={reserve.reserve_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{reserve.customer.customer_name}</td>
-                                    <td>{reserve.employee.employee_name}</td>
-                                    <td>{reserve.note}</td>
-                                    <td>{formatCurrency(reserve.price)}</td>
-                                    <td>{reserve.time}</td>
-                                    <td>{formatCurrency(reserve.commission)}</td>
-                                    <td>
-                                        <Form.Select aria-label="Default select example" className='select-status'
-                                            style={{backgroundColor:`${handleStatusView(reserve.status)}`}}
+            <div className="table-wrapper">
+                <Table striped bordered hover id="myTable" className="table"  >
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên khách hàng</th>
+                            <th>Tên nhân viên</th>
+                            <th>Note</th>
+                            <th>Giá</th>
+                            <th>Thời gian</th>
+                            <th>Hoa hồng</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {reservesFilter?.map((reserve, index) => {
+                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                return (
+                                    <tr key={reserve.reserve_id}>
+                                        <td>{index + 1}</td>
+                                        <td>{reserve.customer.customer_name}</td>
+                                        <td>{reserve.employee.employee_name}</td>
+                                        <td>{reserve.note}</td>
+                                        <td>{formatCurrency(reserve.price)}</td>
+                                        <td>{reserve.time}</td>
+                                        <td>{formatCurrency(reserve.commission)}</td>
+                                        <td>
+                                            <Form.Select aria-label="Default select example" className='select-status'
+                                                style={{backgroundColor:`${handleStatusView(reserve.status)}`}}
 
-                                            value={reserve.status } // Đặt giá trị hiện tại
-                                            onChange={(e) => handleChangeStatus( reserve.reserve_id ,e.target.value)}
-                                        >
-                                            <option value="1" style={{backgroundColor:'white'}} >Đã thanh toán</option>
-                                            <option value="2"  style={{backgroundColor:'white'}} >Chưa thanh toán</option>
-                                            <option value="0"   style={{backgroundColor:'white'}}>Đã hủy</option>
-                                        </Form.Select>
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    })}
+                                                value={reserve.status } // Đặt giá trị hiện tại
+                                                onChange={(e) => handleChangeStatus( reserve.reserve_id ,e.target.value)}
+                                            >
+                                                <option value="1" style={{backgroundColor:'white'}} >Đã thanh toán</option>
+                                                <option value="2"  style={{backgroundColor:'white'}} >Chưa thanh toán</option>
+                                                <option value="0"   style={{backgroundColor:'white'}}>Đã hủy</option>
+                                            </Form.Select>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        })}
 
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
             <PaginationTable
                 numberPages={numberPages}
                 currentPage={Number(currentPage)}

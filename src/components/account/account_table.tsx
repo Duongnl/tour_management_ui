@@ -246,52 +246,53 @@ const AccountTable = (props: IProps) => {
                     <i className="fa-solid fa-user-plus" style={{ paddingRight: '10px' }}
                     ></i>Thêm tài khoản</Button>
             </div>
+            <div className="table-wrapper">
+                <Table striped bordered hover id="myTable" className="table"  >
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên tài khoản</th>
+                            <th>Tên</th>
+                            <th>Quyền</th>
+                            <th>Thời gian tạo</th>
+                            <th>Hoạt động</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {accounts?.map((account, index) => {
+                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                return (
+                                    <tr key={account.account_id}>
+                                        <td>{index + 1}</td>
+                                        <td>{account.account_name}</td>
+                                        <td>{account.employee_name}</td>
+                                        <td>{account.role_name}</td>
+                                        <td>{account.time}</td>
+                                        <td>
+                                            <Form.Check className='check-active'
+                                                checked={account.status == 1}
+                                                onChange={() => handleChangeStatus(account)}
+                                                type="switch"
+                                                id="custom-switch"
+                                            />
+                                        </td>
+                                        <td>
+                                            <Button variant='outline-secondary' className='btn-update' >
 
-            <Table striped bordered hover id="myTable" className="table"  >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên tài khoản</th>
-                        <th>Tên</th>
-                        <th>Quyền</th>
-                        <th>Thời gian tạo</th>
-                        <th>Hoạt động</th>
-                        <th>Chi tiết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {accounts?.map((account, index) => {
-                        if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                            return (
-                                <tr key={account.account_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{account.account_name}</td>
-                                    <td>{account.employee_name}</td>
-                                    <td>{account.role_name}</td>
-                                    <td>{account.time}</td>
-                                    <td>
-                                        <Form.Check className='check-active'
-                                            checked={account.status == 1}
-                                            onChange={() => handleChangeStatus(account)}
-                                            type="switch"
-                                            id="custom-switch"
-                                        />
-                                    </td>
-                                    <td>
-                                        <Button variant='outline-secondary' className='btn-update' >
+                                                <Link href={'/management/account/' + CreateSlug(`${account.employee_name} ${account.account_id}`)} className='link-update' >   <i className="fa-solid fa-user-pen" style={{ color: "black" }} ></i>
 
-                                            <Link href={'/management/account/' + CreateSlug(`${account.employee_name} ${account.account_id}`)} className='link-update' >   <i className="fa-solid fa-user-pen" style={{ color: "black" }} ></i>
+                                                </Link>
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        })}
 
-                                            </Link>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    })}
-
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
             <ChangeStatusModal
                 showChangeStatusModal={showChangeStatusModal}
                 setShowChangeStatusModal={setShowChangeStatusModal}

@@ -39,10 +39,12 @@ const Home = async () => {
             />
           </div>
         </div>
-        <TableReport
-          dataCommissions={reportCommissions}
-          dataSales={reportSales}
-        />
+        <div className="table-wrapper">
+          <TableReport
+            dataCommissions={reportCommissions}
+            dataSales={reportSales}
+          />
+        </div>
         <LineChart dataSales={sales} dataCommissions={commissions} />
       </Container>
     );
