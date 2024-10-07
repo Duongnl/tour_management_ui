@@ -151,35 +151,37 @@ const ReserveCustomer = (props: IProps) => {
                 >Thêm hành khách</Button>
                 <span style={{ color: "red", fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }} >{`Tổng tiền : ${formatCurrency(total)}`}  </span>
             </div>
-            <Table striped bordered hover className="table" style={{ margin: '12px' }}>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên khách hàng</th>
-                        <th>Giới tính</th>
-                        <th>Ngày sinh</th>
-                        <th>Giá</th>
-                        <th>Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {reserveRequests?.map((reserve, index) => {
-                        return (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{reserve.customerResponse.customer_name}</td>
-                                <td>{handleSex(reserve.customerResponse.sex)}</td>
-                                <td>{reserve.customerResponse.birthday}</td>
-                                <td>{formatCurrency(reserve.price)}</td>
-                                <td><Button
-                                    onClick={() => handleDeleteCustomer(reserve)}
-                                    variant="danger" >Xóa</Button></td>
-                            </tr>
-                        );
+            <div className="table-wrapper">
+                <Table striped bordered hover className="table" style={{ margin: '12px' }}>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên khách hàng</th>
+                            <th>Giới tính</th>
+                            <th>Ngày sinh</th>
+                            <th>Giá</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {reserveRequests?.map((reserve, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{reserve.customerResponse.customer_name}</td>
+                                    <td>{handleSex(reserve.customerResponse.sex)}</td>
+                                    <td>{reserve.customerResponse.birthday}</td>
+                                    <td>{formatCurrency(reserve.price)}</td>
+                                    <td><Button
+                                        onClick={() => handleDeleteCustomer(reserve)}
+                                        variant="danger" >Xóa</Button></td>
+                                </tr>
+                            );
 
-                    })}
-                </tbody>
-            </Table>
+                        })}
+                    </tbody>
+                </Table>
+            </div>
             <div className="div-add-reserve" >
                 <Button className="btn-add-reserve"
                     onClick={() => handleReserve()}

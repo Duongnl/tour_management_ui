@@ -97,10 +97,10 @@ const BarChart = (props: Props) => {
 
   return (
     <>
-      <div className="d-flex justify-content-start mb-3">
+      <div className="mb-4 d-flex flex-wrap justify-content-start">
         <Form.Select
           aria-label="Chọn năm"
-          className="mx-2 "
+          className="width-primary m-1"
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
         >
@@ -110,7 +110,7 @@ const BarChart = (props: Props) => {
             </option>
           ))}
         </Form.Select>
-        <Button onClick={fetchData}>Lọc</Button>
+        <Button className="width-primary m-1" onClick={fetchData}>Lọc</Button>
       </div>
       <Bar data={data} options={options} />
     </>

@@ -193,9 +193,8 @@ const CategoryTable = (props: IProps) => {
 
     return (
         <>
-            <div className='div-add'>
-                <div style={{ display: "flex" }} >
-                    <InputGroup className="input-search"
+            <div className='div-add mb-4 d-flex flex-wrap justify-content-start'>
+                    <InputGroup className="input-search width-primary m-1"
                     >
                         <InputGroup.Text id="basic-addon1"
 
@@ -208,7 +207,7 @@ const CategoryTable = (props: IProps) => {
                         />
                     </InputGroup>
 
-                    <Form.Select aria-label="Default select example" className='select-status'
+                    <Form.Select aria-label="Default select example" className='select-status width-primary m-1'
                         value={status || ''} // Đặt giá trị hiện tại
                         onChange={(e) => handleSelectStatus(e.target.value)}
                     >
@@ -217,61 +216,61 @@ const CategoryTable = (props: IProps) => {
                         <option value="active">Đang hoạt động</option>
                         <option value="locked">Đã khóa</option>
                     </Form.Select>
-                </div>
         
 
-                <Button className='btn-add'
+                <Button className='btn-add width-primary mr-1 my-1 ms-auto'
                     onClick={() => handleCreate()}
                 >
                     <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
                     Thêm danh mục</Button>
             </div>
+            <div className="table-wrapper">
+                <Table striped bordered hover id="myTable" className="table"  >
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên danh mục</th>
+                            <th>Hoạt động</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {categoriesFilter?.map((category, index) => {
+                            if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
+                                return (
+                                    <tr key={category.category_id}>
+                                        <td>{index + 1}</td>
+                                        <td>{category.category_name}</td>
+                                        <td>
+                                            <Form.Check className='check-active'
+                                                checked={category.status == 1}
+                                                onChange={() => handleChangeStatus(category)}
+                                                type="switch"
+                                                id="custom-switch"
 
-            <Table striped bordered hover id="myTable" className="table"  >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên danh mục</th>
-                        <th>Hoạt động</th>
-                        <th>Chi tiết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {categoriesFilter?.map((category, index) => {
-                        if ((index + 1) >= numberStart && (index + 1) <= numberEnd) {
-                            return (
-                                <tr key={category.category_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{category.category_name}</td>
-                                    <td>
-                                        <Form.Check className='check-active'
-                                            checked={category.status == 1}
-                                            onChange={() => handleChangeStatus(category)}
-                                            type="switch"
-                                            id="custom-switch"
+                                            />
+                                        </td>
+                                        <td>
+                                            <Button variant='outline-secondary' className='btn-update' >
+                                                <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='' >
+                                                    <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
+                                                </Link>
+                                            </Button>
+                                            <Button variant='outline-secondary' className='btn-update'>
+                                                <Link href={`./tour?category=${category.category_id}`} className='' >
+                                                    <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
+                                                </Link>
 
-                                        />
-                                    </td>
-                                    <td>
-                                        <Button variant='outline-secondary' className='btn-update' >
-                                            <Link href={`${pathname}?category=${CreateSlug(category.category_name)}-${category.category_id}`} className='link-update' >
-                                                <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
-                                            </Link>
-                                        </Button>
-                                        <Button variant='outline-secondary' className='btn-detail'>
-                                            <Link href={`./tour?category=${category.category_id}`} className='link-update' >
-                                                <i className="fa-solid fa-eye" style={{ color: "black" }} ></i>
-                                            </Link>
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                        })}
 
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )
-                        }
-                    })}
-
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
             <PaginationTable
                 numberPages={numberPages}
                 currentPage={Number(currentPage)}

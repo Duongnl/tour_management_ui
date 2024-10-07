@@ -12,7 +12,6 @@ import TourCreateModal from "./tour_create_modal";
 import Loading from "@/components/loading";
 import { defaultIAirlineResponse } from "@/utils/defaults";
 import {
-  fetchGetAirlines,
   fetchGetTours,
   fetchGetToursCategory,
 } from "@/utils/serviceApiClient";
@@ -25,9 +24,6 @@ interface IProps {
 const TourTable = (props: IProps) => {
   const [tours, setTours] = useState(props.tours);
   const [categories] = useState(props.categories);
-  const [airlines, setAirlines] = useState<IAirlineResponse[]>([
-    defaultIAirlineResponse,
-  ]);
   const [showChangeStatusModal, setShowChangeStatusModal] =
     useState<boolean>(false);
   const [showTourModal, setShowTourModal] = useState<boolean>(false);
@@ -89,13 +85,6 @@ const TourTable = (props: IProps) => {
     setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
     setNumberEnd(end); // nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
   }, [currentPage]);
-
-  useEffect(() => {
-    const getData = async () => {
-      setAirlines(await fetchGetAirlines(1));
-    };
-    if (showTourModal) getData();
-  }, [showTourModal]);
 
   const updateTourList = (tours: ITourResponse[]) => {
     setTours(tours);
@@ -169,9 +158,8 @@ const TourTable = (props: IProps) => {
 
   return (
     <>
-      <div className="div-add">
-        <div style={{ display: "flex" }}>
-          <InputGroup className="input-search">
+      <div className="div-add mb-4 d-flex flex-wrap justify-content-start">
+          <InputGroup className="input-search width-primary m-1">
             <InputGroup.Text id="basic-addon1">
               <i className="fa-solid fa-magnifying-glass"></i>
             </InputGroup.Text>
@@ -185,7 +173,7 @@ const TourTable = (props: IProps) => {
 
           <Form.Select
             aria-label="Default select example"
-            className="select-status"
+            className="select-status width-primary m-1"
             value={status || ""} // Đặt giá trị hiện tại
             onChange={(e) => handleSelectStatus(e.target.value)}
           >
@@ -197,7 +185,7 @@ const TourTable = (props: IProps) => {
 
           <Form.Select
             aria-label="Default select example"
-            className="select-status"
+            className="select-status width-primary m-1"
             value={category || ""}
             onChange={(e) => handleSelectCategory(e.target.value)}
           >
@@ -209,83 +197,83 @@ const TourTable = (props: IProps) => {
               </option>
             ))}
           </Form.Select>
-        </div>
 
-        <Button className="btn-add" onClick={() => handleCreate()}>
+        <Button className="btn-add width-primary mr-1 my-1 ms-auto" onClick={() => handleCreate()}>
           <i
             className="fa-solid fa-user-plus"
-            style={{ paddingRight: "10px" }}
+            style={{ paddingRight: "8px" }}
           ></i>
           Thêm Tour
         </Button>
       </div>
-
-      <Table striped bordered hover className="table">
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Tên Tour</th>
-            <th>Tên danh mục</th>
-            <th>Mã danh mục</th>
-            <th>Chi tiết</th>
-            <th>Hoạt động</th>
-            <th>Chi tiết</th>
-          </tr>
-        </thead>
-        <tbody>
-          <Suspense fallback={<Loading />}>
-            {tours?.map((tour, index) => {
-              if (index + 1 >= numberStart && index + 1 <= numberEnd) {
-                return (
-                  <tr key={tour.tour_id}>
-                    <td>{index + 1}</td>
-                    <td>{tour.tour_name}</td>
-                    <td>{tour.category_name}</td>
-                    <td>
-                      <Button
-                        onClick={() =>
-                          handleSelectCategory(
-                            (tour.category_id ? tour.category_id : 0).toString()
-                          )
-                        }
-                        variant="outline-primary"
-                      >
-                        {tour.category_id}
-                      </Button>
-                    </td>
-                    <td>{tour.tour_detail}</td>
-                    <td>
-                      <Form.Check
-                        className="check-active"
-                        checked={tour.status == 1}
-                        onChange={() => handleChangeStatus(tour)}
-                        type="switch"
-                        id="custom-switch"
-                      />
-                    </td>
-                    <td>
-                      <Button
-                        variant="outline-secondary"
-                        className="btn-update"
-                      >
-                        <Link
-                          href={"/management/tour/" + tour.tour_id}
-                          className="link-update"
+      <div className="table-wrapper">
+        <Table striped bordered hover className="table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên Tour</th>
+              <th>Tên danh mục</th>
+              <th>Mã danh mục</th>
+              <th>Chi tiết</th>
+              <th>Hoạt động</th>
+              <th>Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <Suspense fallback={<Loading />}>
+              {tours?.map((tour, index) => {
+                if (index + 1 >= numberStart && index + 1 <= numberEnd) {
+                  return (
+                    <tr key={tour.tour_id}>
+                      <td>{index + 1}</td>
+                      <td>{tour.tour_name}</td>
+                      <td>{tour.category_name}</td>
+                      <td>
+                        <Button
+                          onClick={() =>
+                            handleSelectCategory(
+                              (tour.category_id ? tour.category_id : 0).toString()
+                            )
+                          }
+                          variant="outline-primary"
                         >
-                          <i
-                            className="fa-solid fa-user-pen"
-                            style={{ color: "black" }}
-                          ></i>
-                        </Link>
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              }
-            })}
-          </Suspense>
-        </tbody>
-      </Table>
+                          {tour.category_id}
+                        </Button>
+                      </td>
+                      <td>{tour.tour_detail}</td>
+                      <td>
+                        <Form.Check
+                          className="check-active"
+                          checked={tour.status == 1}
+                          onChange={() => handleChangeStatus(tour)}
+                          type="switch"
+                          id="custom-switch"
+                        />
+                      </td>
+                      <td>
+                        <Button
+                          variant="outline-secondary"
+                          className="btn-update"
+                        >
+                          <Link
+                            href={"/management/tour/" + tour.tour_id}
+                            className=""
+                          >
+                            <i
+                              className="fa-solid fa-user-pen"
+                              style={{ color: "black" }}
+                            ></i>
+                          </Link>
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
+            </Suspense>
+          </tbody>
+        </Table>
+      </div>
       <ChangeStatusModal
         showChangeStatusModal={showChangeStatusModal}
         setShowChangeStatusModal={setShowChangeStatusModal}

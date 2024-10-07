@@ -24,40 +24,41 @@ const CustomerGroupModal = (props: IProps) => {
           {group ? (
             <div>
               <p>Số thành viên: {group.length}</p>
-
-              <Table cellPadding="10" cellSpacing="0" bordered>
-                <thead>
-                  <tr>
-                    <th>Tên Khách hàng</th>
-                    <th>Giới tính</th>
-                    <th>Quan hệ NĐD</th>
-                    <th>Ngày sinh</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.map((customer, index) => (
-                    <tr key={customer.customer_id}>
-                      <td>
-                        <Link
-                          href={
-                            customer.status == 1
-                              ? '/management/customer/' + CreateSlug(`${customer.customer_name} ${customer.customer_id}` ):"#"
-                          }
-                        >
-                          {customer.customer_name}
-                        </Link>
-                      </td>
-                      <td>{customer.sex == 1 ? "Nam" : "Nữ"}</td>
-                      <td>
-                        {index == group.length - 1
-                          ? customer.relationship_name + " (Người đại diện)"
-                          : customer.relationship_name}
-                      </td>
-                      <td>{formatDate(customer.birthday)}</td>
+              <div className="table-wrapper">
+                <Table cellPadding="10" cellSpacing="0" bordered>
+                  <thead>
+                    <tr>
+                      <th>Tên Khách hàng</th>
+                      <th>Giới tính</th>
+                      <th>Quan hệ NĐD</th>
+                      <th>Ngày sinh</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {group.map((customer, index) => (
+                      <tr key={customer.customer_id}>
+                        <td>
+                          <Link
+                            href={
+                              customer.status == 1
+                                ? '/management/customer/' + CreateSlug(`${customer.customer_name} ${customer.customer_id}` ):"#"
+                            }
+                          >
+                            {customer.customer_name}
+                          </Link>
+                        </td>
+                        <td>{customer.sex == 1 ? "Nam" : "Nữ"}</td>
+                        <td>
+                          {index == group.length - 1
+                            ? customer.relationship_name + " (Người đại diện)"
+                            : customer.relationship_name}
+                        </td>
+                        <td>{formatDate(customer.birthday)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
             </div>
           ) : (
             <p>Không có thông tin nhóm.</p>

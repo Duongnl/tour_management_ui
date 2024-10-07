@@ -23,14 +23,14 @@ const Home = async () => {
       <Container style={{ paddingTop: "80px", marginBottom: "40px" }}>
         <h4>Tổng quan</h4>
         <div className="row">
-          <div className="col col-md-6">
+          <div className="col col-md-6 p-0">
             <BarChart
               title="Hoa hồng"
               data={reportCommissions}
               option={1}
             />
           </div>
-          <div className="col col-md-6">
+          <div className="col col-md-6 p-0">
             <BarChart
               title="Doanh thu"
               data={reportSales}
@@ -39,10 +39,12 @@ const Home = async () => {
             />
           </div>
         </div>
-        <TableReport
-          dataCommissions={reportCommissions}
-          dataSales={reportSales}
-        />
+        <div className="table-wrapper">
+          <TableReport
+            dataCommissions={reportCommissions}
+            dataSales={reportSales}
+          />
+        </div>
         <LineChart dataSales={sales} dataCommissions={commissions} />
       </Container>
     );

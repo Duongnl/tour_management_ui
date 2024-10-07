@@ -58,6 +58,7 @@ const TableReport = (props: IProps) => {
       </div>
       <div className="position-relative">
       <h3>Doanh số</h3>
+      <div className="table-wrapper">
         <Table striped bordered hover className="table">
           <thead>
             <tr>
@@ -91,7 +92,9 @@ const TableReport = (props: IProps) => {
             ))}
           </tbody>
         </Table>
-        <h3>Hoa hồng</h3>
+      </div>
+      <h3>Hoa hồng</h3>
+      <div className="table-wrapper">
         <Table striped bordered hover className="table">
           <thead>
             <tr>
@@ -125,6 +128,7 @@ const TableReport = (props: IProps) => {
             ))}
           </tbody>
         </Table>
+      </div>
       </div>
     </>
   );
