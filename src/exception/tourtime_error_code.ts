@@ -17,6 +17,7 @@ enum TourTimeErrorCode {
   TOURTIME_16 = "Thời gian khởi hành lỗi định dạng",
   TOURTIME_17 = "Ngày về lỗi định dạng",
   TOURTIME_18 = "Ngày hết hạn visa bị lỗi định dạng",
+  PERMISSION_2 = "Bạn không có quyền thao tác"
 }
 
 export default TourTimeErrorCode;
