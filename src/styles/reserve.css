@@ -58,7 +58,9 @@
     font-weight: bold;
   }
 
-  
+  .table-reserve{
+    min-width: 1000px !important;
+  }
 
   .btn-reserve{
     color: black;

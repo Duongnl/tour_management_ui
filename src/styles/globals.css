@@ -25,13 +25,13 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height:500px;
+  min-height: 500px;
 }
-.modal-open{
-  padding:0 !important;
+.modal-open {
+  padding: 0 !important;
 }
-.container-wrapper{
-  margin-top: 75px;;
+.container-wrapper {
+  margin-top: 75px;
 }
 .input-error {
   width: 100%;
@@ -41,9 +41,15 @@ a {
   margin-top: 3px;
   font-size: 15px;
 }
-.table-wrapper{
+.table-wrapper {
   overflow: auto;
 }
-.min-width-primary{
-  min-width: 120px;
+.width-primary {
+  width: 190px !important;
+}
+table {
+  min-width: 500px !important;
+}
+.height-primary {
+  height: 58px !important;
 }

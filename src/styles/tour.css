@@ -18,40 +18,15 @@
   padding: 0px;
   margin-top: 10px;
 }
-.select-status {
-  width: 180px;
-  margin-left: 20px;
-}
 
 .btn-add {
   background-color: #2a2f5b;
-  border: color(#2a2f5b) !important ;
-
-  border: 0px;
 }
 
 .btn-add:hover {
   background-color: #2a2f5b;
 }
 
-.btn-update {
-  color: black;
-  padding: 0px;
-}
-.link-update {
-  padding: 20px !important;
-  padding-top: 10px !important;
-}
-
-.btn-update:hover {
-  background-color: cornflowerblue;
-  color: black;
-}
-
-.btn-update:active {
-  background-color: cornflowerblue !important;
-  color: black !important;
-}
 .div-back-create {
   display: flex;
   justify-content: flex-end;

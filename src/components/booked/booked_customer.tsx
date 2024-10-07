@@ -228,7 +228,7 @@ const BookedCustomer = (props: IProps) => {
         <>
             <div className='div-add'>
                 <div style={{ display: "flex" }} >
-                    <InputGroup className="input-search"
+                    <InputGroup className="input-search width-primary m-1"
                     >
                         <InputGroup.Text id="basic-addon1"
 

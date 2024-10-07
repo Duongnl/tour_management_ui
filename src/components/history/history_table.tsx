@@ -82,8 +82,8 @@ const HistoryTable = (props: IProps) => {
 
   return (
     <>
-      <div className="col-md-6">
-        <InputGroup style={{ height: "100%" }} className="input-search">
+      <div className="div-add mb-4 d-flex flex-wrap justify-content-start">
+        <InputGroup className="input-search width-primary m-1 height-primary">
           <InputGroup.Text id="basic-addon1">
             <i className="fa-solid fa-magnifying-glass"></i>
           </InputGroup.Text>
@@ -94,12 +94,11 @@ const HistoryTable = (props: IProps) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </InputGroup>
-      </div>
-      <div className="col-md-2 " style={{ paddingLeft: "0" }}>
+
         <FloatingLabel
           controlId="floatingInput"
           label="Ngày Bắt Đầu"
-          className="mb-6"
+          className=" width-primary m-1"
         >
           <Form.Control
             type="date"
@@ -107,12 +106,11 @@ const HistoryTable = (props: IProps) => {
             onChange={(e) => setStartDate(e.target.value)}
           />
         </FloatingLabel>
-      </div>
-      <div className="col-md-2" style={{ paddingRight: "0" }}>
+
         <FloatingLabel
           controlId="floatingInput"
           label="Ngày Kết Thúc"
-          className="mb-6"
+          className="width-primary m-1"
         >
           <Form.Control
             type="date"
@@ -122,7 +120,7 @@ const HistoryTable = (props: IProps) => {
         </FloatingLabel>
       </div>
       <div className="table-wrapper">
-        <Table striped bordered hover style={{ marginTop: "20px" }}>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>STT</th>

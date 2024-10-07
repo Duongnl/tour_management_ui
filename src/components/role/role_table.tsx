@@ -186,9 +186,8 @@ const RoleTable = (props: IProps) => {
 
     return (
         <>
-            <div className='div-add'>
-                <div style={{ display: "flex" }} >
-                    <InputGroup className="input-search"
+            <div className='div-add mb-4 d-flex flex-wrap justify-content-start'>
+                    <InputGroup className="input-search width-primary m-1"
                     >
                         <InputGroup.Text id="basic-addon1"
 
@@ -201,7 +200,7 @@ const RoleTable = (props: IProps) => {
                         />
                     </InputGroup>
 
-                    <Form.Select aria-label="Default select example" className='select-status'
+                    <Form.Select aria-label="Default select example" className='select-status width-primary m-1'
                         value={status || ''} // Đặt giá trị hiện tại
                         onChange={(e) => handleSelectStatus(e.target.value)}
                     >
@@ -210,10 +209,9 @@ const RoleTable = (props: IProps) => {
                         <option value="active">Đang hoạt động</option>
                         <option value="locked">Đã khóa</option>
                     </Form.Select>
-                </div>
  
 
-                <Button className='btn-add'
+                <Button className='btn-add width-primary mr-1 my-1 ms-auto'
                 onClick={() => handleCreate()}
                 >
                     <i className="fa-solid fa-plus" style={{ paddingRight: '10px' }}></i>
@@ -247,7 +245,7 @@ const RoleTable = (props: IProps) => {
                                         </td>
                                         <td>
                                             <Button variant='outline-secondary' className='btn-update' >
-                                                <Link href={'/management/role/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='link-update' >
+                                                <Link href={'/management/role/' + CreateSlug(`${role.role_name} ${role.role_id}`)} className='' >
                                                     <i className="fa-solid fa-pen-to-square" style={{ color: "black" }}  ></i>
                                                 </Link>
                                             </Button>

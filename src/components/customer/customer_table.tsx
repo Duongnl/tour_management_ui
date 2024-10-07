@@ -157,8 +157,8 @@ const CustomerTable = (props: IProps) => {
 
   return (
     <>
-      <div className="div-add mb-4 d-flex flex-wrap">
-        <InputGroup className="input-search min-width-primary mb-2">
+      <div className="div-add mb-4 d-flex flex-wrap justify-content-start">
+        <InputGroup className="input-search width-primary m-1">
           <InputGroup.Text id="basic-addon1">
             <i className="fa-solid fa-magnifying-glass"></i>
           </InputGroup.Text>
@@ -171,7 +171,7 @@ const CustomerTable = (props: IProps) => {
         </InputGroup>
         <Form.Select
           aria-label="Default select example"
-          className="select-status min-width-primary mb-2"
+          className="select-status width-primary m-1"
           value={status || ""} // Đặt giá trị hiện tại
           onChange={(e) => handleSelectStatus(e.target.value)}
         >
@@ -180,10 +180,10 @@ const CustomerTable = (props: IProps) => {
           <option value="active">Đang hoạt động</option>
           <option value="locked">Đã khóa</option>
         </Form.Select>
-        <Button className="btn-add min-width-primary mb-2" onClick={() => handleCreate()}>
+        <Button className="btn-add width-primary  mr-1 my-1 ms-auto" onClick={() => handleCreate()}>
           <i
             className="fa-solid fa-user-plus"
-            style={{ paddingRight: "10px" }}
+            style={{ paddingRight: "8px" }}
           ></i>
           Thêm khách hàng
         </Button>
@@ -229,7 +229,7 @@ const CustomerTable = (props: IProps) => {
                               `${customer.customer_name} ${customer.customer_id}`
                             )
                           }
-                          className="link-update"
+                          className=""
                         >
                           <i
                             className="fa-solid fa-user-pen"
