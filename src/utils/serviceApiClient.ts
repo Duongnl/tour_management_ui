@@ -1,6 +1,6 @@
 import cookie from "js-cookie";
 
-const url_api = process.env.NEXT_PUBLIC_URL_API?process.env.NEXT_PUBLIC_URL_API:process.env.NEXT_PUBLIC_URL_API_LOCALHOST;
+const url_api = process.env.NEXT_PUBLIC_URL_API ? process.env.NEXT_PUBLIC_URL_API : process.env.NEXT_PUBLIC_URL_API_LOCALHOST;
 
 export const fetchGetTour = async (
   tourId: string
@@ -9,10 +9,32 @@ export const fetchGetTour = async (
   return fetchGetAuthorizedData(url);
 };
 
+export const fetchGetAccount = async (
+  accountId: string
+): Promise<IGetAccountResponse> => {
+  let url = `/account/${accountId}`;
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetMyInfo = async (
+): Promise<IGetAccountResponse> => {
+  let url = `/account/my-info`;
+  return fetchGetAuthorizedData(url);
+};
+
 export const fetchGetCustomer = async (
   customerId: string
 ): Promise<ICustomerDetailResponse> => {
   let url = `/customer/${customerId}`;
+  return fetchGetAuthorizedData(url);
+};
+
+
+
+export const fetchGetCategory = async (
+  slug: string
+): Promise<ICategoryResponse> => {
+  let url = `/category/${slug}`;
   return fetchGetAuthorizedData(url);
 };
 
@@ -40,6 +62,27 @@ export const fetchGetTours = async (
   return fetchGetAuthorizedData(url);
 };
 
+export const fetchGetBookes = async (
+  status?: number, slug?: string
+): Promise<IReserveResponse[]> => {
+  let url = `/reserve/booked/${slug}`;
+  switch (status) {
+    case 0:
+      url = `/reserve/booked/cancled/${slug}`;
+      break;
+    case 1:
+      url = `/reserve/booked/paid/${slug}`;
+      break;
+    case 2:
+      url = `/reserve/booked/unpaid/${slug}`;
+      break;
+    default:
+      url = `/reserve/booked/${slug}`;
+  }
+
+  return fetchGetAuthorizedData(url);
+};
+
 export const fetchGetCategories = async (
   status?: number
 ): Promise<ICategoryResponse[]> => {
@@ -57,6 +100,23 @@ export const fetchGetCategories = async (
   return fetchGetAuthorizedData(url);
 };
 
+export const fetchGetAccounts = async (
+  status?: number
+): Promise<IAccountResponse[]> => {
+  let url = `/account`;
+  switch (status) {
+    case 0:
+      url = `/account/locked`;
+      break;
+    case 1:
+      url = `/account/active`;
+      break;
+    default:
+      url = `/account`;
+  }
+  return fetchGetAuthorizedData(url);
+};
+
 export const fetchGetCustomers = async (
   status?: number
 ): Promise<ICustomerResponse[]> => {
@@ -70,6 +130,23 @@ export const fetchGetCustomers = async (
       break;
     default:
       url = `/customer`;
+  }
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetRoles = async (
+  status?: number
+): Promise<IRoleResponse[]> => {
+  let url = `/role`;
+  switch (status) {
+    case 0:
+      url = `/role/locked`;
+      break;
+    case 1:
+      url = `/role/active`;
+      break;
+    default:
+      url = `/role`;
   }
   return fetchGetAuthorizedData(url);
 };
@@ -216,6 +293,48 @@ export const fetchPostCustomer = async (
   return fetchPostAuthorizedData(url, newData);
 };
 
+export const fetchChangeStatusReserve = async (
+  newData: IReserveStatusRequest
+): Promise<any> => {
+  const url = "/reserve/change-status-reserve";
+  return fetchPostAuthorizedData(url, newData);
+};
+
+export const fetchPostAccount = async (
+  newData: IAccountRequest
+): Promise<any> => {
+  const url = "/account";
+  return fetchPostAuthorizedData(url, newData);
+};
+
+export const fetchFilterReserve = async (
+  newData: IReserveTourFilterRequest
+): Promise<any> => {
+  const url = "/reserve/filter-reserve-tour";
+  return fetchPostAuthorizedData(url, newData);
+};
+
+export const fetchPostReserve = async (
+  newData: IReserveRequests
+): Promise<any> => {
+  const url = "/reserve/reserve-tour";
+  return fetchPostAuthorizedData(url, newData);
+};
+
+export const fetchPostCategory = async (
+  newData: ICategoryRequest
+): Promise<any> => {
+  const url = "/category";
+  return fetchPostAuthorizedData(url, newData);
+};
+
+export const fetchPostRole = async (
+  newData: IRoleRequest
+): Promise<any> => {
+  const url = "/role";
+  return fetchPostAuthorizedData(url, newData);
+};
+
 export const fetchPostTourTime = async (
   tourId: string,
   newTourData: ITourTimeRequest
@@ -275,6 +394,22 @@ export const fetchPutAccount = async (
   updateData: IAccountUpdateRequest
 ): Promise<any> => {
   const url = `/account/${slug}`;
+  return fetchPutAuthorizedData(url, updateData);
+};
+
+export const fetchPutRole = async (
+  slug: string,
+  updateData: IRoleRequest
+): Promise<any> => {
+  const url = `/role/${slug}`;
+  return fetchPutAuthorizedData(url, updateData);
+};
+
+export const fetchPutCategory = async (
+  slug: string,
+  updateData: ICategoryRequest
+): Promise<any> => {
+  const url = `/category/${slug}`;
   return fetchPutAuthorizedData(url, updateData);
 };
 

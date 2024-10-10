@@ -14,6 +14,7 @@ import EmployeeErrorCode from '@/exception/employee_error_code';
 import { toast } from 'react-toastify';
 import { ExportError } from '@/utils/export_error';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { fetchGetRoles, fetchPostAccount } from '@/utils/serviceApiClient';
 interface IProps {
   showAccountModal: boolean
   setShowAccountModal: (value: boolean) => void
@@ -42,24 +43,12 @@ const AccountCreateModal = (props: IProps) => {
   useEffect(() => {
     const fetchRoles = async () => {
       if (showAccountModal == true) {
-        const res = await fetch(
-          "http://localhost:8080/api/role/active",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-            },
-          }
-        );
-        const data = await res.json();
-        const roles: IRoleResponse[] = data.result;
+        const roles: IRoleResponse[] = await fetchGetRoles(1)
         setRoles(roles);
       }
     }
     fetchRoles()
   }, [showAccountModal]);
-
-
 
 
   const [account_name, setAccount_name] = useState<string>('');
@@ -131,20 +120,8 @@ const AccountCreateModal = (props: IProps) => {
         employee: initEmployeeRequest
       }
       console.log("account:", initAcountRequest)
-      const res = await fetch(
-        "http://localhost:8080/api/account",
-        {
-          method: "POST",
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-          },
-          body: JSON.stringify(initAcountRequest)
-        }
-      );
 
-      const data = await res.json();
+      const data = await fetchPostAccount(initAcountRequest)
       if (data.status == "SUCCESS") {
         toast.success(`Thêm người dùng ${account_name} thành công`)
         handleHideModal()

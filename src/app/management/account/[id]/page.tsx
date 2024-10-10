@@ -6,6 +6,7 @@ import { Container, Row } from "react-bootstrap"
 import AccountUpdateForm from "@/components/account/account_update_form";
 import cookie from 'js-cookie';
 import Loading from "../loading";
+import { fetchGetAccount, fetchGetRoles } from "@/utils/serviceApiClient";
 const DetailAccount =  (props: any) => {
     const { params } = props;
     const [loading, setLoading] = useState(true);
@@ -45,40 +46,18 @@ const DetailAccount =  (props: any) => {
  
     
     useEffect (()=>{
-        const fetchGetAccount = async () => {
-            const resGetAccount = await fetch(
-                `http://localhost:8080/api/account/${params.id}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                }
-            );
-        
-            const accountData = await resGetAccount.json();
-            const account:IGetAccountResponse = accountData.result;
+        const fetchGetAccountRes = async () => {
+            const account:IGetAccountResponse = await fetchGetAccount(params.id)
              setAccount(account)
         }
 
         const fetchRoles =  async()=>{
-            const resRoles = await fetch(
-                `http://localhost:8080/api/role`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                }
-            );
-        
-            const RoleData = await resRoles.json();
-            const roles:IRoleResponse[] = RoleData.result;
+            const roles:IRoleResponse[] = await fetchGetRoles()
              setRoles(roles)
         }
  
         const fetchData = async () => {
-            await fetchGetAccount();
+            await fetchGetAccountRes();
             await fetchRoles();
             setLoading(false);
           };

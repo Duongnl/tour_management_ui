@@ -13,6 +13,7 @@ import cookie from 'js-cookie';
 import ChangeStatusModal from '../change_status_modal';
 import RoleCreateModal from './role_create_modal';
 import RoleErrorCode from '@/exception/role_error_code';
+import { fetchGetRoles } from '@/utils/serviceApiClient';
 
 interface IProps {
     roles: IRoleResponse[]
@@ -78,17 +79,7 @@ const RoleTable = (props: IProps) => {
 
 
     const fetchRoles = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/role",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const roles: IRoleResponse[] = data.result
+        const roles: IRoleResponse[] =  await fetchGetRoles()
         setRolesFilter(roles)
         const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
         setNumberPages(numPages);
@@ -96,17 +87,7 @@ const RoleTable = (props: IProps) => {
     };
 
     const fetchLockedRoles = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/role/locked",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const roles: IRoleResponse[] = data.result
+        const roles: IRoleResponse[] =  await fetchGetRoles(0)
 
         setRolesFilter(roles)
         const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
@@ -116,17 +97,7 @@ const RoleTable = (props: IProps) => {
 
 
     const fetchActiveRoles = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/role/active",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const roles: IRoleResponse[] = data.result
+        const roles: IRoleResponse[] =  await fetchGetRoles(1)
         setRolesFilter(roles)
         const numPages = Math.ceil(roles != undefined ? roles.length / 8 : 0);
         setNumberPages(numPages);
@@ -168,7 +139,7 @@ const RoleTable = (props: IProps) => {
         
         setStatusObject(role.status)
         setShowChangeStatusModal(true)
-        setApiChangeStatus(`http://localhost:8080/api/role/change-status/${role.role_id}`)
+        setApiChangeStatus(`${process.env.NEXT_PUBLIC_URL_API}/role/change-status/${role.role_id}`)
         if (role.status == 1) {
         setDetail(`Bạn có muốn tắt quyền ${role.role_name} ?`)
         } else {

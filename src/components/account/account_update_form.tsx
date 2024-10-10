@@ -13,6 +13,7 @@ import AccountErrorCode from '@/exception/account_error_code';
 import EmployeeErrorCode from '@/exception/employee_error_code';
 import { toast } from 'react-toastify';
 import { ExportError } from '@/utils/export_error';
+import { fetchPutAccount, fetchPutEmployee } from '@/utils/serviceApiClient';
 interface IProps {
   account: IGetAccountResponse
   roles: IRoleResponse[]
@@ -176,20 +177,8 @@ const AccountUpdateForm = (props: IProps) => {
       }
 
       console.log(accountRequest)
-      const res = await fetch(
-        `http://localhost:8080/api/account/${url}`,
-        {
-          method: "PUT",
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-          },
-          body: JSON.stringify(accountRequest)
-        }
-      );
 
-      const data = await res.json();
+      const data = await fetchPutAccount(url, accountRequest)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${account_name} thành công`)
         setPassword('')
@@ -286,20 +275,7 @@ const AccountUpdateForm = (props: IProps) => {
         total_sales: total_sales,
       }
 
-      const res = await fetch(
-        `http://localhost:8080/api/account/employee/${url}`,
-        {
-          method: "PUT",
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-          },
-          body: JSON.stringify(employeeRequest)
-        }
-      );
-
-      const data = await res.json();
+      const data = await fetchPutEmployee(url, employeeRequest)
       console.log(data)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${account_name} thành công`)

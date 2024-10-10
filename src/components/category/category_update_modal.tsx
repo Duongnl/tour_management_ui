@@ -11,6 +11,7 @@ import { CreateSlug } from '@/utils/create_slug';
 import cookie from 'js-cookie';
 import { ExportError } from '@/utils/export_error';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { fetchGetCategory, fetchPutCategory } from '@/utils/serviceApiClient';
 
 interface IProps {
     showCategoryUpdateModal: boolean,
@@ -41,19 +42,8 @@ const CategoryUpdateModal = (props:IProps) => {
 
         const fetchCategory = async () => {
        
-              const res = await fetch(
-                `http://localhost:8080/api/category/${category_slug}`,
-                {
-                  method: "GET",
-                  headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                  },
-                }
-              );
-              const data = await res.json();
-
-              if (data.status == "SUCCESS") {
-                const category:ICategoryResponse = data.result;
+              const category:ICategoryResponse = await fetchGetCategory(String(category_slug));
+              if (category.category_id != undefined) {
                 setCategory_name(category.category_name)
                 setCategory_detail (category.category_detail)
                 setUrl( category.url)
@@ -125,20 +115,7 @@ const CategoryUpdateModal = (props:IProps) => {
                 url: url == '' ? CreateSlug(category_name) : url,
             }
 
-            const res = await fetch(
-                `http://localhost:8080/api/category/${category_slug}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                    body: JSON.stringify(categoryRequest)
-                }
-            );
-
-            const data = await res.json();
+            const data = await fetchPutCategory(String(category_slug), categoryRequest)
             if(data.status === "SUCCESS") {
                 toast.success(`Sửa danh mục ${category_name} thành công`)
                 handleClose()

@@ -23,7 +23,7 @@ export default async function RootLayout({
 }>,) {
 
   const res = await fetch(
-    "http://localhost:8080/api/account/my-info",
+    `${process.env.NEXT_PUBLIC_URL_API_LOCALHOST}/account/my-info`,
     {
       method: "GET",
       headers: {

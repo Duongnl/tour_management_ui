@@ -13,6 +13,7 @@ import cookie from 'js-cookie';
 import { toast } from 'react-toastify';
 import ReserveErrorCode from '@/exception/reserve_error_code';
 import { ExportError } from "@/utils/export_error";
+import { fetchChangeStatusReserve, fetchGetBookes } from '@/utils/serviceApiClient';
 interface IProps {
     reserveResponses: IReserveResponse[],
     slug: string
@@ -99,17 +100,7 @@ const BookedCustomer = (props: IProps) => {
     }, [status])
 
     const fetchPaidReserves = async () => {
-        const res = await fetch(
-            `http://localhost:8080/api/reserve/booked/paid/${slug}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const reserves: IReserveResponse[] = data.result
+        const reserves: IReserveResponse[] = await fetchGetBookes(1,slug)
 
         setReservesFilter(reserves)
         const numPages = Math.ceil(reserves != undefined ? reserves.length / 6 : 0);
@@ -119,17 +110,8 @@ const BookedCustomer = (props: IProps) => {
 
 
     const fetchUnpaidReserves = async () => {
-        const res = await fetch(
-            `http://localhost:8080/api/reserve/booked/unpaid/${slug}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const reserves: IReserveResponse[] = data.result
+
+        const reserves: IReserveResponse[] = await fetchGetBookes(2,slug)
 
         setReservesFilter(reserves)
         const numPages = Math.ceil(reserves != undefined ? reserves.length / 6 : 0);
@@ -138,17 +120,7 @@ const BookedCustomer = (props: IProps) => {
     };
 
     const fetchCanceledReserves = async () => {
-        const res = await fetch(
-            `http://localhost:8080/api/reserve/booked/canceled/${slug}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const reserves: IReserveResponse[] = data.result
+        const reserves: IReserveResponse[] = await fetchGetBookes(0,slug)
 
         setReservesFilter(reserves)
         const numPages = Math.ceil(reserves != undefined ? reserves.length / 6 : 0);
@@ -157,18 +129,8 @@ const BookedCustomer = (props: IProps) => {
     };
 
     const fetchReserves = async () => {
-        const res = await fetch(
-            `http://localhost:8080/api/reserve/booked/${slug}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const reserves: IReserveResponse[] = data.result
-
+      
+        const reserves: IReserveResponse[] = await fetchGetBookes(-1,slug)
         setReservesFilter(reserves)
         const numPages = Math.ceil(reserves != undefined ? reserves.length / 6 : 0);
         setNumberPages(numPages);
@@ -199,20 +161,7 @@ const BookedCustomer = (props: IProps) => {
             status:Number(status)
         }
 
-        const res = await fetch(
-            "http://localhost:8080/api/reserve/change-status-reserve",
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-                body: JSON.stringify(initReserveStatusRequest)
-            }
-        );
-
-        const data = await res.json();
+        const data = await fetchChangeStatusReserve(initReserveStatusRequest)
         if (data.status == "SUCCESS") {
             toast.success("Thay đổi trạng thái thành công")
             fetchReserves()

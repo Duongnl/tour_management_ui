@@ -12,6 +12,7 @@ import { CreateSlug } from '@/utils/create_slug';
 import CategoryUpdateModal from './category_update_modal';
 import ChangeStatusModal from '../change_status_modal';
 import CategoryErrorCode from '@/exception/category_error_code';
+import { fetchGetCategories } from '@/utils/serviceApiClient';
 interface IProps {
     categories: ICategoryResponse[]
 }
@@ -62,7 +63,7 @@ const CategoryTable = (props: IProps) => {
         setCategory_id(category.category_id)
         setStatusObject(category.status)
         setShowChangeStatusModal(true)
-        setApiChangeStatus(`http://localhost:8080/api/category/change-status/${category.category_id}`)
+        setApiChangeStatus(`${process.env.NEXT_PUBLIC_URL_API}/category/change-status/${category.category_id}`)
         if (category.status == 1) {
             setDetail(`Bạn có muốn tắt quyền ${category.category_name} ?`)
         } else {
@@ -132,17 +133,8 @@ const CategoryTable = (props: IProps) => {
     }, [category_slug])
 
     const fetchCategories = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/category",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const categories: ICategoryResponse[] = data.result
+
+        const categories:ICategoryResponse[] = await fetchGetCategories();
         setCategoriesFilter(categories)
         const numPages = Math.ceil(categories != undefined ? categories.length / 8 : 0);
         setNumberPages(numPages);
@@ -150,17 +142,7 @@ const CategoryTable = (props: IProps) => {
     };
 
     const fetchLockedCategories = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/category/locked",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const categories: ICategoryResponse[] = data.result
+        const categories:ICategoryResponse[] = await fetchGetCategories(0);
         setCategoriesFilter(categories)
         const numPages = Math.ceil(categories != undefined ? categories.length / 8 : 0);
         setNumberPages(numPages);
@@ -169,17 +151,7 @@ const CategoryTable = (props: IProps) => {
 
 
     const fetchActiveCategories = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/category/active",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const categories: ICategoryResponse[] = data.result
+        const categories:ICategoryResponse[] = await fetchGetCategories(1);
         setCategoriesFilter(categories)
         const numPages = Math.ceil(categories != undefined ? categories.length / 8 : 0);
         setNumberPages(numPages);
