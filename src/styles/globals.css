@@ -53,3 +53,9 @@ table {
 .height-primary {
   height: 58px !important;
 }
+.table-wrapper table button {
+  padding: 0;
+}
+.table-wrapper table button a i {
+  padding: 7px 20px;
+}
