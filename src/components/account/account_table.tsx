@@ -18,6 +18,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 
 import InputGroup from 'react-bootstrap/InputGroup';
 import AccountErrorCode from '@/exception/account_error_code';
+import { fetchGetAccount, fetchGetAccounts } from '@/utils/serviceApiClient';
 interface IProps {
     accounts: IAccountResponse[]
 
@@ -87,17 +88,7 @@ const AccountTable = (props: IProps) => {
 
 
     const fetchAccounts = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/account",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
+        const accounts: IAccountResponse[] = await fetchGetAccounts()
         setAccounts(accounts)
         const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
         setNumberPages(numPages);
@@ -105,17 +96,7 @@ const AccountTable = (props: IProps) => {
     };
 
     const fetchLockedAccounts = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/account/locked",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
+        const accounts: IAccountResponse[] = await fetchGetAccounts(0)
         setAccounts(accounts)
         const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
         setNumberPages(numPages);
@@ -123,17 +104,7 @@ const AccountTable = (props: IProps) => {
     };
 
     const fetchActiveAccounts = async () => {
-        const res = await fetch(
-            "http://localhost:8080/api/account/active",
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const accounts: IAccountResponse[] = data.result
+        const accounts: IAccountResponse[] = await fetchGetAccounts(1)
         setAccounts(accounts)
         const numPages = Math.ceil(accounts != undefined ? accounts.length / 8 : 0);
         setNumberPages(numPages);
@@ -157,20 +128,10 @@ const AccountTable = (props: IProps) => {
        
         setStatusObject(account.status)
         setShowChangeStatusModal(true)
-        setApiChangeStatus(`http://localhost:8080/api/account/change-status/${account.account_id}`)
+        setApiChangeStatus(`${process.env.NEXT_PUBLIC_URL_API}/account/change-status/${account.account_id}`)
 
-        const res = await fetch(
-            `http://localhost:8080/api/account/${account.account_id}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-            }
-        );
-        const data = await res.json();
-        const getAccountResponse:IGetAccountResponse = data.result
-        console.log(getAccountResponse)
+        const getAccountResponse:IGetAccountResponse = await fetchGetAccount(account.account_id)
+  
 
         if (getAccountResponse.role.status == 0 && account.status == 0) {
            setDetail (`Quyền của tài khoản này bị khóa, khi mở tài khoản này thì quyền tương ứng sẽ được mở. Bạn có muốn tiếp tục mở tài khoản ${account.account_name} ?`)

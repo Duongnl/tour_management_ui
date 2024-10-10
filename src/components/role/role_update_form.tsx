@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { ExportError } from '@/utils/export_error';
 import { toast } from 'react-toastify';
 import cookie from 'js-cookie';
+import { fetchPutRole } from '@/utils/serviceApiClient';
 interface IProps {
     role: IRoleResponse
     slug: string
@@ -75,20 +76,7 @@ const RoleUpdateForm = (props: IProps) => {
             }
             console.log(roleRequest)
 
-            const res = await fetch(
-                `http://localhost:8080/api/role/${slug}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                    body: JSON.stringify(roleRequest)
-                }
-            );
-
-            const data = await res.json();
+            const data = await fetchPutRole(slug,roleRequest)
             if (data.status == "SUCCESS") {
                 toast.success("Cập nhật quyền thành công")
                 setValid(false)

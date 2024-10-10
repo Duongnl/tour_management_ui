@@ -11,6 +11,7 @@ import cookie from 'js-cookie';
 import { ExportError } from '@/utils/export_error';
 
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { fetchPostRole } from '@/utils/serviceApiClient';
 interface IProps {
     showRoleModal: boolean
     setShowRoleModal: (value: boolean) => void
@@ -80,21 +81,7 @@ const RoleCreateModal = (props: IProps) => {
                 permission: permission
             }
 
-
-            const res = await fetch(
-                "http://localhost:8080/api/role",
-                {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                    body: JSON.stringify(roleRequest)
-                }
-            );
-
-            const data = await res.json();
+            const data = await fetchPostRole(roleRequest);
             if (data.status == "SUCCESS") {
                 toast.success("Thêm mới quyền thành công")
                 handleHideModal()

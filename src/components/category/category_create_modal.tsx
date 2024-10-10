@@ -11,6 +11,7 @@ import { CreateSlug } from '@/utils/create_slug';
 import cookie from 'js-cookie';
 import { ExportError } from '@/utils/export_error';
 import { useRouter, usePathname } from 'next/navigation'
+import { fetchPostCategory } from '@/utils/serviceApiClient';
 interface Iprops {
     showCategoryCreateModal: boolean,
     setShowCategoryCreateModal: (value: boolean) => void
@@ -48,20 +49,7 @@ const CategoryCreateModal = (props: Iprops) => {
                 category_detail: category_detail,
                 url: url == '' ? CreateSlug(category_name) : url,
             }
-            const res = await fetch(
-                "http://localhost:8080/api/category",
-                {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                    body: JSON.stringify(categoryRequest)
-                }
-            );
-
-            const data = await res.json();
+            const data = await fetchPostCategory(categoryRequest)
             if(data.status === "SUCCESS") {
                 toast.success(`Thêm mới danh mục ${category_name} thành công`)
                 handleClose()

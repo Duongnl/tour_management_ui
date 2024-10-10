@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import AccountErrorCode from "../../exception/account_error_code";
 import { ExportError } from "@/utils/export_error";
+import { fetchGetMyInfo } from "@/utils/serviceApiClient";
 
 interface IProps {
     isPageLogin: boolean;
@@ -22,17 +23,7 @@ const LoginForm = (props: IProps) => {
     if (res.status === "SUCCESS") {
       if (props.isPageLogin) {
 
-        const resRole = await fetch(
-          "http://localhost:8080/api/account/my-info",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${res.result.token}`, // Set Authorization header
-            },
-          }
-        );
-        const data = await resRole.json();
-        const account:IGetAccountResponse = data.result;
+        const account:IGetAccountResponse = await fetchGetMyInfo()
 
         // window.location.href = "/management";
        

@@ -4,36 +4,14 @@ import { Container, Row } from "react-bootstrap"
 import { getSessionId } from "@/utils/session_store"
 import ReserveForm from "@/components/reserve/reserve_form";
 import BookedForm from "@/components/booked/booked_form";
+import { fetchGetBooked, fetchGetReserve } from "@/utils/serviceApiServer";
 
 const DetailBooked = async (props: any) => {
 
     const { params } = props;
-    const res = await fetch(
-        `http://localhost:8080/api/reserve/${params.id}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-            },
-        }
-    );
+    const tourTime = await fetchGetReserve(params.id)
 
-    const data = await res.json();
-    const tourTime = data.result;
-
-
-    const resReserveResponses = await fetch(
-        `http://localhost:8080/api/reserve/booked/${params.id}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-            },
-        }
-    );
-
-    const dataReserveResponses = await resReserveResponses.json();
-    const reserveResponses= dataReserveResponses.result;
+    const reserveResponses= await fetchGetBooked(params.id)
 
     
 

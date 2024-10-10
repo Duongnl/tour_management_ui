@@ -3,7 +3,7 @@ import { setSessionId } from "@/utils/session_store"
 export const LoginServerActions = async (account_name: string, password: string) => {
 
     console.log(account_name, password)
-    const res = await fetch("http://localhost:8080/api/auth/token", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API_LOCALHOST}/auth/token`, {
         method: "POST",
         body: JSON.stringify({ account_name, password }),
         headers: {

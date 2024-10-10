@@ -4,24 +4,14 @@ import "@/styles/account.css"
 import { getSessionId } from "@/utils/session_store"
 import AccountTable from "@/components/account/account_table";
 import { Suspense } from "react";
-
+import { fetchGetAccounts } from "@/utils/serviceApiServer";
 const AccountPage = async () => {
 
-    const res = await fetch(
-        "http://localhost:8080/api/account",
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-            },
-        }
-    );
 
-    const data = await res.json();
-    const accounts = data.result;
-
-    return (
-        <>
+    try {
+        const accounts = await fetchGetAccounts();
+        return (
+            <>
 
             <Container className="ctn-account">
                 <Row>
@@ -35,7 +25,12 @@ const AccountPage = async () => {
             </Container>
 
         </>
-    )
+        );
+      } catch (error) {
+        console.error(error);
+        // Handle error, e.g., show an error message
+        return <div>Error fetching data</div>;
+      }
 }
 
 export default AccountPage;
