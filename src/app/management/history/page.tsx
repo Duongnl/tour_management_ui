@@ -4,20 +4,11 @@ import { Container,Row } from "react-bootstrap"
 import { getSessionId } from "@/utils/session_store"
 import { Suspense } from "react";
 import HistoryTable from "@/components/history/history_table";
+import { fetchGetHistories } from "@/utils/serviceApiServer";
 
 
 const HistoryPage = async() => {
-    const res = await fetch(
-        "http://localhost:8080/api/history/order-by-time",
-        {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${getSessionId()}`, // Set Authorization header
-            },
-        }
-    );
-    const data = await res.json();
-    const histories = data.result;
+    const histories = await fetchGetHistories()
     console.log(histories);
     
     return (

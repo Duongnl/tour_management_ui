@@ -101,7 +101,7 @@ const CustomerTable = (props: IProps) => {
     setStatusObject(customer.status);
     setShowChangeStatusModal(true);
     setApiChangeStatus(
-      `http://localhost:8080/api/customer/change-status/${
+      `${process.env.NEXT_PUBLIC_URL_API}/customer/change-status/${
         customer.customer_name + "-" + customer.customer_id
       }`
     );

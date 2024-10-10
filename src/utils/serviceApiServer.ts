@@ -7,6 +7,8 @@ export const fetchGetTour = async (tourId: number) => {
   return fetchGetAuthorizedData(url);
 };
 
+
+
 export const fetchGetTours = async (
   status?: number
 ): Promise<ITourResponse[]> => {
@@ -24,6 +26,84 @@ export const fetchGetTours = async (
 
   return fetchGetAuthorizedData(url);
 };
+
+export const fetchGetAccounts = async (
+  status?: number
+): Promise<IAccountResponse[]> => {
+  let url = `/account`;
+  switch (status) {
+    case 0:
+      url = `/account/locked`;
+      break;
+    case 1:
+      url = `/account/active`;
+      break;
+    default:
+      url = `/account`;
+  }
+
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetRoles = async (
+  status?: number
+): Promise<IRoleResponse[]> => {
+  let url = `/role`;
+  switch (status) {
+    case 0:
+      url = `/role/locked`;
+      break;
+    case 1:
+      url = `/role/active`;
+      break;
+    default:
+      url = `/role`;
+  }
+
+  return fetchGetAuthorizedData(url);
+};
+
+
+export const fetchGetRole = async (
+  slug?: string
+): Promise<IRoleResponse> => {
+  let url = `/role/${slug}`;
+  
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetReserves = async (
+  status?: number
+): Promise<IReserveTourResponse[]> => {
+  let url = `/reserve/tour`;
+  
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetHistories = async (
+  status?: number
+): Promise<IHistoryResponse[]> => {
+  let url = `/history/order-by-time`;
+  
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetReserve = async (
+  slug?: string
+): Promise<IReserveTourResponse> => {
+  let url = `/reserve/${slug}`;
+  
+  return fetchGetAuthorizedData(url);
+};
+
+export const fetchGetBooked = async (
+  slug?: string
+): Promise<IReserveResponse[]> => {
+  let url = `/reserve/booked/${slug}`;
+  
+  return fetchGetAuthorizedData(url);
+};
+
 
 export const fetchGetCategories = async (
   status?: number

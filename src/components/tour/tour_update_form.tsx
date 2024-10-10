@@ -212,7 +212,7 @@ const TourUpdateForm = (props: IProps) => {
     setTour_time_id(tourTimeReq.tour_time_id);
     setStatusObject(tourTimeReq.status);
     setApiChangeStatus(
-      `http://localhost:8080/api/tour/change-status/${
+      `${process.env.NEXT_PUBLIC_URL_API}/tour/change-status/${
         tourRes.tour_id + `/` + tourTimeReq.tour_time_id
       }`
     );

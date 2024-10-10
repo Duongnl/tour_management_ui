@@ -8,6 +8,7 @@ import { formatCurrency } from '@/utils/string_utils';
 import "@/styles/reserve.css"
 import ReserveErrorCode from '@/exception/reserve_error_code';
 import { ExportError } from "@/utils/export_error";
+import { fetchPostReserve } from '@/utils/serviceApiClient';
 interface IProps {
     reserveTour: IReserveTourResponse;
 }
@@ -85,19 +86,7 @@ const ReserveCustomer = (props: IProps) => {
                 reserveRequests: reserveRequests,
             }
 
-            const res = await fetch(
-                "http://localhost:8080/api/reserve/reserve-tour",
-                {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                    body: JSON.stringify(initReserveRequests)
-                }
-            );
-            const data = await res.json();
+            const data = await fetchPostReserve(initReserveRequests);
             if (data.status === "SUCCESS") {
                 toast.success("Đặt chổ thành công")
                 setReserveRequests([])

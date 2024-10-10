@@ -100,7 +100,7 @@ const TourTable = (props: IProps) => {
     setStatusObject(tour.status ? tour.status : 0);
     setShowChangeStatusModal(true);
     setApiChangeStatus(
-      `http://localhost:8080/api/tour/change-status/${tour.tour_id}`
+      `${process.env.NEXT_PUBLIC_URL_API}/tour/change-status/${tour.tour_id}`
     );
     if (tour.status == 1) {
       setDetail(`Bạn có muốn khóa tài khoản ${tour.tour_name} không ?`);

@@ -11,6 +11,7 @@ import { CreateSlug } from '@/utils/create_slug';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
 import "@/styles/reserve.css"
+import { fetchFilterReserve } from '@/utils/serviceApiClient';
 interface IProps {
     reserveTours: IReserveTourResponse[]
     categories: ICategoryResponse[]
@@ -90,19 +91,7 @@ const BookedTable = (props: IProps) => {
     }
 
     const fetchFilterReserveTours = async (initDataFilter: IReserveTourFilterRequest) => {
-        const res = await fetch(
-            "http://localhost:8080/api/reserve/filter-reserve-tour",
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                },
-                body: JSON.stringify(initDataFilter)
-            }
-        );
-        const data = await res.json();
+        const data = await fetchFilterReserve(initDataFilter);
         const reserveToursRes: IReserveTourResponse[] = data.result
         setReserveToursFilter(reserveToursRes)
         const numPages = Math.ceil(reserveToursRes != undefined ? reserveToursRes.length / 3 : 0);

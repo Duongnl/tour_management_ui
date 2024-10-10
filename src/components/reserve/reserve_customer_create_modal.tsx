@@ -12,6 +12,7 @@ import cookie from 'js-cookie';
 import { getCurrentLocalDateTimeString } from '@/utils/string_utils';
 import { toast } from 'react-toastify';
 import "@/styles/reserve.css"
+import { fetchGetCustomers, fetchGetMyInfo } from "@/utils/serviceApiClient";
 interface IProps {
     showCustomerModal: boolean;
     setShowCustomerModal: (value: boolean) => void;
@@ -46,17 +47,7 @@ const ReserveCustomerCreateModal = (props: IProps) => {
     useEffect(() => {
         const fetchRoles = async () => {
             if (showCustomerModal == true) {
-                const res = await fetch(
-                    "http://localhost:8080/api/customer/active",
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                        },
-                    }
-                );
-                const data = await res.json();
-                const customers: ICustomerResponse[] = data.result;
+                const customers: ICustomerResponse[] = await fetchGetCustomers(1)
                 setCustomers(customers);
             }
         }
@@ -236,17 +227,7 @@ const ReserveCustomerCreateModal = (props: IProps) => {
         
         if (!validation.some(v => v === false)) {
 
-            const res = await fetch(
-                "http://localhost:8080/api/account/my-info",
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${cookie.get('session-id')}`, // Set Authorization header
-                    },
-                }
-            );
-            const data = await res.json();
-            const myInfo: IGetAccountResponse = data.result;
+            const myInfo: IGetAccountResponse = await fetchGetMyInfo()
     
 
             const initCustomerRequest: ICustomerResponse = {
