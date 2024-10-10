@@ -229,7 +229,7 @@ const TourTable = (props: IProps) => {
                       <td>{tour.tour_name}</td>
                       <td>{tour.category_name}</td>
                       <td>
-                        <Button
+                        <Button className="p-2"
                           onClick={() =>
                             handleSelectCategory(
                               (tour.category_id ? tour.category_id : 0).toString()

@@ -33,18 +33,16 @@ const BarChart = (props: Props) => {
   };
 
   useEffect(() => {
-    if (dataYear?.length > 0) {
-      let updatedTotalMonths = Array(dataYear[0]?.months.length).fill(0);
-
+    let updatedTotalMonths = Array(dataYear[0]?.months.length).fill(0);
+    if (dataYear.length != 0) {
       dataYear.forEach((element) => {
         for (var i = 0; i < element.months.length; i++) {
           updatedTotalMonths[i] =
             (updatedTotalMonths[i] || 0) + element.months[i]; // Đảm bảo phần tử đã tồn tại
         }
       });
-
-      setTotalMonths(updatedTotalMonths);
     }
+    setTotalMonths(updatedTotalMonths);
   }, [dataYear]);
 
   const data = {
@@ -64,7 +62,7 @@ const BarChart = (props: Props) => {
     ],
     datasets: [
       {
-        label: title+" năm "+year+" (VNĐ)",
+        label: title + " (VNĐ)",
         data: totalMonths,
         backgroundColor: color != null ? color : "rgba(75, 192, 192, 1)",
         borderColor: color != null ? color : "rgba(75, 192, 192, 1)",

@@ -180,8 +180,7 @@ const BookedCustomer = (props: IProps) => {
 
     return (
         <>
-            <div className='div-add'>
-                <div style={{ display: "flex" }} >
+            <div className='div-add mb-4 d-flex flex-wrap justify-content-start'>
                     <InputGroup className="input-search width-primary m-1"
                     >
                         <InputGroup.Text id="basic-addon1"
@@ -195,7 +194,7 @@ const BookedCustomer = (props: IProps) => {
                         />
                     </InputGroup>
 
-                    <Form.Select aria-label="Default select example" className='select-status'
+                    <Form.Select aria-label="Default select example" className='select-status width-primary m-1'
                         value={status || ''} // Đặt giá trị hiện tại
                         onChange={(e) => handleSelectStatus(e.target.value)}
                     >
@@ -205,7 +204,6 @@ const BookedCustomer = (props: IProps) => {
                         <option value="unpaid">Chưa thanh toán</option>
                         <option value="canceled">Đã hủy</option>
                     </Form.Select>
-                </div>
             </div>
             <div className="table-wrapper">
                 <Table striped bordered hover id="myTable" className="table"  >

@@ -314,7 +314,7 @@ export const TourTimeModal = (props: IProps) => {
 
         <FloatingLabel className="mb-3" label="Số lượng">
           <Form.Control
-            type="number"
+            type="text"
             placeholder="..."
             value={quantity}
             className="form-control"
@@ -335,7 +335,7 @@ export const TourTimeModal = (props: IProps) => {
 
         <FloatingLabel className="mb-3" label="Số lượng đã bán">
           <Form.Control
-            type="number"
+            type="text"
             placeholder="..."
             value={quantity_sell}
             className="form-control"
@@ -356,7 +356,7 @@ export const TourTimeModal = (props: IProps) => {
 
         <FloatingLabel className="mb-3" label="Số lượng đang đặt">
           <Form.Control
-            type="number"
+            type="text"
             placeholder="..."
             className="form-control"
             value={quantity_reserve}
@@ -377,7 +377,7 @@ export const TourTimeModal = (props: IProps) => {
 
         <FloatingLabel className="mb-3" label="Số lượng còn lại (chưa đặt)">
           <Form.Control
-            type="number"
+            type="text"
             placeholder="..."
             value={quantity_left}
             className="form-control"
