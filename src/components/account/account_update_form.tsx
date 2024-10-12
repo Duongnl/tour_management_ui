@@ -343,7 +343,7 @@ const AccountUpdateForm = (props: IProps) => {
                   isInvalid={repassword != '' && !validationAccount[2]}
                 />
                 <Form.Control.Feedback type="invalid">
-                  "Mật khẩu không khớp"
+                  Mật khẩu không khớp
                 </Form.Control.Feedback>
               </FloatingLabel>
 
