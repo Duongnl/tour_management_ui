@@ -116,7 +116,7 @@ const RoleCreateModal = (props: IProps) => {
 
     return (
         <>
-           {console.log("Validation : ",validation)}
+           {// console.log("Validation : ",validation)}
             <Modal show={showRoleModal} fullscreen={true}
                 onHide={() => { handleHideModal() }}>
                 <Modal.Header closeButton>

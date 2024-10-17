@@ -119,7 +119,7 @@ const AccountCreateModal = (props: IProps) => {
         role_id: role.role_id,
         employee: initEmployeeRequest
       }
-      console.log("account:", initAcountRequest)
+      // console.log("account:", initAcountRequest)
 
       const data = await fetchPostAccount(initAcountRequest)
       if (data.status == "SUCCESS") {
@@ -133,7 +133,7 @@ const AccountCreateModal = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data)
+        // console.log("response:", data)
       }
 
 

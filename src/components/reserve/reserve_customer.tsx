@@ -54,7 +54,7 @@ const ReserveCustomer = (props: IProps) => {
 
     const handleCreate = () => {
         setShowCustomerModal(true);
-        console.log("Đã bấm")
+        // console.log("Đã bấm")
     };
 
     const handleCreateReserve = (reserveRequest: IReserveRequest) => {
@@ -96,8 +96,8 @@ const ReserveCustomer = (props: IProps) => {
                   toast.error(errors[i]);
                 }
             }
-            console.log("Reserve requests >>> ", initReserveRequests)
-            console.log("result >>> ", data)
+            // console.log("Reserve requests >>> ", initReserveRequests)
+            // console.log("result >>> ", data)
         } else {
             toast.error("Không có thông tin hành khách")
         }

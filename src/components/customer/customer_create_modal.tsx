@@ -73,7 +73,7 @@ const CustomerCreateModal = (props: IProps) => {
 
   const handleCreate = async () => {
 
-    console.log("validate customer : ", validation)
+    // console.log("validate customer : ", validation)
 
     let flag: boolean = true;
     for (let i: number = 0; i < validation.length; i++) {
@@ -96,7 +96,7 @@ const CustomerCreateModal = (props: IProps) => {
         visa_expire: visa_expire,
         status: 1,
       };
-      console.log("customer:", initCustomerRequest);
+      // console.log("customer:", initCustomerRequest);
       
       const data = await fetchPostCustomer(initCustomerRequest)
       if (data.status == "SUCCESS") {
@@ -109,7 +109,7 @@ const CustomerCreateModal = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data);
+        // console.log("response:", data);
       }
     } else {
       toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");

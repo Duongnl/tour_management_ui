@@ -28,7 +28,7 @@ const ReservePage = async () => {
             </Container>
         )
     } catch (error) {
-         console.error(error);
+         // console.error(error);
         // Handle error, e.g., show an error message
         return <div>Error fetching data</div>;
     }

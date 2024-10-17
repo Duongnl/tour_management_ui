@@ -96,7 +96,7 @@ const TourUpdateForm = (props: IProps) => {
         category_id: category.category_id,
         url: url,
       };
-      console.log(initTourRequest);
+      // console.log(initTourRequest);
 
       const data = await fetchPutTour(
         tourRes.tour_id.toString(),
@@ -111,7 +111,7 @@ const TourUpdateForm = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data);
+        // console.log("response:", data);
       }
     } else {
       toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
@@ -135,7 +135,7 @@ const TourUpdateForm = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data);
+        // console.log("response:", data);
       }
     } else toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
   };
@@ -153,11 +153,11 @@ const TourUpdateForm = (props: IProps) => {
         handleClose();
       } else {
         let errors = ExportError(data, TourErrorCode);
-        console.log(errors);
+        // console.log(errors);
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data);
+        // console.log("response:", data);
       }
     } else toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");
   };

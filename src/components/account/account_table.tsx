@@ -67,7 +67,7 @@ const AccountTable = (props: IProps) => {
         } else if (status == "all") {
             fetchAccounts()
         }
-        console.log("vao status")
+        // console.log("vao status")
     }, [status])
 
     useEffect(() => {
@@ -81,7 +81,7 @@ const AccountTable = (props: IProps) => {
 
         setNumberStart(start); // khi useEffect kết thúc thì mới lên lịch cập nhật biến vào number start
         setNumberEnd(end);// nên không nên cập nhật liên tục để dựa vào biến number để tính toán ngay trong useEffect
-        console.log("vao status")
+        // console.log("vao status")
 
     }, [currentPage])
 
@@ -164,7 +164,7 @@ const AccountTable = (props: IProps) => {
                 return value != null && value.toString().toLowerCase().includes(e.toLowerCase());
             });
         });
-        console.log('filter data : ', filteredData);
+        // console.log('filter data : ', filteredData);
         setAccounts(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 8))
     }

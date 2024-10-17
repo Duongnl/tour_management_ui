@@ -97,9 +97,9 @@ const AccountUpdateForm = (props: IProps) => {
   }
 
 
-  console.log("paass", validationAccount[1])
+  // console.log("paass", validationAccount[1])
 
-  console.log("repaass", validationAccount[2])
+  // console.log("repaass", validationAccount[2])
   const handleRepassword = (e: string) => {
     setValidAccount(true)
     if (e === password) {
@@ -176,7 +176,7 @@ const AccountUpdateForm = (props: IProps) => {
         }
       }
 
-      console.log(accountRequest)
+      // console.log(accountRequest)
 
       const data = await fetchPutAccount(url, accountRequest)
       if (data.status == "SUCCESS") {
@@ -196,7 +196,7 @@ const AccountUpdateForm = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data)
+        // console.log("response:", data)
       }
 
     } else {
@@ -276,7 +276,7 @@ const AccountUpdateForm = (props: IProps) => {
       }
 
       const data = await fetchPutEmployee(url, employeeRequest)
-      console.log(data)
+      // console.log(data)
       if (data.status == "SUCCESS") {
         toast.success(`Cập nhật người dùng ${account_name} thành công`)
         setValidEmployee(false)
@@ -294,7 +294,7 @@ const AccountUpdateForm = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data)
+        // console.log("response:", data)
       }
 
     } else {
