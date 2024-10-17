@@ -220,7 +220,7 @@ const ReserveCustomerCreateModal = (props: IProps) => {
     }
 
     // useEffect(() => {
-    //     console.log("Customer selected >>> ", customer)
+    //     // console.log("Customer selected >>> ", customer)
     // }, [customer])
 
     const handleCreateReserveFromModal = async() => {

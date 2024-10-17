@@ -106,7 +106,7 @@ const CategoryTable = (props: IProps) => {
         });
         setCategoriesFilter(filteredData)
         setNumberPages(Math.ceil(filteredData.length / 8))
-        console.log("Categories : ", categories)
+        // console.log("Categories : ", categories)
     }
 
     const handleSelectStatus = (e: string) => {
@@ -124,7 +124,7 @@ const CategoryTable = (props: IProps) => {
     }, [status])
 
     useEffect(() => {
-        console.log("Category_slug : ", category_slug)
+        // console.log("Category_slug : ", category_slug)
         if (category_slug != null && category_slug != '') {
             setShowCategoryUpdateModal(true)
         } else {

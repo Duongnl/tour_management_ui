@@ -30,7 +30,7 @@ function PaginationTable(props: IProps) {
         // Tạo URL mới với các tham số truy vấn hiện tại và tham số 'status' mới
         // Chuyển hướng đến URL mới
         router.push(`${pathname}?${currentParams.toString()}`);
-        console.log("current params : ",`${pathname}?${currentParams.toString()}`)
+        // console.log("current params : ",`${pathname}?${currentParams.toString()}`)
       };
     
      

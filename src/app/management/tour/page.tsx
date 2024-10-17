@@ -19,7 +19,7 @@ const ProfilePage = async () => {
       </Container>
     );
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return <div>Error fetching data</div>;
   }
 };

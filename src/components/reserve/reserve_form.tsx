@@ -10,7 +10,7 @@ interface IProps {
 const ReserveForm = (props: IProps) => {
 
     const [reserveTour, setReserveTour] = useState<IReserveTourResponse>(props.reserveTour)
-    console.log(reserveTour)
+    // console.log(reserveTour)
 
     return (
         <>

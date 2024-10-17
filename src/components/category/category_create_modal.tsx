@@ -41,7 +41,7 @@ const CategoryCreateModal = (props: Iprops) => {
     }
 
     const createCategory = async () => {
-        console.log("Validation", validation)
+        // console.log("Validation", validation)
         if (!validation.some(v => v === false)) {
 
             const categoryRequest: ICategoryRequest = {
@@ -70,7 +70,7 @@ const CategoryCreateModal = (props: Iprops) => {
 
 
 
-        console.log("Validation create category : ", !validation.some(v => v === false))
+        // console.log("Validation create category : ", !validation.some(v => v === false))
     }
 
 

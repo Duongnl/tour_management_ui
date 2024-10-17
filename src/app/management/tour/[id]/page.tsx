@@ -28,7 +28,7 @@ const DetailTour = (props: any) => {
         setAirlines(await fetchGetAirlines(1));
         setTour(await fetchGetTour(params.id));
       } catch (error) {
-        console.error("Error fetching data", error);
+        // console.error("Error fetching data", error);
       } finally {
         setLoading(false);
       }

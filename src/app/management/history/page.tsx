@@ -9,7 +9,7 @@ import { fetchGetHistories } from "@/utils/serviceApiServer";
 
 const HistoryPage = async() => {
     const histories = await fetchGetHistories()
-    console.log(histories);
+    // console.log(histories);
     
     return (
         <Container  className="ctn-history">

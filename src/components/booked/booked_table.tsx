@@ -97,7 +97,7 @@ const BookedTable = (props: IProps) => {
         const numPages = Math.ceil(reserveToursRes != undefined ? reserveToursRes.length / 3 : 0);
         setNumberPages(numPages);
         setReserveTours(reserveToursRes)
-        console.log("result >>> ", data)
+        // console.log("result >>> ", data)
     };
 
     const handleStartDay = (e: string) => {
@@ -111,7 +111,7 @@ const BookedTable = (props: IProps) => {
                 category_slug: categorySlug,
             }
             fetchFilterReserveTours(initDataFilter)
-            console.log("Data fiter start day >>> ", initDataFilter)
+            // console.log("Data fiter start day >>> ", initDataFilter)
         }
 
 
@@ -130,7 +130,7 @@ const BookedTable = (props: IProps) => {
                 category_slug: categorySlug,
             }
             fetchFilterReserveTours(initDataFilter)
-            console.log("Data fiter end day >>> ", initDataFilter)
+            // console.log("Data fiter end day >>> ", initDataFilter)
         }
     }
 
@@ -144,7 +144,7 @@ const BookedTable = (props: IProps) => {
             category_slug: e,
         }
 
-        console.log("Data fiter category >>> ", initDataFilter)
+        // console.log("Data fiter category >>> ", initDataFilter)
         fetchFilterReserveTours(initDataFilter)
 
     }
@@ -169,7 +169,7 @@ const BookedTable = (props: IProps) => {
                     category_slug: categorySlug,
                 }
                 fetchFilterReserveTours(initDataFilter)
-                console.log("Data fiter date >>> ", initDataFilter)
+                // console.log("Data fiter date >>> ", initDataFilter)
             } else {
                 const initDataFilter: IReserveTourFilterRequest = {
                     start_date: '',
@@ -178,7 +178,7 @@ const BookedTable = (props: IProps) => {
                     category_slug: categorySlug,
                 }
                 fetchFilterReserveTours(initDataFilter)
-                console.log("Data fiter date >>> ", initDataFilter)
+                // console.log("Data fiter date >>> ", initDataFilter)
             }
         }
     }

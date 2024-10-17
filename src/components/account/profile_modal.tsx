@@ -108,7 +108,7 @@ const ProfileModal = (props: IProps) => {
             }
           }
         } catch (error) {
-          console.error("Có lỗi xảy ra:", error);
+          // console.error("Có lỗi xảy ra:", error);
           // Xử lý lỗi chung nếu xảy ra sự cố trong bất kỳ hàm fetch nào
         }
       };

@@ -106,7 +106,7 @@ const CustomerUpdateForm = (props: IProps) => {
         for (let i: number = 0; i < errors.length; i++) {
           toast.error(errors[i]);
         }
-        console.log("response:", data);
+        // console.log("response:", data);
       }
     } else {
       toast.error("Vui lòng nhập đầy đủ thông tin hợp lệ");

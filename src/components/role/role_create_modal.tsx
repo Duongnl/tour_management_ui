@@ -116,7 +116,7 @@ const RoleCreateModal = (props: IProps) => {
 
     return (
         <>
-           {console.log("Validation : ",validation)}
+           {// console.log("Validation : ",validation)}
             <Modal show={showRoleModal} fullscreen={true}
                 onHide={() => { handleHideModal() }}>
                 <Modal.Header closeButton>
@@ -154,8 +154,8 @@ const RoleCreateModal = (props: IProps) => {
                         </thead>
                         <tbody>
 
-                            {permissionDefault.map(pd => (
-                                <tr>
+                            {permissionDefault.map((pd,index) => (
+                                <tr key={index}>
                                     {
                                         pd.map((pdt, index) => {
                                             if (index == 0) {
