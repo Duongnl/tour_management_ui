@@ -63,6 +63,24 @@ export const fetchGetRoles = async (
   return fetchGetAuthorizedData(url);
 };
 
+export const fetchGetAirlines = async (
+  status?: number
+): Promise<IAirlineResponse[]> => {
+  let url = `/airline`;
+  switch (status) {
+    case 0:
+      url = `/airline/locked`;
+      break;
+    case 1:
+      url = `/airline/active`;
+      break;
+    default:
+      url = `/airline`;
+  }
+
+  return fetchGetAuthorizedData(url);
+};
+
 
 export const fetchGetRole = async (
   slug?: string

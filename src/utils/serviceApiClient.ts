@@ -38,6 +38,13 @@ export const fetchGetCategory = async (
   return fetchGetAuthorizedData(url);
 };
 
+export const fetchGetAirline = async (
+  slug: string
+): Promise<IAirlineResponse> => {
+  let url = `/airline/${slug}`;
+  return fetchGetAuthorizedData(url);
+};
+
 export const fetchGetParents = async (): Promise<ICustomerResponse[]> => {
   let url = `/customer/parent`;
   return fetchGetAuthorizedData(url);
@@ -328,6 +335,13 @@ export const fetchPostCategory = async (
   return fetchPostAuthorizedData(url, newData);
 };
 
+export const fetchPostAirline = async (
+  newData: IAirlineRequest
+): Promise<any> => {
+  const url = "/airline";
+  return fetchPostAuthorizedData(url, newData);
+};
+
 export const fetchPostRole = async (
   newData: IRoleRequest
 ): Promise<any> => {
@@ -410,6 +424,14 @@ export const fetchPutCategory = async (
   updateData: ICategoryRequest
 ): Promise<any> => {
   const url = `/category/${slug}`;
+  return fetchPutAuthorizedData(url, updateData);
+};
+
+export const fetchPutAirline = async (
+  slug: string,
+  updateData: IAirlineRequest
+): Promise<any> => {
+  const url = `/airline/${slug}`;
   return fetchPutAuthorizedData(url, updateData);
 };
 

@@ -72,6 +72,21 @@ const AppSidebar = (props: Iprops) => {
             <br />
           </>)}
 
+          
+
+          {permission.includes("ACCESS_AIRLINE") && (<>
+            <Link href={"/management/airline"} className='link-tab-sidebar'
+              onClick={() => setShowSidebar(false)}
+            >
+              <Navbar className={`${"bg-body-tertiary tab-sidebar"} ${pathName.includes("airline") ? "active" : ""}`}>
+                <Container>
+                  <span className='name-tab-sidebar'>Chuyến bay </span>
+                </Container>
+              </Navbar>
+            </Link>
+            <br />
+          </>)}
+
 
           {permission.includes("ACCESS_RESERVE") && (<>
             <Link href={"/management/reserve"} className='link-tab-sidebar'
