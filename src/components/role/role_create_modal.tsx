@@ -62,8 +62,13 @@ const RoleCreateModal = (props: IProps) => {
         "Quản lý quyền", "ACCESS_ROLE", "CREATE_ROLE", "UPDATE_ROLE", "CHANGE_ROLE_STATUS",
     ]
 
+    const permissionAirline: string[] = [
+        "Quản lý chuyến bay", "ACCESS_AIRLINE", "CREATE_AIRLINE", "UPDATE_AIRLINE", "CHANGE_AIRLINE_STATUS",
+    ]
+
+
     const permissionDefault: string[][] = [
-        permissionCategory, permissionTour,permissionCustomer, permissionAccount, permissionRole
+        permissionCategory, permissionTour,permissionCustomer, permissionAccount, permissionRole,permissionAirline
     ]
 
     const handleHideModal = () => {
