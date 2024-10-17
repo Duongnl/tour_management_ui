@@ -9,7 +9,7 @@ const Profile = async () => {
   try {
     account = await fetchGetAccount();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 
   if (account)

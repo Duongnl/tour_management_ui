@@ -67,7 +67,7 @@ const TourTable = (props: IProps) => {
             updateTourList(await fetchGetToursCategory(category));
         }
       } catch (error) {
-        console.error("Error fetching data", error);
+        // console.error("Error fetching data", error);
       }
     };
     fetchData();
@@ -138,7 +138,7 @@ const TourTable = (props: IProps) => {
         );
       });
     });
-    console.log("filter data : ", filteredData);
+    // console.log("filter data : ", filteredData);
     setTours(filteredData);
     setNumberPages(Math.ceil(filteredData.length / 8));
   };

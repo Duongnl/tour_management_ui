@@ -12,7 +12,7 @@ interface IProps {
 const BookedForm = (props: IProps) => {
     const{reserveResponses,slug} = props;
     const [reserveTour, setReserveTour] = useState<IReserveTourResponse>(props.reserveTour)
-    console.log(reserveTour)
+    // console.log(reserveTour)
 
     return (
         <>

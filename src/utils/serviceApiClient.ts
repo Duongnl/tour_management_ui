@@ -64,7 +64,6 @@ export const fetchGetTours = async (
     default:
       url = `/tour`;
   }
-  console.log(url_api + url);
 
   return fetchGetAuthorizedData(url);
 };
@@ -265,7 +264,7 @@ const fetchGetAuthorizedData = async (url: string): Promise<any> => {
     const data = await res.json();
     return data.result;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
   }
 };
 
@@ -284,7 +283,7 @@ const fetchPostAuthorizedData = async (url: string, bodyData: any) => {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
   }
 };
 
@@ -375,7 +374,7 @@ const fetchPutAuthorizedData = async (
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("Error in fetching:", error);
+    // console.error("Error in fetching:", error);
   }
 };
 

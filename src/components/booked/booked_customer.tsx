@@ -88,7 +88,7 @@ const BookedCustomer = (props: IProps) => {
 
     useEffect(() => {
         if (status == "paid") {
-            console.log("paid >>> ", pathname)
+            // console.log("paid >>> ", pathname)
             fetchPaidReserves()
         } else if (status == "unpaid") {
             fetchUnpaidReserves()

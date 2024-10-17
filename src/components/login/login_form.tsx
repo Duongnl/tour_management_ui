@@ -4,9 +4,9 @@ import { Button } from "react-bootstrap";
 import "@/styles/login.css";
 import { useState, useEffect } from "react";
 import { LoginServerActions } from "./login_server_actions";
-import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
-import AccountErrorCode from "../../exception/account_error_code";
+import AccountErrorCode from "@/exception/account_error_code";
 import { ExportError } from "@/utils/export_error";
 import { fetchGetMyInfo } from "@/utils/serviceApiClient";
 
@@ -31,7 +31,7 @@ const LoginForm = (props: IProps) => {
         for (let i: number = 0; i < account.role.permissions.length; i++) {
           permissionString.push(account.role.permissions[i].permission_id);
         }
-        console.log("Login success data >>> ",  permissionString)
+        // console.log("Login success data >>> ",  permissionString)
         if (permissionString.includes("ACCESS_DASHBOARD")) {
             window.location.href = "/management";
         } else if (permissionString.includes("ACCESS_CATEGORY")) {

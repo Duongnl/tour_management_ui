@@ -17,7 +17,7 @@ interface IProps {
 
 const RoleUpdateForm = (props: IProps) => {
     const { role, slug } = props
-    // console.log(role)
+    // // console.log(role)
     const [permission, setPermission] = useState<string[]>([])
     const [role_name, setRole_name] = useState<string>(role.role_name)
     const [validation, setValidation] = useState<boolean>(true)
@@ -78,7 +78,7 @@ const RoleUpdateForm = (props: IProps) => {
                 role_name: role_name.trim(),
                 permission: permission
             }
-            console.log(roleRequest)
+            // console.log(roleRequest)
 
             const data = await fetchPutRole(slug,roleRequest)
             if (data.status == "SUCCESS") {
@@ -141,7 +141,7 @@ const RoleUpdateForm = (props: IProps) => {
                                 {
                                     pd.map((pdt, index) => {
                                         if (index == 0) {
-                                            return (<td>{pdt}</td>)
+                                            return (<td key={index}>{pdt}</td>)
                                         } else {
                                             return (<>
                                                 <td>

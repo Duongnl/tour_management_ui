@@ -109,7 +109,7 @@ const ReserveTable = (props: IProps) => {
   ) => {
     const data = await fetchFilterReserve(initDataFilter);
     const reserveToursRes: IReserveTourResponse[] = data.result
-    console.log("Reserve tours >>> ", reserveToursRes)
+    // console.log("Reserve tours >>> ", reserveToursRes)
     setReserveToursFilter(reserveToursRes);
     const numPages = Math.ceil(
       reserveToursRes != undefined ? reserveToursRes.length / 3 : 0
@@ -129,7 +129,7 @@ const ReserveTable = (props: IProps) => {
         category_slug: categorySlug,
       };
       fetchFilterReserveTours(initDataFilter);
-      console.log("Data fiter start day >>> ", initDataFilter);
+      // console.log("Data fiter start day >>> ", initDataFilter);
     }
   };
 
@@ -144,7 +144,7 @@ const ReserveTable = (props: IProps) => {
         category_slug: categorySlug,
       };
       fetchFilterReserveTours(initDataFilter);
-      console.log("Data fiter end day >>> ", initDataFilter);
+      // console.log("Data fiter end day >>> ", initDataFilter);
     }
   };
 
@@ -158,7 +158,7 @@ const ReserveTable = (props: IProps) => {
       category_slug: e,
     };
 
-    console.log("Data fiter category >>> ", initDataFilter);
+    // console.log("Data fiter category >>> ", initDataFilter);
     fetchFilterReserveTours(initDataFilter);
   };
 
@@ -180,7 +180,7 @@ const ReserveTable = (props: IProps) => {
           category_slug: categorySlug,
         };
         fetchFilterReserveTours(initDataFilter);
-        console.log("Data fiter date >>> ", initDataFilter);
+        // console.log("Data fiter date >>> ", initDataFilter);
       } else {
         const initDataFilter: IReserveTourFilterRequest = {
           start_date: "",
@@ -189,7 +189,7 @@ const ReserveTable = (props: IProps) => {
           category_slug: categorySlug,
         };
         fetchFilterReserveTours(initDataFilter);
-        console.log("Data fiter date >>> ", initDataFilter);
+        // console.log("Data fiter date >>> ", initDataFilter);
       }
     }
   };
